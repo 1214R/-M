@@ -3818,18 +3818,18 @@ html, body { overscroll-behavior-y: none; }
                             <button @click="settings.tarotRate = Math.min(100, (settings.tarotRate || 0) + 5)" class="w-7 h-7 rounded-lg bg-bg flex items-center justify-center text-muted active:bg-border">+</button>
                         </div>
                     </div>
-                    <span class="text-[10px] text-muted/80 leading-relaxed block w-full text-left">功能说明：他回你消息时，有这个概率会自己抽一张塔罗发给你。</span>
+                    <span class="text-[10px] text-muted/80 leading-relaxed block w-full text-left">功能说明：8% 大约聊十来条冒一张。塔罗和推歌共用一次抽取，一轮最多一张、两分钟内不会连着推，所以不会反复冒卡片。塔罗页「发到聊天」不受限制。</span>
                 </div>
                 <div class="p-3.5 flex flex-col gap-2 border-t border-border">
                     <div class="flex items-center justify-between">
                         <span>他推歌的概率</span>
                         <div class="flex items-center gap-3">
-                            <button @click="settings.songRate = Math.max(0, (settings.songRate == null ? 12 : settings.songRate) - 5)" class="w-7 h-7 rounded-lg bg-bg flex items-center justify-center text-muted active:bg-border">−</button>
-                            <span class="w-10 text-center font-mono font-medium">{{ settings.songRate == null ? 12 : settings.songRate }}%</span>
-                            <button @click="settings.songRate = Math.min(100, (settings.songRate == null ? 12 : settings.songRate) + 5)" class="w-7 h-7 rounded-lg bg-bg flex items-center justify-center text-muted active:bg-border">+</button>
+                            <button @click="settings.songRate = Math.max(0, (settings.songRate == null ? 8 : settings.songRate) - 5)" class="w-7 h-7 rounded-lg bg-bg flex items-center justify-center text-muted active:bg-border">−</button>
+                            <span class="w-10 text-center font-mono font-medium">{{ settings.songRate == null ? 8 : settings.songRate }}%</span>
+                            <button @click="settings.songRate = Math.min(100, (settings.songRate == null ? 8 : settings.songRate) + 5)" class="w-7 h-7 rounded-lg bg-bg flex items-center justify-center text-muted active:bg-border">+</button>
                         </div>
                     </div>
-                    <span class="text-[10px] text-muted/80 leading-relaxed block w-full text-left">功能说明：他回你消息时，有这个概率自己搜一首、或从你歌单里挑一首，在主聊天发一张卡片给你；点「现在听」就播，点「等会再听」先留着。音乐页里也能直接让他推一首。</span>
+                    <span class="text-[10px] text-muted/80 leading-relaxed block w-full text-left">功能说明：概率按你发的每条消息算，8% 大约聊十来条冒一张。和塔罗共用一次抽取，一轮最多一张、两分钟内不会连着推。他自己搜一首、或从你歌单里挑一首，在主聊天发一张卡片给你；点「现在听」就播，点「等会再听」先留着。音乐页「让他推一首」不受限制。</span>
                 </div>
                 <div class="p-3.5 flex flex-col gap-2 border-t border-border">
                     <div class="flex items-center justify-between">
@@ -6434,7 +6434,7 @@ createApp({
         const profiles = reactive({ me: { name: '我', avatar: '' }, them: { name: '客', avatar: '' } });
         
         const settings = reactive({ 
-            darkMode: false, showAvatar: true, avatarRadius: 50, autoReply: true, soundEnabled: true, tarotRate: 15, sleepRate: 12, songRate: 12,
+            darkMode: false, showAvatar: true, avatarRadius: 50, autoReply: true, soundEnabled: true, tarotRate: 8, sleepRate: 12, songRate: 8,
             keepAlive: true,
             fontFamily: 'serif', fontSize: 14,
             learnRate: 30,
@@ -8027,7 +8027,24 @@ createApp({
             { k:'brush',     name:'软刷',   paths:['M4 4h14v6H4z','M7 10v10','M11 10v10','M15 10v10'] },
             { k:'bubble',    name:'气泡水', paths:['M6 3h12l-1 18H7L6 3z','M9 9h.01','M12 13h.01','M15 8h.01','M10 17h.01'] },
             { k:'glass',     name:'玻璃碰', paths:['M8 3h8l-1 18H9L8 3z','M12 8v7','M8 8h8'] },
-            { k:'whisper',   name:'耳语',   paths:['M12 3a6 6 0 0 0-6 6v4a3 3 0 0 0 3 3','M18 8a6 6 0 0 0-3-5','M12 20v2','M8 20h8'] }
+            { k:'whisper',   name:'耳语',   paths:['M12 3a6 6 0 0 0-6 6v4a3 3 0 0 0 3 3','M18 8a6 6 0 0 0-3-5','M12 20v2','M8 20h8'] },
+            // 木质 / 木头汤：木勺在碗里搅、敲，温润不刺
+            { k:'woodsoup',  name:'木头汤', paths:['M3 11h18a9 9 0 0 1-18 0z','M12 2v7','M7 5l5 4','M17 5l-5 4','M3 11h18'] },
+            { k:'woodbowl',  name:'木碗',   paths:['M3 11h18a9 9 0 0 1-18 0z','M2 11h20','M8 20h8','M12 11v3'] },
+            { k:'woodstick', name:'木筷',   paths:['M7 3l7 18','M17 3L10 21','M6 3h3','M16 3h3'] },
+            { k:'woodbox',   name:'木盒',   paths:['M3 8h18v12H3z','M3 8l3-4h12l3 4','M12 8v12','M7 12h2'] },
+            // 各类敲击音
+            { k:'tapglass',  name:'敲玻璃', paths:['M7 3h10l-1 17H8L7 3z','M7 8h10','M12 12v5','M9 20h6'] },
+            { k:'tapceramic',name:'敲瓷碗', paths:['M3 10h18a9 9 0 0 1-18 0z','M2 10h20','M8 19h8','M12 3v3'] },
+            { k:'tapmetal',  name:'敲铁盒', paths:['M4 6h16v13H4z','M4 6l2-3h12l2 3','M8 11h8','M8 15h5'] },
+            { k:'tapstone',  name:'敲石头', paths:['M4 15l3-8 5-3 6 4 2 7-5 4H8z','m9 7 4 6 5-2','M4 15l5 4'] },
+            { k:'nailtap',   name:'指甲敲', paths:['M6 20V9a3 3 0 0 1 6 0v11','M6 13h6','M15 20V9a3 3 0 0 1 6 0v11','M15 13h6'] },
+            { k:'fingertap', name:'指腹敲', paths:['M5 18c0-4 2-6 4-8','M9 10V5a2 2 0 0 1 4 0v6','M13 11V6a2 2 0 0 1 4 0v6','M17 12V8a2 2 0 0 1 4 0v8c0 3-2 5-5 5H9'] },
+            // 挂麦 / 刮麦：麦克风网罩上的近距离触发音
+            { k:'micscratch',name:'刮麦',   paths:['M12 2a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z','M5 11a7 7 0 0 0 14 0','M12 18v4','M8 22h8','M6 5l2 2','M18 5l-2 2'] },
+            { k:'micbrush',  name:'刷麦',   paths:['M12 2a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z','M5 11a7 7 0 0 0 14 0','M12 18v4','M8 22h8','M3 4h6','M3 7h6'] },
+            { k:'mictap',    name:'敲麦',   paths:['M12 2a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z','M5 11a7 7 0 0 0 14 0','M12 18v4','M8 22h8','M18 3l2 2','M20 6l-3 3'] },
+            { k:'micrub',    name:'揉麦',   paths:['M12 2a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z','M5 11a7 7 0 0 0 14 0','M12 18v4','M8 22h8','M2 8c2-2 4 2 6 0','M16 8c2-2 4 2 6 0'] }
         ];
         const cpAllSounds = cpNoises.concat(cpMusics).concat(cpAsmr);
         const cpSoundName = (k) => { const n = cpAllSounds.find(x => x.k === k); return n ? n.name : k; };
@@ -8075,6 +8092,21 @@ createApp({
             'bubble':      4.72,  // 气泡水   asmr 实测 0.0030
             'glass':       2.67,  // 玻璃碰   asmr 实测 0.0053
             'whisper':     7.00,  // 耳语    asmr 实测 0.0018
+            // 新增 14 项：逐音实测峰值后反推增益，与原有 ASMR 同一响度带
+            'woodsoup':    2.83,  // 木头汤 asmr 实测 0.0070
+            'woodbowl':    2.86,  // 木碗 asmr 实测 0.0069
+            'woodstick':   6.75,  // 木筷 asmr 实测 0.0029
+            'woodbox':     3.58,  // 木盒 asmr 实测 0.0055
+            'tapglass':    3.79,  // 敲玻璃 asmr 实测 0.0052
+            'tapceramic':  3.84,  // 敲瓷碗 asmr 实测 0.0051
+            'tapmetal':    3.59,  // 敲铁盒 asmr 实测 0.0055
+            'tapstone':    4.08,  // 敲石头 asmr 实测 0.0048
+            'nailtap':     8.00,  // 指甲敲 asmr 实测 0.0013
+            'fingertap':   4.57,  // 指腹敲 asmr 实测 0.0043
+            'micscratch':  3.87,  // 刮麦 asmr 实测 0.0051
+            'micbrush':    8.00,  // 刷麦 asmr 实测 0.0018
+            'mictap':      4.10,  // 敲麦 asmr 实测 0.0048
+            'micrub':      4.50,  // 揉麦 asmr 实测 0.0044
         };
         // 叠得越多，每层自动轻一点，总响度不会越叠越炸（n=1 不衰减）
         const cpLayerGain = (n) => n <= 1 ? 1 : Math.pow(n, -0.35);
@@ -8221,7 +8253,49 @@ createApp({
             brush:     { ev:'brushswish',gain:0.8, base:{ src:'pink',  filters:[['lowpass',1400,0.8]], gain:0.075, lfo:{ f:0.13, depth:0.035 } } },
             bubble:    { ev:'bubble',    gain:0.9, base:{ src:'pink',  filters:[['lowpass',900,0.7]],  gain:0.030 } },
             glass:     { ev:'glass',     gain:0.9 },
-            whisper:   { ev:'whisper',   gain:0.7, base:{ src:'pink',  filters:[['bandpass',1100,0.7]],gain:0.045, lfo:{ f:0.20, depth:0.022 } } }
+            whisper:   { ev:'whisper',   gain:0.7, base:{ src:'pink',  filters:[['bandpass',1100,0.7]],gain:0.045, lfo:{ f:0.20, depth:0.022 } } },
+            // 木质 / 木头汤
+            woodsoup:  { ev:'woodsoup',  gain:0.9 },
+            woodbowl:  { ev:'woodbowl',  gain:0.9 },
+            woodstick: { ev:'woodstick', gain:0.9 },
+            woodbox:   { ev:'woodbox',   gain:0.9 },
+            // 各类敲击
+            tapglass:  { ev:'tapglass',  gain:0.9 },
+            tapceramic:{ ev:'tapceramic',gain:0.9 },
+            tapmetal:  { ev:'tapmetal',  gain:0.9 },
+            tapstone:  { ev:'tapstone',  gain:0.9 },
+            nailtap:   { ev:'nailtap',   gain:0.85 },
+            fingertap: { ev:'fingertap', gain:0.85 },
+            // 刮麦 / 刷麦 / 敲麦 / 揉麦：都带一层极轻的近距底噪
+            micscratch:{ ev:'micscratch',gain:0.8, base:{ src:'pink', filters:[['highpass',2600,0.7]], gain:0.020 } },
+            micbrush:  { ev:'micbrush',  gain:0.8, base:{ src:'pink', filters:[['bandpass',1800,0.6]], gain:0.024, lfo:{ f:0.11, depth:0.012 } } },
+            mictap:    { ev:'mictap',    gain:0.8, base:{ src:'pink', filters:[['lowpass',700,0.7]],  gain:0.018 } },
+            micrub:    { ev:'micrub',    gain:0.8, base:{ src:'pink', filters:[['lowpass',1200,0.7]], gain:0.028, lfo:{ f:0.17, depth:0.014 } } }
+        };
+
+        // 短促敲击的通用合成：一记带滤波的噪声敲击 + 可选的一记 tonal 共鸣
+        const cpTap = (ctx, t, o) => {
+            const g = t.evGain || 1;
+            cpHit(ctx, o.f + Math.random() * (o.fr || 0), o.q || 1.6,
+                  o.dur || 0.05, (o.amp || 0.08) * g, o.ft || 'bandpass', t);
+            if (o.tone) cpBlip(ctx, o.tone[0] + Math.random() * (o.tone[1] || 0),
+                o.tone[2] || null, o.tone[3] || 0.1, (o.tone[4] || 0.03) * g,
+                o.tone[5] || 'triangle', t, 0.002);
+        };
+        // 连击：n 记，间隔随机，像指甲/筷子连着敲
+        const cpTapRun = (ctx, t, o) => {
+            const n = (o.n || 3) + Math.floor(Math.random() * (o.nr || 2));
+            for (let i = 0; i < n; i++) {
+                const d = setTimeout(() => { if (cpTracks[t.k]) cpTap(ctx, t, o); }, i * (o.gap || 90) + Math.random() * (o.gapr || 70));
+                t.timers.push(d);
+            }
+        };
+        // 摩擦/刮擦：一段带起伏的中长噪声，比单记敲击柔和
+        const cpRasp = (ctx, t, o) => {
+            const g = t.evGain || 1;
+            const dur = (o.dur || 0.25) + Math.random() * (o.durr || 0.25);
+            cpHit(ctx, o.f + Math.random() * (o.fr || 0), o.q || 0.8, dur, (o.amp || 0.03) * g, o.ft || 'bandpass', t);
+            if (o.tone) cpBlip(ctx, o.tone[0], o.tone[1] || null, dur, (o.tone[2] || 0.012) * g, 'sine', t, 0.02);
         };
 
         const cpEventFns = {
@@ -8331,6 +8405,63 @@ createApp({
                 const g = t.evGain || 1;
                 cpHit(ctx, 900 + Math.random() * 700, 1.1, 0.3 + Math.random() * 0.3, 0.03 * g, 'bandpass', t);
             },
+            // ===== 新增：木头汤 / 各类敲击 / 刮麦 =====
+            woodsoup: (ctx, t) => {                              // 木头汤：木勺搅碗，两三下温润木叩 + 一点刮擦
+                cpTapRun(ctx, t, { n:2, nr:2, gap:170, gapr:140, f:260, fr:130, q:1.2,
+                    dur:0.07, amp:0.10, ft:'lowpass', tone:[150, 70, 100, 0.10, 0.045] });
+                cpRasp(ctx, t, { f:700, fr:500, q:1.6, dur:0.18, durr:0.18, amp:0.028, ft:'bandpass' });
+            },
+            woodbowl: (ctx, t) => {                              // 木碗：带空腔的短共鸣
+                cpTap(ctx, t, { f:330, fr:160, q:1.4, dur:0.09, amp:0.10, ft:'lowpass',
+                    tone:[290, 120, 210, 0.22, 0.055] });
+            },
+            woodstick:(ctx, t) => {                              // 木筷：两记清脆木质互敲
+                cpTapRun(ctx, t, { n:2, nr:1, gap:110, gapr:90, f:900, fr:500, q:2.4,
+                    dur:0.035, amp:0.075, ft:'bandpass', tone:[620, 200, 480, 0.07, 0.03] });
+            },
+            woodbox:  (ctx, t) => {                              // 木盒：闷、低频、箱体感
+                cpTap(ctx, t, { f:150, fr:90, q:1.1, dur:0.11, amp:0.13, ft:'lowpass',
+                    tone:[120, 40, 85, 0.14, 0.055] });
+            },
+            tapglass: (ctx, t) => {                              // 敲玻璃杯：清亮长 ping
+                cpBlip(ctx, 2600 + Math.random() * 1500, null, 0.45, 0.032 * (t.evGain||1), 'sine', t, 0.001);
+                cpHit(ctx, 4200 + Math.random() * 1800, 4, 0.02, 0.03 * (t.evGain||1), 'bandpass', t);
+            },
+            tapceramic:(ctx, t) => {                             // 敲瓷碗：中高频短共鸣
+                cpTap(ctx, t, { f:1500, fr:800, q:3.0, dur:0.05, amp:0.07, ft:'bandpass',
+                    tone:[1250, 400, 900, 0.16, 0.045] });
+            },
+            tapmetal: (ctx, t) => {                              // 敲铁盒：金属泛音，稍长
+                cpTap(ctx, t, { f:2100, fr:1100, q:4.0, dur:0.06, amp:0.06, ft:'bandpass',
+                    tone:[1800, 700, null, 0.34, 0.042] });
+            },
+            tapstone: (ctx, t) => {                              // 敲石头：又干又硬，极短
+                cpTapRun(ctx, t, { n:1, nr:2, gap:220, gapr:180, f:1100, fr:700, q:1.0,
+                    dur:0.022, amp:0.09, ft:'highpass' });
+            },
+            nailtap:  (ctx, t) => {                              // 指甲敲：细密高频连击
+                cpTapRun(ctx, t, { n:3, nr:3, gap:55, gapr:55, f:3400, fr:2200, q:3.2,
+                    dur:0.016, amp:0.055, ft:'bandpass' });
+            },
+            fingertap:(ctx, t) => {                              // 指腹敲：闷软的两下
+                cpTapRun(ctx, t, { n:2, nr:1, gap:200, gapr:160, f:230, fr:120, q:1.0,
+                    dur:0.09, amp:0.11, ft:'lowpass', tone:[170, 50, 120, 0.12, 0.035] });
+            },
+            micscratch:(ctx, t) => {                             // 刮麦：网罩上细密沙沙
+                cpTapRun(ctx, t, { n:4, nr:4, gap:60, gapr:80, f:2800, fr:2400, q:1.0,
+                    dur:0.10, amp:0.028, ft:'highpass' });
+            },
+            micbrush: (ctx, t) => {                              // 刷麦：软刷扫过，长起伏
+                cpRasp(ctx, t, { f:1300, fr:900, q:0.7, dur:0.45, durr:0.45, amp:0.030, ft:'bandpass' });
+            },
+            mictap:   (ctx, t) => {                              // 敲麦：近距闷「咚」
+                cpTapRun(ctx, t, { n:2, nr:2, gap:190, gapr:170, f:190, fr:110, q:0.9,
+                    dur:0.085, amp:0.10, ft:'lowpass', tone:[140, 50, 100, 0.13, 0.04] });
+            },
+            micrub:   (ctx, t) => {                              // 揉麦：低频摩擦
+                cpRasp(ctx, t, { f:420, fr:320, q:0.9, dur:0.35, durr:0.4, amp:0.034, ft:'lowpass',
+                    tone:[110, 70, 0.020] });
+            },
             thunder: (ctx, t) => {
                 const now = ctx.currentTime;
                 const sr = ctx.createBufferSource(); sr.buffer = cpNoiseBuf(ctx, 'brown');
@@ -8351,7 +8482,11 @@ createApp({
             ice:[900,3200], icecup:[1100,3600], icecrush:[700,2400],
             wood:[800,2800], woodspoon:[600,2000], woodblock:[1000,3200],
             paper:[1200,4000], crinkle:[900,3000], brushswish:[1600,5000],
-            bubble:[500,1800], glass:[2200,6500], whisper:[1800,5200]
+            bubble:[500,1800], glass:[2200,6500], whisper:[1800,5200],
+            woodsoup:[1100,3200], woodbowl:[1600,4600], woodstick:[900,2800], woodbox:[1800,5000],
+            tapglass:[2600,7000], tapceramic:[1500,4200], tapmetal:[2200,6000], tapstone:[1200,3600],
+            nailtap:[700,2200], fingertap:[1400,4000],
+            micscratch:[900,2600], micbrush:[1800,5200], mictap:[1300,3800], micrub:[1600,4600]
         };
         const cpEventLoop = (ctx, ev, t) => {
             if (!cpTracks[t.k]) return;
@@ -9122,7 +9257,27 @@ createApp({
 
                 const t = syncPlaylist.value[syncState.index];
                 if (t) { const src = getTrackSrc(t); if (src) { syncAudio.src = src; msLoadedSrc = src; } }   // getTrackSrc 已统一升级为安全地址
-            } catch (e) { console.log('加载数据出错:', e); } finally { isLoading = false; }
+            } catch (e) { console.log('加载数据出错:', e); } finally {
+                isLoading = false;
+                // 等所有数据恢复完再做一次性迁移：推歌旧 12/15、塔罗旧 15
+                // 按「每条消息掷一次」算偏密，都落到 8%。只动这些旧档位，
+                // 用户自己调到任何其它值都不碰，之后也不再重复迁移。
+                try {
+                    let changed = false;
+                    if (!settings.__sgRateV2) {
+                        if (settings.songRate === 12 || settings.songRate === 15) settings.songRate = 8;
+                        settings.__sgRateV2 = true; changed = true;
+                    }
+                    if (!settings.__cardRateV3) {
+                        if (settings.tarotRate === 15) settings.tarotRate = 8;
+                        settings.__cardRateV3 = true; changed = true;
+                    }
+                    if (changed) {
+                        try { localStorage.setItem('liubai_sync_settings', JSON.stringify(settings)); } catch (e) {}
+                        try { saveAllNow(); } catch (e) {}
+                    }
+                } catch (e) {}
+            }
         };
         
         // ================= [MOD-08B] 播放控制：切歌 / 暂停 / 循环模式 / 进度 =================
@@ -9640,7 +9795,7 @@ createApp({
                         removed++;
                     }
                 }
-                const lsKeep = new Set(['liubai_theme_dark','liubai_sync_profiles','liubai_sync_settings','liubai_sync_replyGroups','liubai_sync_emojiList','liubai_sync_letters','liubai_playlist_string','liubai_watch_string','liubai_waiting_letter','liubai_weather_data_v2']);
+                const lsKeep = new Set(['liubai_theme_dark','liubai_sync_profiles','liubai_sync_settings','liubai_sync_replyGroups','liubai_sync_emojiList','liubai_sync_letters','liubai_playlist_string','liubai_watch_string','liubai_waiting_letter','liubai_weather_data_v2','liubai_card_cd']);
                 for (let i = localStorage.length - 1; i >= 0; i--) {
                     const k = localStorage.key(i);
                     if (k && k.startsWith('liubai_') && !lsKeep.has(k)) {
@@ -10369,15 +10524,30 @@ createApp({
             finally { isTyping.value = false; if (settings.keepAlive) kaSave(null); saveAll(); }
         };
 
+        // 塔罗 / 推歌两类大卡片共用：一轮只掷一次、最多出一张，并且共享冷却。
+        // 以前两个独立 if 会叠加（15%+8% 实际约 28% 会冒卡），聊得密还会连着冒。
+        const CARD_CD_KEY = 'liubai_card_cd';
+        const CARD_CD_MS = 2 * 60 * 1000;   // 两分钟内最多一张
+        const cardCdRead = () => { try { return Number(localStorage.getItem(CARD_CD_KEY)) || 0; } catch (e) { return 0; } };
+        const cardCdWrite = (t) => { try { localStorage.setItem(CARD_CD_KEY, String(t)); } catch (e) {} };
+        const themMaybeSendCard = (delayTarot, delaySong) => {
+            const now = Date.now();
+            if (now - cardCdRead() < CARD_CD_MS) return;   // 冷却中：两类都不推
+            const pT = Math.max(0, Number(settings.tarotRate) || 0) / 100;
+            const pS = Math.max(0, Number(settings.songRate == null ? 8 : settings.songRate)) / 100;
+            const r = Math.random();
+            if (r >= pT + pS) return;                       // 这轮不出卡
+            cardCdWrite(now);                               // 先占住冷却，延时期间再发消息也不会重复命中
+            if (r < pT) setTimeout(() => themSendTarot(), delayTarot);
+            else setTimeout(() => themPushSong(), delaySong);
+        };
+
         const triggerAutoReplies = () => {
             if (isTyping.value) return;
             if (settings.useAI && settings.apiKey && settings.apiUrl) {
                 requestAIReply();
                 // AI 模式下也按概率附一张（延后一点，等 AI 那条落地）
-                const r0 = (settings.tarotRate || 0) / 100;
-                if (Math.random() < r0) setTimeout(() => themSendTarot(), 3500);
-                const rS = (settings.songRate == null ? 12 : settings.songRate) / 100;
-                if (Math.random() < rS) setTimeout(() => themPushSong(), 4300);
+                themMaybeSendCard(3500, 4300);
                 return;
             }
             const total = Math.floor(Math.random() * (replyMaxCount.value - replyMinCount.value + 1)) + replyMinCount.value;
@@ -10385,7 +10555,7 @@ createApp({
             for (let i = 0; i < total; i++) { const randomDelay = Math.floor(Math.random() * (replyMaxDelay.value - replyMinDelay.value + 1)) + replyMinDelay.value; if (i === 0) elapsed = randomDelay * 1000; else elapsed += randomDelay * 1000; scheduled.push(elapsed); }
             const kaTok = kaNewToken();
             kaPlan('chat', total, scheduled[0] || 1000, kaTok);
-            scheduled.forEach((delay, i) => { setTimeout(() => { if (kaTok !== kaToken) return; if (i === scheduled.length - 1) isTyping.value = false; sendAutoReply(); kaTick('chat', scheduled[i + 1] || 0, kaTok); if (i === scheduled.length - 1) { const r = (settings.tarotRate || 0) / 100; if (Math.random() < r) setTimeout(() => themSendTarot(), 900); const rS = (settings.songRate == null ? 12 : settings.songRate) / 100; if (Math.random() < rS) setTimeout(() => themPushSong(), 1700); } }, delay); });
+            scheduled.forEach((delay, i) => { setTimeout(() => { if (kaTok !== kaToken) return; if (i === scheduled.length - 1) isTyping.value = false; sendAutoReply(); kaTick('chat', scheduled[i + 1] || 0, kaTok); if (i === scheduled.length - 1) themMaybeSendCard(900, 1700); }, delay); });
         };
         const sendAutoReply = () => {
             const useSticker = stickers.value.length > 0 && Math.random() < 0.35; let newMsg;
