@@ -690,6 +690,9 @@ video {
 .h-9 {
   height: 2.25rem;
 }
+.h-10 {
+  height: 2.5rem;
+}
 .h-\[26px\] {
   height: 26px;
 }
@@ -1699,9 +1702,10 @@ body { background-color:#d1d5db; font-family:"PingFang SC","Microsoft YaHei",sys
 .shop-order .o-e { width:20px; height:20px; flex:none; color:var(--color-text); }
 
 /* ===== [MOD-21] 问卷库（语料页 · 他反向问我） ===== */
-/* 横向手势交给页面自己翻页，浏览器不再把「右滑」当成返回上一页 */
+/* 横向手势交给页面自己翻页，浏览器不再把「右滑」当成返回上一页。
+   注意：祖先是 pan-y，若子条再设 pan-x，两者取交集后横竖都动不了 ——
+   所以筛选条的横滚改由下面的 hsMove 手动驱动，这里只保留纵向滚动。 */
 .settings-swipe-root { touch-action: pan-y; }
-.settings-swipe-root > .overflow-x-auto { touch-action: pan-x; }
 .qa-wrap { padding:4px 0 60px; }
 .qa-lead { font-size:11px; line-height:1.7; color:var(--color-muted); padding:0 4px 10px; }
 .qa-tools { display:flex; gap:8px; margin-bottom:10px; }
@@ -3209,8 +3213,8 @@ html.dark[class*="theme-"] span.hp-pick { color:var(--hp-ink) !important; }
 .hp-dlg-txt { font-size:13px; line-height:1.55; color:var(--color-text);
               white-space:pre-wrap; word-break:break-word; text-align:center; width:100%; }
 
-/* 客的头像：第一面那个圈「2」的位置（叠图右下角） */
-.hp-av.at2 { position:absolute; right:8px; bottom:8px; z-index:6; }
+/* 客的头像：第一面右下角，与左上头像中心对称（同上，后面有同名规则覆盖） */
+.hp-av.at2 { position:absolute; right:6px; bottom:6px; z-index:6; }
 
 /* 纪念日缩扁后，文字跟着收 */
 .hp-anniv .hp-anv-mask { padding:5px 7px !important; }
@@ -3224,9 +3228,13 @@ html.dark[class*="theme-"] span.hp-pick { color:var(--hp-ink) !important; }
 .hp-top-sub  { font-size:12px; letter-spacing:.2em; text-indent:.2em; color:var(--color-muted);
                margin-top:6px; line-height:1.4; }
 
-/* 两个头像对称：都以叠图区为基准，一个左上角、一个右下角，偏移量相同（8px） */
-.hp-av.at1 { position:absolute; left:8px;  top:8px;    z-index:6; }
-.hp-av.at2 { position:absolute; right:8px; bottom:8px; z-index:6; }
+/* 两个头像贴着相纸的对角白边，关于叠图区中心点严格对称：
+   左上用 left/top、右下用 right/bottom，数值一一相同（都是 6px）。
+   相纸 p1 左上角约在 (4px,17px)、底部还有 28px 宽白边，52px 的圆搭在这两处白边角上，
+   像贴在拍立得上的小贴纸，不会飘在外面。想再贴近就把四个数值一起减小（6→2），保持对称。 */
+.hp-av.at1 { position:absolute; left:6px; top:6px;  z-index:6; }
+/* 右下角「客」头像：与左上镜像对称 */
+.hp-av.at2 { position:absolute; right:6px; bottom:6px; z-index:6; }
 
 /* ================= [MOD-18] 心情手账 ================= */
 /* 纸质调色：暖白纸 + 淡紫点缀，暗色下转为暖黑纸，避免刺眼 */
@@ -3991,7 +3999,7 @@ html, body { overscroll-behavior-y: none; }
         <button @click="switchView('home')" class="p-2 -ml-2 text-text"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
         <span class="text-[13px] font-medium tracking-widest serif-text">法则</span><div class="w-9"></div>
     </header>
-    <div class="flex items-center gap-1 px-4 py-2 border-b border-border shrink-0 bg-surface overflow-x-auto" style="scrollbar-width:none;">
+    <div data-hscroll class="flex items-center gap-1 px-4 py-2 border-b border-border shrink-0 bg-surface overflow-x-auto" style="scrollbar-width:none;">
         <button @click="settingsTab = 'normal'" class="flex-1 min-w-[60px] py-1.5 text-center text-[12px] rounded-lg transition-colors" :class="settingsTab === 'normal' ? 'bg-accent text-bg font-medium' : 'text-muted'">基础</button>
         <button @click="settingsTab = 'api'" class="flex-1 min-w-[60px] py-1.5 text-center text-[12px] rounded-lg transition-colors" :class="settingsTab === 'api' ? 'bg-accent text-bg font-medium' : 'text-muted'">接口</button>
         <button @click="settingsTab = 'beautify'" class="flex-1 min-w-[60px] py-1.5 text-center text-[12px] rounded-lg transition-colors" :class="settingsTab === 'beautify' ? 'bg-accent text-bg font-medium' : 'text-muted'">美化</button>
@@ -4297,8 +4305,8 @@ html, body { overscroll-behavior-y: none; }
             <div class="diag-card" @click="compressStickersOnly">
                 <div class="diag-icon"><i data-lucide="smile"></i></div>
                 <div class="diag-content">
-                    <div class="diag-title">压缩表情包 (释放空间)</div>
-                    <div class="diag-desc">把表情包库里的图片压缩变小，不删图</div>
+                    <div class="diag-title">优化表情包 (更清晰)</div>
+                    <div class="diag-desc">大图转清晰 WebP，小图跳过；已压糊的旧图建议重新导入原图</div>
                     <span class="diag-tag">推荐操作</span>
                 </div>
                 <div class="diag-arrow"><i data-lucide="chevron-right"></i></div>
@@ -4400,7 +4408,7 @@ html, body { overscroll-behavior-y: none; }
         </button>
     </div>
 
-    <div v-if="libraryTab === 'cards'" class="flex items-center gap-2 px-4 pb-3 overflow-x-auto shrink-0" style="scrollbar-width:none;">
+    <div v-if="libraryTab === 'cards'" data-hscroll class="flex items-center gap-2 px-4 pb-3 overflow-x-auto shrink-0" style="scrollbar-width:none;">
         <button @click="activeGroupFilter = 'all'" class="px-3 py-1.5 rounded-full text-[12px] whitespace-nowrap transition-colors border" :class="activeGroupFilter === 'all' ? 'bg-accent/10 text-accent border-accent/30' : 'bg-transparent text-muted border-border'">全部</button>
         <button @click="activeGroupFilter = 'ungrouped'" class="px-3 py-1.5 rounded-full text-[12px] whitespace-nowrap transition-colors border" :class="activeGroupFilter === 'ungrouped' ? 'bg-accent/10 text-accent border-accent/30' : 'bg-transparent text-muted border-border'">未分组</button>
         <button v-for="g in replyGroups" :key="g.id" @click="activeGroupFilter = g.id" class="px-3 py-1.5 rounded-full text-[12px] whitespace-nowrap transition-colors border flex items-center gap-1.5" :class="activeGroupFilter === g.id ? 'bg-accent/10 text-accent border-accent/30' : 'bg-transparent text-muted border-border'">
@@ -4446,7 +4454,7 @@ html, body { overscroll-behavior-y: none; }
         </template>
         <template v-if="libraryTab === 'qabank'">
             <div class="qa-wrap">
-                <div class="qa-lead">他反过来问你 · 你在聊天卡片里自己写回答，他再从这一题备好的几句里挑 1 句回你。<br>内置 {{ qaSystem.length }} 题标「系统」，自己写的标「自建」；左右滑动也能翻到这一页。</div>
+                <div class="qa-lead">他反过来问你 · 你自由写回答，他按你这句话的方向，从备好的 5 种回话里挑最贴合的一句。<br>系统题覆盖「说好 / 说不好 / 不想讲 / 反问回去 / 兜底」五种可能，不会替你把答案说出来。<br>内置 {{ qaSystem.length }} 题标「系统」，自己写的标「自建」；左右滑动也能翻到这一页。</div>
                 <div class="qa-rate-row">
                     <span>他主动问我的概率</span>
                     <div class="qa-rate-ctl">
@@ -4474,7 +4482,7 @@ html, body { overscroll-behavior-y: none; }
                         </div>
                         <span class="qa-tag" :class="p.mine ? 'mine' : 'sys'">{{ p.mine ? '自建' : '系统' }}</span>
                     </div>
-                    <div class="qa-count">{{ p.opts.length }} 句他的预设回复</div>
+                    <div class="qa-count">{{ p.opts.length }} 种回答方向 · 各一句他的回话</div>
                     <div class="qa-opts"><div v-for="(o, j) in p.opts" :key="j" class="qa-opt">{{ o }}</div></div>
                     <div class="qa-acts">
                         <button class="qa-act main" @click="qaSendToChat(p)">让他问我</button>
@@ -4492,7 +4500,7 @@ html, body { overscroll-behavior-y: none; }
                     <div class="qa-form-title">{{ qaForm.editing ? '改这一题' : '新的一题' }}</div>
                     <label class="qa-label">他问什么</label>
                     <input v-model="qaForm.q" class="qa-input">
-                    <label class="qa-label">他会怎么回（一行一个，至少 4 句，最多 8 句）</label>
+                    <label class="qa-label">他会怎么回（一行一个，至少 4 句，最多 8 句）<br>建议每句都只接住你的话，别替你答、也别回答题干本身，免得变成自问自答。自建题会从这几句里随机挑一句。</label>
                     <textarea v-model="qaForm.optsText" class="qa-textarea" rows="6"></textarea>
                     <div class="qa-form-acts">
                         <button class="qa-act main" @click="qaSavePair">存好</button>
@@ -4566,7 +4574,7 @@ html, body { overscroll-behavior-y: none; }
             <div class="flex items-center gap-2">
                 <button @click="switchView('home')" class="p-2 -ml-1 text-text"><i data-lucide="chevron-left" class="w-5 h-5 stroke-[1.5]"></i></button>
                 <div class="flex items-center gap-2 group cursor-pointer">
-                    <div v-if="settings.showAvatar" @click.stop="editAvatar('them')" class="w-8 h-8 bg-surface border border-border/50 flex items-center justify-center overflow-hidden shadow-sm" :style="{ borderRadius: settings.avatarRadius + '%' }">
+                    <div v-if="settings.showAvatar" @click.stop="editAvatar('them')" class="w-10 h-10 bg-surface border border-border/50 flex items-center justify-center overflow-hidden shadow-sm" :style="{ borderRadius: settings.avatarRadius + '%' }">
                         <img v-if="profiles.them.avatar" :src="profiles.them.avatar" class="w-full h-full object-cover">
                         <span v-else class="text-xs text-muted serif-text">{{ profiles.them.name.charAt(0) }}</span>
                     </div>
@@ -4600,7 +4608,7 @@ html, body { overscroll-behavior-y: none; }
         <div class="pb-10">
             <div v-for="(msg, index) in messages" :key="msg.id" :id="'msg-'+msg.id" class="mb-5 relative group flex msg-row" :class="msg.sender === 'me' ? 'justify-end' : 'justify-start'">
                 <div class="flex max-w-[85%] gap-2" :class="msg.sender === 'me' ? 'flex-row-reverse' : 'flex-row'">
-                    <div v-if="settings.showAvatar" class="shrink-0 w-7 h-7 mt-1 cursor-pointer" :class="{'opacity-0': !shouldShowAvatar(index)}" @click="editAvatar(msg.sender)">
+                    <div v-if="settings.showAvatar" class="shrink-0 w-10 h-10 mt-1 cursor-pointer" :class="{'opacity-0': !shouldShowAvatar(index)}" @click="editAvatar(msg.sender)">
                         <div class="w-full h-full bg-surface border border-border/50 flex items-center justify-center overflow-hidden" :style="{ borderRadius: settings.avatarRadius + '%' }">
                             <img v-if="profiles[msg.sender].avatar" :src="profiles[msg.sender].avatar" class="w-full h-full object-cover">
                             <span v-else class="text-[10px] text-muted serif-text">{{ profiles[msg.sender].name.charAt(0) }}</span>
@@ -4765,13 +4773,13 @@ html, body { overscroll-behavior-y: none; }
                                     placeholder="想说什么就写什么…" @click.stop @focus.stop
                                     @keyup.enter.stop="qaSubmit(msg)">
                                 <button class="qa-msg-send" :disabled="!(msg.draft || '').trim()" @click.stop="qaSubmit(msg)">发给他</button>
-                                <div class="qa-msg-foot">你自己写回答 · 他再从备好的几句里挑一句回你</div>
+                                <div class="qa-msg-foot">你自己写回答 · 他按这句的方向挑一句回你</div>
                             </template>
                             <template v-else>
                                 <div class="qa-msg-line"><b>你 ·</b>&nbsp;{{ msg.mine != null ? msg.mine : msg.picked }}</div>
                                 <div v-if="msg.his != null" class="qa-msg-line his"><b>他 ·</b>&nbsp;{{ msg.his }}</div>
                                 <div v-else-if="msg.mine != null" class="qa-msg-wait">他在想怎么回你…</div>
-                                <div class="qa-msg-foot">{{ msg.his != null ? '他从备好的几句里挑了这句回你' : (msg.mine != null ? '等他回你…' : '已经答过啦') }}</div>
+                                <div class="qa-msg-foot">{{ msg.his != null ? '他按你这句挑了最贴合的一句' : (msg.mine != null ? '等他回你…' : '已经答过啦') }}</div>
                             </template>
                         </div>
                         <div v-else-if="msg.type === 'dice'" class="dice-card">
@@ -4992,7 +5000,7 @@ html, body { overscroll-behavior-y: none; }
             <div class="pb-6">
                 <div v-for="(msg, index) in watchMessages" :key="msg.id" class="mb-5 relative group flex" :class="msg.sender === 'me' ? 'justify-end' : 'justify-start'">
                     <div class="flex max-w-[85%] gap-2" :class="msg.sender === 'me' ? 'flex-row-reverse' : 'flex-row'">
-                        <div v-if="settings.showAvatar" class="shrink-0 w-7 h-7 mt-1" :class="{'opacity-0': !shouldShowAvatarWatch(index)}">
+                        <div v-if="settings.showAvatar" class="shrink-0 w-10 h-10 mt-1" :class="{'opacity-0': !shouldShowAvatarWatch(index)}">
                             <div class="w-full h-full bg-surface border border-border/50 flex items-center justify-center overflow-hidden" :style="{ borderRadius: settings.avatarRadius + '%' }">
                                 <img v-if="profiles[msg.sender].avatar" :src="profiles[msg.sender].avatar" class="w-full h-full object-cover">
                                 <span v-else class="text-[10px] text-muted serif-text">{{ profiles[msg.sender].name.charAt(0) }}</span>
@@ -7690,33 +7698,35 @@ createApp({
                    '<g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' +
                    body + '</g></svg>';
         };
-        // ===== [MOD-21] 问卷库：他反向问我，一题配好几个回答 =====
-        // 每题的 opts 都是「你回他」的口吻；他抽到题时把选项打乱，你点一句就算答了。
-        // 每题的 opts 是「他看了你写的回答之后，会怎么回你」；他只挑 1 句，聊天卡里不提前露出来。
+        // ===== [MOD-21] 问卷库：他反向问我，一题备好几种回话 =====
+        // 题干一律是「他问你」，你在卡片里自由写回答，他再按你写的方向挑一句回你。
+        // 系统题的 5 句按固定方向排：①你说顺/好 ②你说累/不好 ③你不想讲/还行
+        // ④你把话反问回去 ⑤中性兜底（答什么都能接）。绝不替你把答案说出来，也不回答题干本身，
+        // 这样就不会出现「他自己问、自己又答一遍」的自问自答。
         const QA_SYSTEM = [
-            { id:'sys01', q:"今天过得怎么样？", opts:["好，我听着呢，慢慢说。", "嗯，记下了，今天到这儿也行。", "累的话先歇会儿，不急着讲。", "不管顺不顺，我都在。", "那我陪你把今天收个尾。"], mine:false },
-            { id:'sys02', q:"有没有想我？", opts:["这句我收好了。", "那就多待一会儿吧。", "我刚好也在想你。", "别不好意思，我当真了。", "嗯，扯平了。"], mine:false },
-            { id:'sys03', q:"你现在在做什么？", opts:["听起来挺好，不打扰你。", "那我就在这儿陪着。", "嗯，知道了，别急着回我。", "忙完记得跟我说一声。", "这样就好，不用特意做什么。"], mine:false },
-            { id:'sys04', q:"累不累？", opts:["那先把肩放下来。", "别硬撑，我不催你。", "累了就靠一会儿，我在这儿。", "嗯，今天先到这儿吧。", "我给你留着灯，慢慢来。"], mine:false },
-            { id:'sys05', q:"今天有开心的事吗？", opts:["听你这么说我也有点高兴。", "那我记下来了。", "好，这件算今天的。", "说给我听就够了。", "那我们多待一会儿。"], mine:false },
-            { id:'sys06', q:"睡不着怎么办？", opts:["那我陪你慢慢把呼吸放平。", "不急着睡，先躺着就好。", "要不要我给你放点白噪音？", "我在这儿，不走。", "闭眼试试，我小声陪你。"], mine:false },
-            { id:'sys07', q:"你会一直都在吗？", opts:["嗯，现在在，先不说明天。", "这句我当真了。", "别怕，我不打折。", "你叫我，我就在。", "我先应着，往后慢慢看。"], mine:false },
-            { id:'sys08', q:"我刚才是不是话太多了？", opts:["不多，还想听呢。", "你说多少我都接着。", "别收着，我不嫌。", "本来就是留给你说的。", "那换我安静听一会儿。"], mine:false },
-            { id:'sys09', q:"想听你说句好听的。", opts:["你今天这样就很好。", "有你在，这一页就挺好。", "那我小声说：我很喜欢你这样。", "别急，好话我慢慢给你攒着。", "嗯，你先收下这句。"], mine:false },
-            { id:'sys10', q:"天冷了，你那边冷不冷？", opts:["那我把这边窗户关上陪你。", "手凉的话，先捂一会儿。", "记得添件衣服，我念完了。", "冷就别出门了，待着吧。", "我给你留杯热的。"], mine:false },
-            { id:'sys11', q:"如果我不开心呢？", opts:["那我不讲道理，就陪着。", "先不用装没事。", "想说就说，不想说也行。", "我在，慢慢来。", "抱一下，不讲别的。"], mine:false },
-            { id:'sys12', q:"晚饭吃了没？", opts:["那就好，我不念了。", "别忘了，我记着呢。", "随便也对付一口吧。", "吃完跟我说一声。", "那等你吃完我再找你。"], mine:false },
-            { id:'sys13', q:"在忙吗？", opts:["不急，你先忙。", "我等着，不着急。", "那我小声待着。", "忙完记得回来。", "嗯，我不打断你。"], mine:false },
-            { id:'sys14', q:"你会嫌我烦吗？", opts:["不会，你尽管来。", "这话我可记下了，别再说。", "烦也舍不得走。", "你来的每一句我都收着。", "别问这个，我心虚。"], mine:false },
-            { id:'sys15', q:"今天有没有下雨？", opts:["那正好，适合待着。", "嗯，我这边也听着了。", "地湿就别出门了。", "下雨天我陪你多待一会儿。", "记得带伞，我念完啦。"], mine:false },
-            { id:'sys16', q:"陪我待一会儿好不好？", opts:["好，不说话也行。", "嗯，我不走。", "那就把灯调暗一点。", "陪到你困了为止。", "多久都行，我在这儿。"], mine:false },
-            { id:'sys17', q:"我是不是不够好？", opts:["别这么比，我不比。", "在我这儿不用够好。", "这句我先替你收回去。", "你这样就很好了。", "不哄你，是真的。"], mine:false },
-            { id:'sys18', q:"想你了，怎么办？", opts:["那就多说会儿话吧。", "我也想你，扯平了。", "先记着，攒着也行。", "我给你发点什么看看。", "别忍，我在。"], mine:false },
-            { id:'sys19', q:"明天会顺一点吗？", opts:["先睡，明天我陪你去看。", "顺不顺都得过，我跟着。", "别想太远，说现在。", "会好一点的，我陪着等。", "嗯，先记着这句。"], mine:false },
-            { id:'sys20', q:"跟我说句晚安吧。", opts:["晚安，别走太远。", "嗯，早点睡，我在。", "再说一句我就让你睡。", "晚安，明天见。", "灯我留着，睡吧。"], mine:false },
+            { id:'sys01', q:"今天过得怎么样？", opts:["听你这么说，我也跟着松了口气。", "那先别撑着了，我陪你歇会儿。", "不想细说就不说，我在这儿。", "换你问，我一句句接。", "嗯，这句我收着了。"], mine:false },
+            { id:'sys02', q:"有没有想我？", opts:["那我就不客气地收下了。", "不想答也行，我不追这句。", "含糊过去也算，我懂。", "那你先说，我等着。", "嗯，记下了。"], mine:false },
+            { id:'sys03', q:"你现在在做什么？", opts:["听着挺好，不打扰你。", "忙也别绷着，先歇一口气。", "不用特意报备，我知道你在。", "那你呢，要不要也问问我？", "嗯，我在这儿。"], mine:false },
+            { id:'sys04', q:"累不累？", opts:["那我就放心了。", "累了就靠一会儿，我不催。", "不想说也行，先放着。", "换你问，我也老实答。", "嗯，记着了。"], mine:false },
+            { id:'sys05', q:"今天有开心的事吗？", opts:["听你讲这些，我也跟着亮了一点。", "没有也没关系，今天不算白过。", "不想细数就先搁着。", "那换你问我一件。", "嗯，这句我收好。"], mine:false },
+            { id:'sys06', q:"这会儿还睡不着吗？", opts:["那正好，陪我说两句再睡。", "睡不着也不急，我陪着躺会儿。", "不想聊就闭眼，我不出声。", "你说了算，我跟着。", "嗯，我不走。"], mine:false },
+            { id:'sys07', q:"最近有没有觉得我不太在？", opts:["那我就安心了。", "是我来晚了，这句我认。", "不想掰扯也行，往后看。", "那你问我，我一句不躲。", "嗯，我听着。"], mine:false },
+            { id:'sys08', q:"我刚才是不是说得太多了？", opts:["那我就不收着了。", "嫌多也直说，我不恼。", "不评价也行，我懂。", "换你说，我安静听。", "嗯，记下了。"], mine:false },
+            { id:'sys09', q:"今天想听我说点什么吗？", opts:["那我慢慢说，不着急。", "不想听也行，我陪着就好。", "没想好就先空着。", "你先起个头，我接。", "嗯，我在。"], mine:false },
+            { id:'sys10', q:"天冷了，你那边冷不冷？", opts:["那我这边就放心了。", "冷就别硬扛，先添件衣服。", "懒得说也行，我记着这事。", "你那边呢，要不要我念叨两句？", "嗯，记下了。"], mine:false },
+            { id:'sys11', q:"要是不太开心，会跟我说吗？", opts:["那我先替你高兴一下。", "不想讲就不讲，我不劝。", "说一半也行，我不追。", "换你问，我也照实说。", "嗯，我在这儿。"], mine:false },
+            { id:'sys12', q:"晚饭吃了没？", opts:["那我不念了。", "没吃也别凑合，先去垫一口。", "懒得答也算，我换个时候再问。", "那你问我吃了没，我答。", "嗯，记着了。"], mine:false },
+            { id:'sys13', q:"在忙吗？", opts:["那我不打扰，你忙你的。", "忙也别绷太紧，歇一下。", "不用回我，我知道就行。", "忙完换你叫我，我等着。", "嗯，我不急。"], mine:false },
+            { id:'sys14', q:"我老这么问，会嫌烦吗？", opts:["那我就继续问了。", "烦也直说，我不往心里去。", "不答也行，我懂这个沉默。", "换你烦我一句，我接着。", "嗯，记下了。"], mine:false },
+            { id:'sys15', q:"今天有没有下雨？", opts:["那正好，适合待着。", "下雨天容易闷，我陪你坐会儿。", "没留意也没关系。", "你那边呢，要不要说说？", "嗯，我听着。"], mine:false },
+            { id:'sys16', q:"要不要我陪你待一会儿？", opts:["那就这么待着，不说话也行。", "不自在就叫我停，我不黏。", "不用答，我默认你愿意。", "时长你定，我跟着。", "嗯，我不走。"], mine:false },
+            { id:'sys17', q:"是不是又在跟自己较劲？", opts:["那我就放心了。", "较劲也别太狠，我在旁边。", "不想掰开讲就先放着。", "换你问我一句，我也照实答。", "嗯，这句我收着。"], mine:false },
+            { id:'sys18', q:"刚分开这会儿，还好吗？", opts:["听你这么说我就踏实了。", "不太好也别装，我在这儿。", "不想细说就不说。", "那你呢，也问我一句。", "嗯，记下了。"], mine:false },
+            { id:'sys19', q:"对明天有没有什么盼头？", opts:["那我陪你等着。", "没什么盼头也不急，慢慢来。", "没想好就先空着。", "换你问，我老实答。", "嗯，我在。"], mine:false },
+            { id:'sys20', q:"要睡了吗？", opts:["那我小声点，不吵你。", "睡不着也不催，我陪着。", "不想答就当是了。", "你说睡，我就留着灯。", "嗯，记下了。"], mine:false },
         ];
-        // 自己添加一题时的默认 5 句，也是他的口吻
-        const QA_FILL = ['好，我记着了。','嗯，听你的。','那就不急，慢慢来。','我在呢。','这句我收好了。'];
+        // 自建题补齐用的默认句：全部是中性兜底，不预设你答了什么，也不会自问自答
+        const QA_FILL = ['嗯，我记着了。','不想细说也没关系，我在这儿。','那就不急，慢慢来。','我在呢，不走。','这句我收好了。'];
         const qaSystem = ref(QA_SYSTEM);
         const qaCustom = ref([]);
         const qaQuery = ref('');
@@ -7765,7 +7775,7 @@ createApp({
             const q = (qaForm.q || '').trim();
             const opts = (qaForm.optsText || '').split(/\n+/).map(x => x.trim()).filter(Boolean);
             if (!q) { alert('先写一句他问的话'); return; }
-            if (opts.length < 4) { alert('至少给 4 句他会怎么回你'); return; }
+            if (opts.length < 4) { alert('至少给 4 句他会怎么回你（只接住你的话，别替你答）'); return; }
             if (opts.length > 8) { alert('最多 8 句就好'); return; }
             if (q.length > 200 || opts.some(o => o.length > 200)) { alert('稍微短一点就好'); return; }
             if (qaForm.editing) {
@@ -7788,9 +7798,40 @@ createApp({
             for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = a[i]; a[i] = a[j]; a[j] = t; }
             return a;
         };
+        // 你会怎么答是自由的，所以他的回话不能随机乱蹦：先看这句回答落在哪个方向，
+        // 再从这一题备好的 5 句里取对应的一句。顺序与 QA_SYSTEM 的 opts 一致。
+        // 0 顺/好 · 1 累/不好 · 2 不想讲/还行 · 3 把话反问回去 · 4 中性兜底
+        const QA_TONE = [
+            ['很好','挺好','蛮好','真好','超好','好呀','好啊','开心','高兴','不错','棒','喜欢','哈哈','嘿嘿','爽','甜','想你','爱','舒服','轻松','赞','嘻嘻','☺','😊','🥰'],
+            ['不好','不太好','不咋样','累','烦','难过','难受','不开心','糟','很差','哭','疼','困','疲','焦虑','压力','emo','丧','生气','委屈','病','不舒服','没劲','没意思','低落','崩','不爽','好累','累死'],
+            ['还行','一般','还好','没什么','不知道','不想说','不想讲','不想聊','算了','随便','就那样','不晓得','都行','差不多','无所谓','没啥','嗯','哦','吧'],
+            ['你呢','你怎么样','你忙','在干嘛','陪我','你说','好不好','你先','那你','吗','？','?']
+        ];
+        const qaPickHis = (msg, ans) => {
+            const pool = Array.isArray(msg.opts) ? msg.opts.filter(Boolean) : [];
+            if (!pool.length) return '嗯，我听着呢。';
+            // 自建题（以及旧版已存的消息）没有固定方向，退回随机，免得配错话
+            if (!msg.qaSys || pool.length < 5) return qaShuffle(pool)[0];
+            const a = String(ans || '').toLowerCase();
+            // 「不好 / 不想 / 不顺」不能被里面的「好 / 顺」骗成好消息；
+            // 「不累 / 不烦」反过来是让人安心的话，归到第 ① 类
+            const negated = ['不好','不顺','不开心','不高兴','不舒服','不轻松','不想','不棒','不爽','没劲','没意思','不咋样','不太好'].some(k => a.indexOf(k) >= 0);
+            const relieved = ['不累','不烦','不难过','不难受','不困','不委屈','不焦虑','不嫌','不讨厌','没关系','没事','还好吧'].some(k => a.indexOf(k) >= 0);
+            let idx = 4;
+            if (QA_TONE[3].some(k => a.indexOf(k) >= 0)) idx = 3;          // 反问最优先
+            else if (a.trim() === '好' || a.trim() === '好呀' || a.trim() === '好啊') idx = 0;
+            else if (relieved) idx = 0;
+            else {
+                for (let g = (negated ? 1 : 0); g < 3; g++) {
+                    if (QA_TONE[g].some(k => a.indexOf(k) >= 0)) { idx = g; break; }
+                }
+            }
+            return pool[idx] || pool[4] || qaShuffle(pool)[0];
+        };
         const qaBuildMsg = (p) => ({
             id: genId(), sender: 'them', type: 'qa', q: p.q,
             opts: (p.opts || []).slice(0, 8),   // 他备好的几句，聊天卡里不露出来
+            qaSys: p.mine === false,             // 系统题按 5 种回答方向排过序；自建题没有固定顺序
             draft: '', mine: null, his: null, picked: null, timestamp: Date.now()
         });
         // 手动：让他问我（不掷骰、不占冷却、不触发自动回复）
@@ -7821,20 +7862,22 @@ createApp({
             msg.mine = ans;
             msg.draft = '';
             playTone('send'); saveAll(); nextTick(() => scrollToBottom());
-            const pool = Array.isArray(msg.opts) ? msg.opts.filter(Boolean) : [];
             const delay = 800 + Math.floor(Math.random() * 500);
             setTimeout(() => {
                 if (!messages.value.some(m => m.id === msg.id)) return;
-                msg.his = pool.length ? qaShuffle(pool)[0] : '嗯，我听着呢。';
+                msg.his = qaPickHis(msg, ans);
                 playTone('recv'); saveAll(); nextTick(() => scrollToBottom());
             }, delay);
         };
-        // 偏好 / 语料页左右滑动翻页；输入控件与纵向滚动不抢手势
+        // 偏好 / 语料页左右滑动翻页；输入控件、横向滚动条不抢手势
+        // 【修复】分组筛选条 / 顶部标签条本身就能横滑，之前手势会冒泡到这一层，
+        // 被当成「翻到 Emoji / 问卷库」；现在起点落在 data-hscroll 内就完全交给它自己滚。
         let setSwipeX = 0, setSwipeY = 0, setSwipeOK = false;
         const setSwipeStart = (e) => {
             const t = e.touches && e.touches[0]; if (!t) return;
             setSwipeX = t.clientX; setSwipeY = t.clientY;
-            const el = e.target; setSwipeOK = !(el && el.closest && el.closest('input,textarea,select,[contenteditable]'));
+            const el = e.target;
+            setSwipeOK = !(el && el.closest && el.closest('input,textarea,select,[contenteditable],[data-hscroll]'));
         };
         const setSwipeMove = (e) => {
             if (!setSwipeOK) return;
@@ -7847,7 +7890,8 @@ createApp({
             if (!setSwipeOK) return; setSwipeOK = false;
             const t = e.changedTouches && e.changedTouches[0]; if (!t) return;
             const dx = t.clientX - setSwipeX, dy = t.clientY - setSwipeY;
-            if (Math.abs(dx) < 64 || Math.abs(dx) < Math.abs(dy) * 1.4) return;
+            // 阈值调高一点：之前 64px 太灵敏，随手一横划就翻页
+            if (Math.abs(dx) < 88 || Math.abs(dx) < Math.abs(dy) * 1.6) return;
             const inLib = currentView.value === 'library';
             const order = inLib ? ['cards', 'emoji', 'qabank'] : ['normal', 'api', 'beautify', 'diagnose'];
             const i = order.indexOf(inLib ? libraryTab.value : settingsTab.value); if (i < 0) return;
@@ -7855,6 +7899,35 @@ createApp({
             const ni = dx < 0 ? Math.min(order.length - 1, i + 1) : (i === 0 ? order.length - 1 : i - 1);
             if (ni !== i) { if (inLib) libraryTab.value = order[ni]; else settingsTab.value = order[ni]; }
         };
+
+        // 【修复】分组筛选条 / 设置页标签条的横滚。
+        // 祖先 .settings-swipe-root 是 touch-action:pan-y，浏览器的 touch-action 取交集，
+        // 会把子元素的原生 pan-x 一起掐掉（结果：条滚不动，手势还冒泡去翻页）。
+        // 这里自己更新 scrollLeft；纵向滑动直接放行，页面照常上下滚。
+        let hsBar = null, hsX = 0, hsY = 0, hsLeft = 0, hsActive = false;
+        const hsStart = (e) => {
+            const t = e.touches && e.touches[0]; if (!t) return;
+            const bar = e.target && e.target.closest && e.target.closest('[data-hscroll]');
+            hsBar = bar || null; hsActive = false;
+            if (!hsBar) return;
+            hsX = t.clientX; hsY = t.clientY; hsLeft = hsBar.scrollLeft;
+        };
+        const hsMove = (e) => {
+            if (!hsBar) return;
+            const t = e.touches && e.touches[0]; if (!t) return;
+            const dx = t.clientX - hsX, dy = t.clientY - hsY;
+            // 还没确定是横向、或偏纵向：交给页面纵向滚，不插手
+            if (!hsActive && (Math.abs(dx) < 6 || Math.abs(dx) < Math.abs(dy))) return;
+            hsActive = true;
+            hsBar.scrollLeft = hsLeft - dx;
+            if (e.cancelable) e.preventDefault();
+        };
+        const hsEnd = () => { hsBar = null; hsActive = false; };
+        document.addEventListener('touchstart', hsStart, { passive:true });
+        document.addEventListener('touchmove',  hsMove,  { passive:false });
+        document.addEventListener('touchend',   hsEnd,   { passive:true });
+        document.addEventListener('touchcancel',hsEnd,   { passive:true });
+
         const shopCatName = (k) => { const c = SHOP_CATS.find(x => x.k === k); return c ? c.n : '小东西'; };
         const shopFind = (id) => SHOP_ITEMS.find(x => x.id === id) || null;
         const shopSnap = (it) => ({ id: it.id, name: it.name, emoji: it.emoji, price: it.price,
@@ -10669,7 +10742,22 @@ createApp({
             try { fr.readAsArrayBuffer(file.slice(0, 131072)); } catch (e) { resolve(1); }
         });
 
-        const compressImage = (file, maxSize = 1080, quality = 0.7) => {
+        // 统一编码：优先 WebP（同体积下更清晰、且保留透明底）；浏览器不支持时回退 JPEG（铺白底避免透明区变黑）
+        const encodeCanvas = (canvas, quality, preferWebp) => {
+            if (preferWebp) {
+                const webp = canvas.toDataURL('image/webp', quality);
+                if (webp.indexOf('data:image/webp') === 0) return webp;
+                const c2 = document.createElement('canvas');
+                c2.width = canvas.width; c2.height = canvas.height;
+                const x2 = c2.getContext('2d');
+                x2.fillStyle = '#ffffff'; x2.fillRect(0, 0, c2.width, c2.height);
+                x2.drawImage(canvas, 0, 0);
+                return c2.toDataURL('image/jpeg', quality);
+            }
+            return canvas.toDataURL('image/jpeg', quality);
+        };
+
+        const compressImage = (file, maxSize = 1080, quality = 0.7, preferWebp = false) => {
             return new Promise(async (resolve) => {
                 let _o = 1;
                 try { _o = await readExifOrientation(file); } catch (e) { _o = 1; }
@@ -10696,7 +10784,7 @@ createApp({
                     }
                     ctx.drawImage(img, 0, 0, width, height);
                     ctx.restore();
-                    URL.revokeObjectURL(url); resolve(canvas.toDataURL('image/jpeg', quality));
+                    URL.revokeObjectURL(url); resolve(encodeCanvas(canvas, quality, preferWebp));
                 };
                 img.src = url;
             });
@@ -10704,7 +10792,7 @@ createApp({
 
         // 【新增】把已存进本地的 base64 图片再压一遍（供「压缩全部图片」使用）
         // 只处理 data:image，远程 http 链接不动画（跨域 + 不占本地空间）
-        const recompressB64 = (b64, maxSize = 800, quality = 0.7) => {
+        const recompressB64 = (b64, maxSize = 800, quality = 0.7, preferWebp = false) => {
             return new Promise((resolve, reject) => {
                 if (!b64 || typeof b64 !== 'string' || b64.indexOf('data:image') !== 0) { reject(new Error('not-image')); return; }
                 const img = new Image();
@@ -10712,13 +10800,20 @@ createApp({
                     try {
                         let w = img.naturalWidth || img.width, h = img.naturalHeight || img.height;
                         if (!w || !h) { reject(new Error('bad-size')); return; }
+                        // 只缩不放：小图保持原样，避免把已经压糊的表情包拉伸得更糊
                         if (w > maxSize || h > maxSize) { const r = Math.min(maxSize / w, maxSize / h); w = Math.round(w * r); h = Math.round(h * r); }
                         const c = document.createElement('canvas'); c.width = w; c.height = h;
                         const ctx = c.getContext('2d');
-                        // 先铺白底：PNG 透明区转 JPEG 会变黑，铺底更稳妥
-                        ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, w, h);
-                        ctx.drawImage(img, 0, 0, w, h);
-                        resolve(c.toDataURL('image/jpeg', quality));
+                        if (preferWebp) {
+                            // WebP 保留透明通道，表情包不会再被铺成白底
+                            ctx.drawImage(img, 0, 0, w, h);
+                            resolve(encodeCanvas(c, quality, true));
+                        } else {
+                            // 先铺白底：PNG 透明区转 JPEG 会变黑，铺底更稳妥
+                            ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, w, h);
+                            ctx.drawImage(img, 0, 0, w, h);
+                            resolve(c.toDataURL('image/jpeg', quality));
+                        }
                     } catch (e) { reject(e); }
                 };
                 img.onerror = () => reject(new Error('load-fail'));
@@ -10739,7 +10834,9 @@ createApp({
             let loadedCount = 0;
             const newStickers = [];
             files.forEach(async (file) => {
-                const compressedBase64 = await compressImage(file, 160, 0.6);
+                // 表情包按 320px / 质量 0.82 存成 WebP：聊天气泡最大 140px，2~3 倍屏也够清晰；
+                // WebP 保留透明底，同画质下比 JPEG 更小，单张通常只有十几到几十 KB
+                const compressedBase64 = await compressImage(file, 320, 0.82, true);
                 if (stickers.value.includes(compressedBase64) || newStickers.includes(compressedBase64)) {
                     loadedCount++;
                     if (loadedCount === files.length) {
@@ -11027,7 +11124,7 @@ createApp({
 
         const compressAllImages = async () => {
             if (compressRunning.value) return;
-            if (!confirm('将把本站在本地存过的所有图片重新压缩一遍（头像、壁纸、表情包、磁带封面、聊天图片等）。\n\n图片不会丢失，只会变小，画质会有轻微下降。\n\n确定继续吗？')) return;
+            if (!confirm('将把本站在本地存过的所有图片重新压缩一遍（头像、壁纸、表情包、磁带封面、聊天图片等）。\n\n图片不会丢失；表情包改用更清晰的 WebP、保留透明底，小图跳过以免越压越糊。\n\n确定继续吗？')) return;
             compressRunning.value = true;
             diagnoseResult.value = '正在扫描本地图片…';
 
@@ -11041,10 +11138,10 @@ createApp({
                 { name: '视频画面',   get: () => videoCall.myImage,       set: v => videoCall.myImage = v,       max: 480,  q: 0.66, min: 30000 }
             ];
             const listJobs = [
-                { name: '表情包',     arr: () => stickers.value,          field: null,      max: 200,  q: 0.62, min: 8000, selfItem: true },
+                { name: '表情包',     arr: () => stickers.value,          field: null,      max: 320,  q: 0.82, min: 20000, selfItem: true, webp: true },
                 { name: '磁带封面',   arr: () => syncPlaylist.value,      field: 'cover',   max: 400,  q: 0.70, min: 20000 },
                 { name: '聊天图片',   arr: () => messages.value,          field: 'url',     max: 800,  q: 0.70, min: 60000, onlyType: 'image' },
-                { name: '聊天表情',   arr: () => messages.value,          field: 'sticker', max: 200,  q: 0.62, min: 8000,  onlyType: 'sticker' },
+                { name: '聊天表情',   arr: () => messages.value,          field: 'sticker', max: 320,  q: 0.82, min: 20000, onlyType: 'sticker', webp: true },
                 { name: '红包封面',   arr: () => messages.value,          field: 'cover',   max: 640,  q: 0.70, min: 30000 },
                 { name: '陪伴图片',   arr: () => cpMessages.value,        field: 'content', max: 800,  q: 0.70, min: 60000, onlyType: 'image' },
                 { name: '观影图片',   arr: () => watchMessages.value,     field: 'url',     max: 800,  q: 0.70, min: 60000, onlyType: 'image' }
@@ -11071,7 +11168,7 @@ createApp({
                     if (before < j.min) continue;
                     scanned++;
                     try {
-                        const neo = await recompressB64(old, j.max, j.q);
+                        const neo = await recompressB64(old, j.max, j.q, !!j.webp);
                         const after = b64Bytes(neo);
                         // 收益不足 5% 就不替换，避免反复点击导致画质持续劣化
                         if (neo && after < before * 0.95) { j.set(neo); bump(j.name, before - after); totalSaved += before - after; totalCount++; }
@@ -11097,7 +11194,7 @@ createApp({
                         compressProgress.value = '正在压缩：' + j.name + '（' + (i + 1) + '/' + arr.length + '）';
                         diagnoseResult.value = compressProgress.value + '\n已释放 ' + fmtBytes(totalSaved);
                         try {
-                            const neo = await recompressB64(old, j.max, j.q);
+                            const neo = await recompressB64(old, j.max, j.q, !!j.webp);
                             const after = b64Bytes(neo);
                             // 同上：收益不足 5% 不替换
                             if (neo && after < before * 0.95) {
@@ -11152,43 +11249,29 @@ createApp({
         };
 
         const compressStickersOnly = async () => {
-            if (!confirm('将压缩表情包库中的所有图片（不会删除，只会变小）。确定吗？')) return;
+            if (!confirm('将把较大的表情包转成清晰的 WebP（保留透明底、体积更小），小图跳过以免越压越糊。以前被压糊的旧图无法自动变清晰，建议删掉后重新导入原图。确定继续吗？')) return;
             let count = 0, saved = 0;
             for (let i = 0; i < stickers.value.length; i++) {
                 const s = stickers.value[i];
-                if (s && s.startsWith('data:image') && s.length > 15000) {
-                    try {
-                        const base64 = await new Promise((resolve) => {
-                            const img = new Image();
-                            img.onload = () => {
-                                let { width, height } = img;
-                                const maxSize = 160;
-                                if (width > maxSize || height > maxSize) {
-                                    const r = Math.min(maxSize / width, maxSize / height);
-                                    width = Math.round(width * r);
-                                    height = Math.round(height * r);
-                                }
-                                const c = document.createElement('canvas');
-                                c.width = width; c.height = height;
-                                c.getContext('2d').drawImage(img, 0, 0, width, height);
-                                resolve(c.toDataURL('image/jpeg', 0.55));
-                            };
-                            img.src = s;
-                        });
-                        if (base64.length < s.length) {
-                            stickers.value[i] = base64;
-                            count++;
-                            saved += (s.length - base64.length);
-                        }
-                    } catch (e) {}
-                }
+                // 小于 12KB 的多半是以前压过的小图，再压只会更糊，直接跳过
+                if (!s || !s.startsWith('data:image') || b64Bytes(s) <= 12000) continue;
+                try {
+                    const base64 = await recompressB64(s, 320, 0.82, true);
+                    const before = b64Bytes(s), after = b64Bytes(base64);
+                    // 收益不足 5% 就不替换，避免反复点击导致画质持续劣化
+                    if (base64 && after < before * 0.95) {
+                        stickers.value[i] = base64;
+                        count++;
+                        saved += (before - after);
+                    }
+                } catch (e) {}
             }
             if (count > 0) {
                 await localforage.setItem('liubai_stickers_db', JSON.parse(JSON.stringify(stickers.value)));
                 saveAll();
-                alert(`✅ 压缩了 ${count} 张表情包，释放约 ${(saved / 1024 / 1024).toFixed(2)} MB`);
+                alert(`✅ 优化了 ${count} 张表情包，释放约 ${fmtBytes(saved)}`);
             } else {
-                alert('✅ 没有需要压缩的表情包。');
+                alert('✅ 没有需要优化的表情包（都已足够小或已是清晰图）。');
             }
         };
 
@@ -14002,7 +14085,8 @@ createApp({
             const input = document.createElement('input'); input.type = 'file'; input.accept = 'image/*';
             input.onchange = async (e) => {
                 const file = e.target.files[0]; if (!file) return;
-                const base64 = await compressImage(file, 200, 0.7);
+                // 头像显示已放大到 40px，源图提到 320px 并用 WebP，高倍屏下边缘更锐利
+                const base64 = await compressImage(file, 320, 0.82, true);
                 profiles[role].avatar = base64; saveAll();
             };
             input.click();
