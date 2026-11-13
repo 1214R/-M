@@ -1567,65 +1567,233 @@ body { background-color:#d1d5db; font-family:"PingFang SC","Microsoft YaHei",sys
 .rp-open-blessing { font-size:12px; color:var(--color-muted); margin-bottom:18px; }
 .sticker-bubble { max-width:140px; border-radius:14px; overflow:hidden; background:transparent; }
 .sticker-bubble img { width:100%; height:auto; display:block; border-radius:14px; }
+/* ============ 音乐页：白天白底黑字 / 夜里黑底白字 ============
+   所有歌词、搜歌卡片的颜色都走 --vp-ink（墨水色三元值）。
+   唱片不再是死黑胶：换成柔和磨砂盘 + 极细同心线，白天浅灰白、夜里暖深灰，
+   跟着主题一起换，中间那张封面照片因此更显眼。 */
+.music-page {
+    --vp-ink: 26,26,26;
+    --vp-bg: radial-gradient(120% 80% at 50% -10%, rgba(206,200,224,.48) 0%, rgba(248,248,250,.96) 45%, #f1f1f4 100%);
+    --vp-head-bg: rgba(255,255,255,.86);
+    --vp-head-line: rgba(var(--vp-ink), .10);
+    --vp-play-bg: var(--color-text);
+    --vp-play-ink: var(--color-bg);
+    --vp-solid-bg: var(--color-text);
+    --vp-solid-ink: var(--color-bg);
+    --vp-knob: var(--color-text);
+    --vp-pop-bg: var(--color-surface);
+    --vp-card-bg: rgba(var(--vp-ink), .045);
+    --vp-card-line: rgba(var(--vp-ink), .16);
+    --vp-disc-shadow: 0 14px 34px rgba(0,0,0,.13), 0 2px 8px rgba(0,0,0,.05);
+    --vp-disc-a: #ffffff;
+    --vp-disc-b: #ececf2;
+    --vp-disc-c: #dcdce6;
+    --vp-disc-line: rgba(var(--vp-ink), .055);
+    --vp-disc-edge: rgba(var(--vp-ink), .14);
+    --vp-disc-sheen: rgba(255,255,255,.55);
+    --vp-arm: rgba(var(--vp-ink), .35);
+    --vp-arm-dot: var(--color-accent);
+    --vp-hole: rgba(var(--vp-ink), .30);
+    --vp-cover-edge: rgba(var(--vp-ink), .17);
+    --vp-def-a: var(--color-surface);
+    --vp-def-b: var(--color-bg);
+}
+html.dark .music-page, .music-page.vp-dark {
+    --vp-ink: 255,255,255;
+    --vp-bg: radial-gradient(120% 80% at 50% -10%, rgba(80,70,110,.30) 0%, rgba(20,20,26,.92) 45%, #08080a 100%);
+    --vp-head-bg: rgba(10,10,12,.82);
+    --vp-head-line: rgba(var(--vp-ink), .12);
+    --vp-play-bg: var(--color-text);
+    --vp-play-ink: var(--color-bg);
+    --vp-solid-bg: var(--color-text);
+    --vp-solid-ink: var(--color-bg);
+    --vp-knob: var(--color-text);
+    --vp-pop-bg: var(--color-surface);
+    --vp-card-bg: rgba(var(--vp-ink), .06);
+    --vp-card-line: rgba(var(--vp-ink), .18);
+    --vp-disc-shadow: 0 14px 34px rgba(0,0,0,.42), 0 2px 8px rgba(0,0,0,.22);
+    --vp-disc-a: #3a3a45;
+    --vp-disc-b: #2b2b34;
+    --vp-disc-c: #202028;
+    --vp-disc-line: rgba(var(--vp-ink), .055);
+    --vp-disc-edge: rgba(var(--vp-ink), .14);
+    --vp-disc-sheen: rgba(255,255,255,.10);
+    --vp-arm: rgba(var(--vp-ink), .35);
+    --vp-arm-dot: var(--color-accent);
+    --vp-hole: rgba(var(--vp-ink), .30);
+    --vp-cover-edge: rgba(var(--vp-ink), .17);
+    --vp-def-a: var(--color-surface);
+    --vp-def-b: var(--color-bg);
+}
+/* ===== 音乐页跟随配色主题：换主题时背景渐变与字色一起换 =====
+   主题本身在 html.theme-xxx 上定义了 --color-* 和 app-container 的渐变，
+   这里把同一套渐变/文字色注入音乐页，按钮与线条则直接继承 --color-*。 */
+html.theme-rishi .music-page {
+    --vp-bg: linear-gradient(165deg,#FFF6DC 0%,#FFE7C2 34%,#FBCBB4 68%,#F6DDCB 100%);
+    --vp-ink: 107, 74, 59;
+    --vp-head-bg: rgba(255, 252, 243, .86);
+}
+html.dark.theme-rishi .music-page {
+    --vp-bg: linear-gradient(165deg,#131726 0%,#25203A 50%,#3B2A38 100%);
+    --vp-ink: 239, 233, 222;
+    --vp-head-bg: rgba(30, 35, 56, .82);
+}
+html.theme-oufen .music-page {
+    --vp-bg: linear-gradient(165deg,#FBF1F1 0%,#EFE1E6 36%,#E9E9F3 72%,#FDF9EE 100%);
+    --vp-ink: 90, 67, 72;
+    --vp-head-bg: rgba(253, 250, 245, .86);
+}
+html.dark.theme-oufen .music-page {
+    --vp-bg: linear-gradient(165deg,#1E1A1D 0%,#28232C 50%,#302A33 100%);
+    --vp-ink: 238, 227, 229;
+    --vp-head-bg: rgba(42, 36, 41, .82);
+}
+html.theme-taiting .music-page {
+    --vp-bg: linear-gradient(165deg,#EFF4EE 0%,#E3EBE2 36%,#F1E5F0 72%,#FDF9EE 100%);
+    --vp-ink: 61, 74, 65;
+    --vp-head-bg: rgba(251, 253, 248, .86);
+}
+html.dark.theme-taiting .music-page {
+    --vp-bg: linear-gradient(165deg,#171E1A 0%,#222A28 50%,#2C2830 100%);
+    --vp-ink: 227, 235, 228;
+    --vp-head-bg: rgba(34, 43, 37, .82);
+}
+html.theme-ziteng .music-page {
+    --vp-bg: linear-gradient(165deg,#F2ECF6 0%,#E8E0EF 36%,#E9EEEB 72%,#FDF9EE 100%);
+    --vp-ink: 69, 62, 82;
+    --vp-head-bg: rgba(252, 249, 253, .86);
+}
+html.dark.theme-ziteng .music-page {
+    --vp-bg: linear-gradient(165deg,#1B1822 0%,#262233 50%,#2A2C34 100%);
+    --vp-ink: 234, 227, 240;
+    --vp-head-bg: rgba(37, 33, 48, .82);
+}
+html.theme-ganlan .music-page {
+    --vp-bg: linear-gradient(165deg,#F3F3E8 0%,#E8E9DA 36%,#F7EBE5 72%,#FDF9EE 100%);
+    --vp-ink: 72, 74, 59;
+    --vp-head-bg: rgba(252, 252, 244, .86);
+}
+html.dark.theme-ganlan .music-page {
+    --vp-bg: linear-gradient(165deg,#1D1E17 0%,#272A25 50%,#302A27 100%);
+    --vp-ink: 237, 236, 218;
+    --vp-head-bg: rgba(40, 42, 33, .82);
+}
+html.theme-yuhou .music-page {
+    --vp-bg: linear-gradient(165deg,#EEF2F7 0%,#E4EAF1 36%,#EDF0EC 72%,#FDF9EE 100%);
+    --vp-ink: 62, 72, 84;
+    --vp-head-bg: rgba(250, 252, 253, .86);
+}
+html.dark.theme-yuhou .music-page {
+    --vp-bg: linear-gradient(165deg,#171B21 0%,#222933 50%,#272D31 100%);
+    --vp-ink: 227, 234, 241;
+    --vp-head-bg: rgba(33, 40, 49, .82);
+}
+html.theme-caolv .music-page {
+    --vp-bg: linear-gradient(165deg,#FBE9F2 0%,#F3E4EC 32%,#DDEBC9 70%,#CFE7B6 100%);
+    --vp-ink: 63, 74, 58;
+    --vp-head-bg: rgba(253, 251, 245, .86);
+}
+html.dark.theme-caolv .music-page {
+    --vp-bg: linear-gradient(165deg,#1A1E17 0%,#22271F 50%,#2C2430 100%);
+    --vp-ink: 231, 239, 224;
+    --vp-head-bg: rgba(37, 43, 32, .82);
+}
+html.theme-tianlan .music-page {
+    --vp-bg: linear-gradient(165deg,#DCEEFF 0%,#B9DEFF 30%,#E4F1FA 62%,#FFF4E3 100%);
+    --vp-ink: 39, 75, 107;
+    --vp-head-bg: rgba(250, 253, 255, .86);
+}
+html.dark.theme-tianlan .music-page {
+    --vp-bg: linear-gradient(165deg,#101C27 0%,#1A2C3C 50%,#2A2A33 100%);
+    --vp-ink: 222, 235, 247;
+    --vp-head-bg: rgba(24, 39, 52, .82);
+}
+html.theme-xinghua .music-page {
+    --vp-bg: linear-gradient(165deg,#FDEDF4 0%,#F8E5EF 30%,#DDEAF6 68%,#CCE2F2 100%);
+    --vp-ink: 74, 69, 87;
+    --vp-head-bg: rgba(253, 251, 252, .86);
+}
+html.dark.theme-xinghua .music-page {
+    --vp-bg: linear-gradient(165deg,#1C1A24 0%,#262235 50%,#232C3A 100%);
+    --vp-ink: 237, 231, 242;
+    --vp-head-bg: rgba(38, 35, 49, .82);
+}
+
+
+.music-page { background:var(--vp-bg); }
+.music-page .music-head { background:var(--vp-head-bg); border-bottom:1px solid var(--vp-head-line);
+    backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); }
+.music-page .music-head-ink { color:rgb(var(--vp-ink)); }
+.music-page .music-main { background:transparent; }
+/* 唱针跟着盘面走：浅盘用淡墨、深盘用淡白，始终只留一点影 */
+.music-page .vinyl-tonearm circle:first-child { stroke:var(--vp-arm); stroke-width:1.1; }
+.music-page .vinyl-tonearm circle:nth-of-type(2) { fill:var(--vp-arm); }
+.music-page .vinyl-tonearm path { stroke:var(--vp-arm); stroke-width:1.3; }
+.music-page .vinyl-tonearm rect { fill:var(--vp-arm); }
+.music-page .vc-disc { color:rgba(var(--vp-ink), .42); }
+.music-page .vp-spin { border:2px solid rgba(var(--vp-ink), .22); border-top-color:rgb(var(--vp-ink)); }
 /* ============ 黑胶唱片播放器 ============ */
 .vinyl-deck { position:relative; width:100%; max-width:360px; margin:0 auto; display:flex; flex-direction:column; align-items:center; padding-top:8px; }
 .vinyl-shaft { position:relative; width:210px; height:210px; flex-shrink:0; }
 @media (min-width: 400px) { .vinyl-shaft { width:230px; height:230px; } }
 .vinyl-tonearm { position:absolute; top:-6px; right:0px; width:88px; height:120px; z-index:15; transform-origin:16px 16px; transform:rotate(28deg); transition:transform .6s cubic-bezier(.45,1.6,.5,1); pointer-events:none; }
 .vinyl-tonearm.on { transform:rotate(-6deg); }
-.vinyl-tonearm::after { content:''; position:absolute; right:4px; bottom:8px; width:16px; height:16px; border-radius:50%; background:linear-gradient(135deg,#d8d8dc,#8c8c92); box-shadow:0 2px 6px rgba(0,0,0,.5); }
+.vinyl-tonearm::after { content:''; position:absolute; right:4px; bottom:8px; width:15px; height:15px; border-radius:50%; background:var(--vp-arm-dot); box-shadow:0 2px 6px rgba(0,0,0,.18); opacity:.7; }
 .vinyl-disc-layer { position:absolute; inset:0; will-change:transform; animation:vinylSlowSpin 20s linear infinite; animation-play-state:paused; }
 .vinyl-disc { position:absolute; inset:0; border-radius:50%; background:
-  radial-gradient(circle at 50% 50%, #111 0 8%, #1a1a1a 8.5% 9%, #0c0c0c 9.5% 16%, #1a1a1a 16.5% 17%, #0c0c0c 17.5% 24%, #1a1a1a 24.5% 25%, #0c0c0c 25.5% 32%, #1a1a1a 32.5% 33%, #0c0c0c 33.5% 40%, #1a1a1a 40.5% 41%, #0c0c0c 41.5% 48%, #1a1a1a 48.5% 49%, #0c0c0c 49.5% 56%, #1a1a1a 56.5% 57%, #0c0c0c 57.5% 64%, #1a1a1a 64.5% 65%, #0c0c0c 65.5% 72%, #1a1a1a 72.5% 73%, #0c0c0c 73.5% 80%, #1a1a1a 80.5% 81%, #0c0c0c 81.5% 88%, #141414 89%, #050505 100%);
-  box-shadow:0 14px 40px rgba(0,0,0,.55), 0 0 0 2px #000, inset 0 0 0 1px rgba(255,255,255,.06); }
-.vinyl-groove-glint { position:absolute; inset:6px; border-radius:50%; background:conic-gradient(from 0deg, rgba(255,255,255,.06) 0deg, transparent 60deg, rgba(255,255,255,.06) 120deg, transparent 200deg, rgba(255,255,255,.06) 280deg, transparent 340deg); pointer-events:none; mix-blend-mode:screen; }
+  repeating-radial-gradient(circle at 50% 50%, transparent 0 7px, var(--vp-disc-line) 7px 8px),
+  radial-gradient(circle at 50% 50%, transparent 42%, rgba(var(--vp-ink), .045) 100%),
+  radial-gradient(circle at 50% 50%, var(--vp-disc-a) 0%, var(--vp-disc-b) 68%, var(--vp-disc-c) 100%);
+  box-shadow:var(--vp-disc-shadow), 0 0 0 1px var(--vp-disc-edge); }
+.vinyl-groove-glint { position:absolute; inset:6px; border-radius:50%; pointer-events:none;
+  background:radial-gradient(circle at 50% 50%, transparent 52%, var(--vp-disc-line) 82%, transparent 100%); opacity:.7; }
 /* 【调整】封面从固定的 72px 改为按唱片直径的 66%，大屏自动更大。
    直径占比 34% → 66%，图片面积约为原来的 3.7 倍；外圈仍保留黑胶沟槽环。
    想更大就调这里的百分比（建议不要超过 78%，否则会盖住外圈沟槽失去唱片质感）。 */
-.vinyl-cover { position:absolute; left:17%; top:17%; width:66%; height:66%; border-radius:50%; overflow:hidden; background:var(--color-surface); border:1.5px solid #1a1a1a; box-shadow:0 0 0 3px rgba(255,255,255,.10), 0 0 0 6px rgba(0,0,0,.35); cursor:pointer; }
+.vinyl-cover { position:absolute; left:17%; top:17%; width:66%; height:66%; border-radius:50%; overflow:hidden; background:var(--color-surface); border:1px solid var(--vp-cover-edge); box-shadow:0 0 0 4px rgba(var(--vp-ink), .035), 0 6px 18px rgba(0,0,0,.12); cursor:pointer; }
 .vinyl-cover:active { transform:scale(.97); }
 .vinyl-cover img { width:100%; height:100%; object-fit:cover; display:block; }
 /* 高光不随盘转：真实唱片的反光来自环境，跟着转会有「光在动」的怪感。 */
 .vinyl-cover-glint { position:absolute; left:17%; top:17%; width:66%; height:66%; border-radius:50%; pointer-events:none;
-                     background:radial-gradient(circle at 50% 18%, rgba(255,255,255,.14) 0%, transparent 55%); }
-.vinyl-cover .vc-default { width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#1c1c20,#2a2a30); }
-.vinyl-hole { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:9px; height:9px; border-radius:50%; background:#000; border:1px solid rgba(255,255,255,.28); z-index:4; pointer-events:none; }
+                     background:radial-gradient(circle at 50% 14%, var(--vp-disc-sheen) 0%, transparent 52%); opacity:.32; }
+.vinyl-cover .vc-default { width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,var(--vp-def-a),var(--vp-def-b)); }
+.vinyl-hole { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:8px; height:8px; border-radius:50%; background:var(--vp-hole); border:1px solid var(--vp-cover-edge); z-index:4; pointer-events:none; }
 .vinyl-shaft.dragging .vinyl-disc { transform:scale(0.97); transition:transform .15s; }
 /* 原来写的是 .vinyl-disc.swiping，但 swiping 这个 class 加在 .vinyl-shaft 上、
    动画又在 .vinyl-disc-layer 上，两边都对不上，这条规则从来没生效过。 */
 .vinyl-shaft.dragging .vinyl-disc-layer { animation-play-state:paused !important; }
 .vinyl-info { text-align:center; margin-top:22px; width:100%; }
-.vinyl-title { font-family:'Noto Serif SC','Noto Serif SC Offline',serif; font-size:18px; font-weight:400; color:#fff; letter-spacing:.02em; line-height:1.4; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:0 12px; }
-.vinyl-artist { font-size:11px; color:rgba(255,255,255,.6); margin-top:5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:0 12px; }
-.vinyl-meta { font-size:10px; color:rgba(255,255,255,.4); margin-top:4px; }
+.vinyl-title { font-family:'Noto Serif SC','Noto Serif SC Offline',serif; font-size:18px; font-weight:400; color:rgb(var(--vp-ink)); letter-spacing:.02em; line-height:1.4; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:0 12px; }
+.vinyl-artist { font-size:11px; color:rgba(var(--vp-ink),.6); margin-top:5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:0 12px; }
+.vinyl-meta { font-size:10px; color:rgba(var(--vp-ink),.4); margin-top:4px; }
 .vinyl-bars { display:flex; align-items:flex-end; justify-content:center; gap:3px; height:22px; margin-top:12px; }
-.vinyl-bars span { display:block; width:3px; border-radius:2px; background:rgba(255,255,255,.35); height:6px; transition:height .25s ease; }
+.vinyl-bars span { display:block; width:3px; border-radius:2px; background:rgba(var(--vp-ink),.35); height:6px; transition:height .25s ease; }
 .vinyl-progress-wrap { width:100%; margin-top:18px; }
-.vinyl-times { display:flex; justify-content:space-between; font-size:9.5px; color:rgba(255,255,255,.55); font-variant-numeric:tabular-nums; }
+.vinyl-times { display:flex; justify-content:space-between; font-size:9.5px; color:rgba(var(--vp-ink),.55); font-variant-numeric:tabular-nums; }
 .vinyl-progress-track { position:relative; height:18px; display:flex; align-items:center; cursor:pointer; margin-top:5px; }
-.vinyl-progress-rail { width:100%; height:3px; border-radius:2px; background:rgba(255,255,255,.16); position:relative; overflow:visible; }
-.vinyl-progress-fill { position:absolute; left:0; top:0; height:100%; width:0%; border-radius:2px; background:linear-gradient(90deg,rgba(255,255,255,.75),#fff); }
-.vinyl-progress-knob { position:absolute; top:50%; transform:translate(-50%,-50%); width:11px; height:11px; border-radius:50%; background:#fff; box-shadow:0 1px 4px rgba(0,0,0,.5); opacity:0; transition:opacity .2s; }
+.vinyl-progress-rail { width:100%; height:3px; border-radius:2px; background:rgba(var(--vp-ink),.16); position:relative; overflow:visible; }
+.vinyl-progress-fill { position:absolute; left:0; top:0; height:100%; width:0%; border-radius:2px; background:linear-gradient(90deg,rgba(var(--vp-ink),.5),rgb(var(--vp-ink))); }
+.vinyl-progress-knob { position:absolute; top:50%; transform:translate(-50%,-50%); width:11px; height:11px; border-radius:50%; background:var(--vp-knob); box-shadow:0 1px 4px rgba(0,0,0,.28); opacity:0; transition:opacity .2s; }
 .vinyl-progress-track:hover .vinyl-progress-knob { opacity:1; }
 .vinyl-ctrls { width:100%; display:flex; align-items:center; justify-content:center; gap:26px; margin-top:18px; }
-.vinyl-ctrl-btn { width:34px; height:34px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:rgba(255,255,255,.75); transition:color .2s, transform .15s; flex-shrink:0; }
+.vinyl-ctrl-btn { width:34px; height:34px; display:flex; align-items:center; justify-content:center; cursor:pointer; color:rgba(var(--vp-ink),.75); transition:color .2s, transform .15s; flex-shrink:0; }
 .vinyl-ctrl-btn:active { transform:scale(.86); }
-.vinyl-ctrl-btn.mode-on { color:#fff; }
-.vinyl-ctrl-btn.mode-on svg { filter:drop-shadow(0 0 4px rgba(255,255,255,.7)); }
-.vinyl-play-btn { width:52px; height:52px; border-radius:50%; background:rgba(255,255,255,.96); color:#111; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 6px 20px rgba(0,0,0,.4); transition:transform .15s; }
+.vinyl-ctrl-btn.mode-on { color:rgb(var(--vp-ink)); }
+.vinyl-ctrl-btn.mode-on svg { filter:drop-shadow(0 0 4px rgba(var(--vp-ink), .3)); }
+.vinyl-play-btn { width:52px; height:52px; border-radius:50%; background:var(--vp-play-bg); color:var(--vp-play-ink); display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 6px 20px rgba(0,0,0,.4); transition:transform .15s; }
 .vinyl-play-btn:active { transform:scale(.92); }
 .vinyl-play-btn svg { width:20px; height:20px; display:block; flex-shrink:0; }
 .vinyl-play-btn svg[viewBox] { overflow:visible; }
 /* 播放三角图标向右微调，使其视觉居中（三角形几何中心偏左） */
 .vinyl-play-btn .play-icon { margin-left:2px; }
 .vinyl-vol { display:flex; align-items:center; gap:8px; width:100%; margin-top:14px; }
-.vinyl-vol svg { width:15px; height:15px; color:rgba(255,255,255,.5); flex-shrink:0; }
-.vinyl-vol input[type=range] { flex:1; -webkit-appearance:none; appearance:none; height:3px; border-radius:2px; background:rgba(255,255,255,.18); outline:none; }
-.vinyl-vol input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:11px; height:11px; border-radius:50%; background:#fff; cursor:pointer; border:none; }
-.vinyl-vol input[type=range]::-moz-range-thumb { width:11px; height:11px; border-radius:50%; background:#fff; cursor:pointer; border:none; }
+.vinyl-vol svg { width:15px; height:15px; color:rgba(var(--vp-ink),.5); flex-shrink:0; }
+.vinyl-vol input[type=range] { flex:1; -webkit-appearance:none; appearance:none; height:3px; border-radius:2px; background:rgba(var(--vp-ink),.18); outline:none; }
+.vinyl-vol input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:11px; height:11px; border-radius:50%; background:var(--vp-knob); cursor:pointer; border:none; }
+.vinyl-vol input[type=range]::-moz-range-thumb { width:11px; height:11px; border-radius:50%; background:var(--vp-knob); cursor:pointer; border:none; }
 .vinyl-actions { width:100%; display:flex; gap:10px; margin-top:20px; }
-.vinyl-act-btn { flex:1; display:flex; align-items:center; justify-content:center; gap:6px; padding:9px 0; border-radius:11px; border:1px solid rgba(255,255,255,.2); background:rgba(255,255,255,.07); color:rgba(255,255,255,.85); font-size:11.5px; cursor:pointer; transition:background .2s; }
-.vinyl-act-btn:active { background:rgba(255,255,255,.16); }
+.vinyl-act-btn { flex:1; display:flex; align-items:center; justify-content:center; gap:6px; padding:9px 0; border-radius:11px; border:1px solid var(--vp-card-line); background:var(--vp-card-bg); color:rgba(var(--vp-ink), .85); font-size:11.5px; cursor:pointer; transition:background .2s; }
+.vinyl-act-btn:active { background:rgba(var(--vp-ink),.16); }
 .vinyl-act-btn svg { width:14px; height:14px; }
 .vinyl-act-btn input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; }
 .vinyl-import-wrap { position:relative; overflow:hidden; }
@@ -1792,8 +1960,6 @@ body { background-color:#d1d5db; font-family:"PingFang SC","Microsoft YaHei",sys
 @keyframes msgMenuPop { from { opacity:0; transform:translateY(9px) scale(.95); } to { opacity:1; transform:none; } }
 .msg-menu-cap { display:flex; align-items:center; justify-content:space-between;
   padding:3px 7px 8px 9px; font-size:10px; letter-spacing:.14em; color:var(--color-muted); }
-.msg-menu-x { width:22px; height:22px; display:flex; align-items:center; justify-content:center;
-  border:0; border-radius:50%; background:var(--color-bg); color:var(--color-muted); cursor:pointer; }
 .msg-menu-item { width:100%; display:flex; align-items:center; gap:10px; padding:11px 12px;
   border:0; border-radius:13px; background:transparent; color:var(--color-text);
   font-size:13px; letter-spacing:.03em; text-align:left; cursor:pointer;
@@ -1815,7 +1981,7 @@ body { background-color:#d1d5db; font-family:"PingFang SC","Microsoft YaHei",sys
   position:relative; z-index:11;
 }
 .qa-tag { flex:none; font-size:10px; letter-spacing:.06em; padding:3px 8px; border-radius:9px; white-space:nowrap; }
-/* 「系统」：低饱和复古绿，浅底深墨绿 / 深底浅豆绿，都不发脏 */
+/* 「内置」标签：低饱和复古绿，浅底深墨绿 / 深底浅豆绿，都不发脏 */
 .qa-tag.sys { color:#3F7D5C !important; background:rgba(63,125,92,.09) !important; border:1px solid rgba(63,125,92,.30) !important; }
 html.dark .qa-tag.sys { color:#BEE7CD !important; background:rgba(159,211,180,.14) !important; border-color:rgba(159,211,180,.42) !important; }
 .qa-tag.mine { color:var(--color-muted) !important; background:var(--color-bg) !important; border:1px solid var(--color-border) !important; }
@@ -1911,18 +2077,18 @@ html.dark .qa-tag.sys { color:#BEE7CD !important; background:rgba(159,211,180,.1
 
 /* ===== 音乐：磁带 / 歌词 两种模式 ===== */
 .ms-mode-seg { display:flex; align-items:center; gap:2px; padding:2px; border-radius:999px;
-      border:1px solid rgba(255,255,255,.22); background:rgba(255,255,255,.06); }
+      border:1px solid rgba(var(--vp-ink),.22); background:rgba(var(--vp-ink),.06); }
 .ms-mode-seg span { font-size:10px; line-height:1; padding:6px 9px; border-radius:999px;
-      color:rgba(255,255,255,.55); cursor:pointer; letter-spacing:.06em; transition:all .2s; white-space:nowrap; }
-.ms-mode-seg span.on { color:#fff; background:rgba(255,255,255,.20); }
+      color:rgba(var(--vp-ink),.55); cursor:pointer; letter-spacing:.06em; transition:all .2s; white-space:nowrap; }
+.ms-mode-seg span.on { color:rgb(var(--vp-ink)); background:rgba(var(--vp-ink),.20); }
 .lyric-stage { position:relative; width:100%; height:230px; flex-shrink:0; margin-top:2px;
       display:flex; flex-direction:column; }
 .lyric-head { display:flex; align-items:center; justify-content:space-between; gap:8px; padding:0 4px 6px; }
-.lyric-head > span { font-size:9.5px; color:rgba(255,255,255,.46); line-height:1.4; flex:1; min-width:0; }
+.lyric-head > span { font-size:9.5px; color:rgba(var(--vp-ink),.46); line-height:1.4; flex:1; min-width:0; }
 .lyric-acts { display:flex; gap:5px; flex:none; }
 .lyric-acts button { font-size:9.5px; padding:5px 8px; border-radius:999px; cursor:pointer;
-      border:1px solid rgba(255,255,255,.22); background:rgba(255,255,255,.07); color:rgba(255,255,255,.8); }
-.lyric-acts button:active { background:rgba(255,255,255,.20); }
+      border:1px solid rgba(var(--vp-ink),.22); background:rgba(var(--vp-ink),.07); color:rgba(var(--vp-ink),.8); }
+.lyric-acts button:active { background:rgba(var(--vp-ink),.20); }
 .lyric-acts button:disabled { opacity:.45; }
 .lyric-scroll { position:relative; flex:1; min-height:0; overflow-y:auto; overscroll-behavior:contain;
       scrollbar-width:none; -webkit-mask-image:linear-gradient(to bottom,transparent 0,#000 18%,#000 82%,transparent 100%);
@@ -1930,88 +2096,88 @@ html.dark .qa-tag.sys { color:#BEE7CD !important; background:rgba(159,211,180,.1
 .lyric-scroll::-webkit-scrollbar { display:none; }
 .lyric-pad { height:74px; }
 .lyric-line { text-align:center; font-size:12.5px; line-height:1.55; padding:6px 16px;
-      color:rgba(255,255,255,.38); cursor:pointer; transition:color .3s, font-size .3s, opacity .3s;
+      color:rgba(var(--vp-ink),.38); cursor:pointer; transition:color .3s, font-size .3s, opacity .3s;
       font-family:'Noto Serif SC','Noto Serif SC Offline',serif; letter-spacing:.02em; word-break:break-word; }
 .lyric-line.dim { opacity:.55; }
-.lyric-line.on { color:#fff; font-size:15px; font-weight:500;
-      text-shadow:0 0 16px rgba(255,255,255,.5); }
-.lyric-line:active { color:#fff; }
+.lyric-line.on { color:rgb(var(--vp-ink)); font-size:15px; font-weight:500;
+      text-shadow:0 0 14px rgba(var(--vp-ink),.22); }
+.lyric-line:active { color:rgb(var(--vp-ink)); }
 .lyric-empty { height:100%; display:flex; flex-direction:column; align-items:center; justify-content:center;
-      gap:8px; text-align:center; font-size:11.5px; color:rgba(255,255,255,.55); line-height:1.7; padding:0 24px; }
-.lyric-empty span { font-size:10px; color:rgba(255,255,255,.36); }
+      gap:8px; text-align:center; font-size:11.5px; color:rgba(var(--vp-ink),.55); line-height:1.7; padding:0 24px; }
+.lyric-empty span { font-size:10px; color:rgba(var(--vp-ink),.36); }
 .lyric-back { position:absolute; left:50%; bottom:4px; transform:translateX(-50%); z-index:3;
       font-size:10px; padding:5px 12px; border-radius:999px; cursor:pointer;
-      border:1px solid rgba(255,255,255,.3); background:rgba(20,20,26,.82); color:#fff; }
+      border:1px solid rgba(var(--vp-ink),.3); background:var(--vp-pop-bg); color:rgb(var(--vp-ink)); }
 .lrc-editor-area { width:100%; min-height:170px; resize:vertical; border-radius:12px; padding:10px 12px;
       border:1px solid var(--color-border); background:var(--color-bg); color:var(--color-text);
       font-size:12px; line-height:1.7; outline:none; font-family:ui-monospace,monospace; }
 /* ===== 搜歌：公开免密钥曲库 ===== */
 .ms-wrap { padding:14px 16px 0; }
 .ms-bar { display:flex; align-items:center; gap:8px; padding:7px 8px 7px 12px;
-      border-radius:13px; border:1px solid rgba(255,255,255,.2); background:rgba(255,255,255,.07); }
-.ms-bar > svg { width:15px; height:15px; flex:none; color:rgba(255,255,255,.55); }
+      border-radius:13px; border:1px solid var(--vp-card-line); background:var(--vp-card-bg); }
+.ms-bar > svg { width:15px; height:15px; flex:none; color:rgba(var(--vp-ink),.55); }
 .ms-bar input { flex:1; min-width:0; border:none; outline:none; background:transparent;
-      color:#fff; font-size:13px; letter-spacing:.03em; }
-.ms-bar input::placeholder { color:rgba(255,255,255,.38); }
+      color:rgb(var(--vp-ink)); font-size:13px; letter-spacing:.03em; }
+.ms-bar input::placeholder { color:rgba(var(--vp-ink),.38); }
 .ms-bar button { flex:none; padding:6px 13px; border-radius:9px; border:none;
-      background:rgba(255,255,255,.9); color:#15151a; font-size:11px; letter-spacing:.08em; cursor:pointer; }
+      background:var(--vp-solid-bg); color:var(--vp-solid-ink); font-size:11px; letter-spacing:.08em; cursor:pointer; }
 .ms-bar button:disabled { opacity:.5; }
 .ms-src { display:flex; align-items:center; gap:6px; margin:9px 0 0; }
 .ms-src span { font-size:10px; padding:4px 10px; border-radius:999px; cursor:pointer;
-      color:rgba(255,255,255,.5); border:1px solid rgba(255,255,255,.16); }
-.ms-src span.on { color:#fff; border-color:rgba(255,255,255,.55); background:rgba(255,255,255,.10); }
-.ms-src em { margin-left:auto; font-style:normal; font-size:9.5px; color:rgba(255,255,255,.54); letter-spacing:.04em; }
-.ms-msg { font-size:10.5px; color:rgba(255,255,255,.66); line-height:1.6; margin:9px 2px 0; }
-.ms-list { margin-top:10px; border-top:1px solid rgba(255,255,255,.1); padding-top:6px; }
+      color:rgba(var(--vp-ink),.5); border:1px solid rgba(var(--vp-ink),.16); }
+.ms-src span.on { color:rgb(var(--vp-ink)); border-color:rgba(var(--vp-ink),.55); background:rgba(var(--vp-ink),.10); }
+.ms-src em { margin-left:auto; font-style:normal; font-size:9.5px; color:rgba(var(--vp-ink),.54); letter-spacing:.04em; }
+.ms-msg { font-size:10.5px; color:rgba(var(--vp-ink),.66); line-height:1.6; margin:9px 2px 0; }
+.ms-list { margin-top:10px; border-top:1px solid rgba(var(--vp-ink),.1); padding-top:6px; }
 .ms-list-head { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:1px 2px 8px; }
-.ms-list-head > span { font-size:10px; color:rgba(255,255,255,.5); letter-spacing:.06em; }
+.ms-list-head > span { font-size:10px; color:rgba(var(--vp-ink),.5); letter-spacing:.06em; }
 .ms-clear { flex:none; min-height:30px; display:flex; align-items:center; gap:6px;
-    padding:5px 12px 5px 10px; border-radius:999px; border:1px solid rgba(255,255,255,.26);
-    background:rgba(255,255,255,.07); color:#fff; font-size:10.5px; letter-spacing:.04em; cursor:pointer; }
-.ms-clear:active { background:rgba(255,255,255,.20); }
+    padding:5px 12px 5px 10px; border-radius:999px; border:1px solid rgba(var(--vp-ink),.26);
+    background:rgba(var(--vp-ink),.07); color:rgb(var(--vp-ink)); font-size:10.5px; letter-spacing:.04em; cursor:pointer; }
+.ms-clear:active { background:rgba(var(--vp-ink),.20); }
 .ms-clear b { font-size:15px; line-height:1; font-weight:400; }
 .ms-item { display:flex; align-items:center; gap:10px; padding:7px 6px; border-radius:10px;
       cursor:pointer; transition:background .15s; }
-.ms-item:active { background:rgba(255,255,255,.10); }
-.ms-item.playing { background:rgba(255,255,255,.13); }
+.ms-item:active { background:rgba(var(--vp-ink),.10); }
+.ms-item.playing { background:rgba(var(--vp-ink),.13); }
 .ms-cover { width:38px; height:38px; flex:none; border-radius:8px; overflow:hidden;
-      background:rgba(255,255,255,.08); display:flex; align-items:center; justify-content:center; }
+      background:rgba(var(--vp-ink),.08); display:flex; align-items:center; justify-content:center; }
 .ms-cover img { width:100%; height:100%; object-fit:cover; display:block; }
-.ms-cover svg { width:17px; height:17px; color:rgba(255,255,255,.4); }
+.ms-cover svg { width:17px; height:17px; color:rgba(var(--vp-ink),.4); }
 .ms-info { flex:1; min-width:0; }
-.ms-title { font-size:12px; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.ms-artist { font-size:10px; color:rgba(255,255,255,.48); margin-top:2px;
+.ms-title { font-size:12px; color:rgb(var(--vp-ink)); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ms-artist { font-size:10px; color:rgba(var(--vp-ink),.48); margin-top:2px;
       white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-.ms-tag { flex:none; font-size:9px; color:rgba(255,255,255,.58); border:1px solid rgba(255,255,255,.16);
+.ms-tag { flex:none; font-size:9px; color:rgba(var(--vp-ink),.58); border:1px solid rgba(var(--vp-ink),.16);
       border-radius:6px; padding:2px 5px; }
-.ms-add { flex:none; width:26px; height:26px; border-radius:50%; border:1px solid rgba(255,255,255,.28);
-      background:transparent; color:#fff; font-size:16px; line-height:1; cursor:pointer;
+.ms-add { flex:none; width:26px; height:26px; border-radius:50%; border:1px solid rgba(var(--vp-ink),.28);
+      background:transparent; color:rgb(var(--vp-ink)); font-size:16px; line-height:1; cursor:pointer;
       display:flex; align-items:center; justify-content:center; }
-.ms-add.done { background:rgba(255,255,255,.9); color:#15151a; border-color:transparent; font-size:12px; }
-.vinyl-playlist-panel { width:100%; margin-top:20px; border-top:1px solid rgba(255,255,255,.1); padding-top:14px; }
-.vinyl-pl-note { font-size:10.5px; line-height:1.7; color:rgba(255,255,255,.72);
+.ms-add.done { background:var(--vp-solid-bg); color:var(--vp-solid-ink); border-color:transparent; font-size:12px; }
+.vinyl-playlist-panel { width:100%; margin-top:20px; border-top:1px solid rgba(var(--vp-ink),.1); padding-top:14px; }
+.vinyl-pl-note { font-size:10.5px; line-height:1.7; color:rgba(var(--vp-ink),.72);
     margin:0 0 10px; padding:8px 10px; border-radius:9px;
-    background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12); }
+    background:rgba(var(--vp-ink),.07); border:1px solid rgba(var(--vp-ink),.12); }
 .vinyl-pl-note.healing { color:#ffe6a8; }
 .vinyl-pl-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
-.vinyl-pl-head span { font-size:10px; color:rgba(255,255,255,.5); letter-spacing:.1em; }
-.vinyl-pl-head button { font-size:10px; color:rgba(255,255,255,.55); background:none; border:none; cursor:pointer; padding:2px 6px; }
-.vinyl-pl-head button:active { color:#fff; }
+.vinyl-pl-head span { font-size:10px; color:rgba(var(--vp-ink),.5); letter-spacing:.1em; }
+.vinyl-pl-head button { font-size:10px; color:rgba(var(--vp-ink),.55); background:none; border:none; cursor:pointer; padding:2px 6px; }
+.vinyl-pl-head button:active { color:rgb(var(--vp-ink)); }
 .vinyl-pl-item { display:flex; align-items:center; gap:10px; padding:7px 8px; border-radius:9px; cursor:pointer; transition:background .15s; }
-.vinyl-pl-item:hover { background:rgba(255,255,255,.06); }
-.vinyl-pl-item.active { background:rgba(255,255,255,.11); }
-.vinyl-pl-cover { width:32px; height:32px; border-radius:7px; overflow:hidden; flex-shrink:0; background:rgba(255,255,255,.1); }
+.vinyl-pl-item:hover { background:rgba(var(--vp-ink),.06); }
+.vinyl-pl-item.active { background:rgba(var(--vp-ink),.11); }
+.vinyl-pl-cover { width:32px; height:32px; border-radius:7px; overflow:hidden; flex-shrink:0; background:rgba(var(--vp-ink),.1); }
 .vinyl-pl-cover img { width:100%; height:100%; object-fit:cover; }
-.vinyl-pl-cover .vpc-def { width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.35); }
+.vinyl-pl-cover .vpc-def { width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:rgba(var(--vp-ink),.35); }
 .vinyl-pl-info { flex:1; min-width:0; }
-.vinyl-pl-title { font-size:11.5px; color:rgba(255,255,255,.92); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-.vinyl-pl-item.active .vinyl-pl-title { color:#fff; font-weight:600; }
-.vinyl-pl-artist { font-size:9.5px; color:rgba(255,255,255,.42); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-top:2px; }
-.vinyl-pl-dur { font-size:9.5px; color:rgba(255,255,255,.45); font-variant-numeric:tabular-nums; flex-shrink:0; }
-.vinyl-pl-del { width:22px; height:22px; display:flex; align-items:center; justify-content:center; color:rgba(255,255,255,.3); cursor:pointer; flex-shrink:0; font-size:13px; border-radius:5px; }
-.vinyl-pl-del:hover { color:#fff; background:rgba(255,255,255,.1); }
-.vinyl-pl-empty { text-align:center; font-size:11px; color:rgba(255,255,255,.35); padding:18px 0; }
-.vinyl-drag-hint { position:absolute; inset:0; border-radius:50%; background:rgba(0,0,0,.55); display:flex; align-items:center; justify-content:center; font-size:11px; color:#fff; opacity:0; transition:opacity .2s; pointer-events:none; z-index:20; text-align:center; line-height:1.5; }
+.vinyl-pl-title { font-size:11.5px; color:rgba(var(--vp-ink),.92); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.vinyl-pl-item.active .vinyl-pl-title { color:rgb(var(--vp-ink)); font-weight:600; }
+.vinyl-pl-artist { font-size:9.5px; color:rgba(var(--vp-ink),.42); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin-top:2px; }
+.vinyl-pl-dur { font-size:9.5px; color:rgba(var(--vp-ink),.45); font-variant-numeric:tabular-nums; flex-shrink:0; }
+.vinyl-pl-del { width:22px; height:22px; display:flex; align-items:center; justify-content:center; color:rgba(var(--vp-ink),.3); cursor:pointer; flex-shrink:0; font-size:13px; border-radius:5px; }
+.vinyl-pl-del:hover { color:rgb(var(--vp-ink)); background:rgba(var(--vp-ink),.1); }
+.vinyl-pl-empty { text-align:center; font-size:11px; color:rgba(var(--vp-ink),.35); padding:18px 0; }
+.vinyl-drag-hint { position:absolute; inset:0; border-radius:50%; background:rgba(0,0,0,.55); display:flex; align-items:center; justify-content:center; font-size:11px; color:rgb(var(--vp-ink)); opacity:0; transition:opacity .2s; pointer-events:none; z-index:20; text-align:center; line-height:1.5; }
 .vinyl-shaft.drag-over .vinyl-drag-hint { opacity:1; }
 /* 动画常驻、只切播放状态：暂停停在原角度，恢复从原角度继续，角度连续不跳变。 */
 .vinyl-disc-layer.spinning { animation-play-state:running; }
@@ -4427,42 +4593,42 @@ html, body { overscroll-behavior-y: none; }
                 <div class="flex items-center justify-between p-3.5 border-b border-border">
                     <span>回复速度最短 (秒)</span>
                     <div class="flex items-center gap-3">
-                        <button @click="replyMinDelay = Math.max(1, replyMinDelay - 10)" class="w-7 h-7 rounded-lg bg-bg flex items-center justify-center text-muted active:bg-border">−</button>
+                        <button @click="replyMinDelay = Math.max(1, replyMinDelay - 10)" class="w-7 h-7 rounded-full bg-bg flex items-center justify-center text-muted active:bg-border">−</button>
                         <span class="w-10 text-center font-mono font-medium">{{ replyMinDelay }}</span>
-                        <button @click="replyMinDelay = Math.min(replyMaxDelay, replyMinDelay + 10)" class="w-7 h-7 rounded-lg bg-bg flex items-center justify-center text-muted active:bg-border">+</button>
+                        <button @click="replyMinDelay = Math.min(replyMaxDelay, replyMinDelay + 10)" class="w-7 h-7 rounded-full bg-bg flex items-center justify-center text-muted active:bg-border">+</button>
                     </div>
                 </div>
                 <div class="flex items-center justify-between p-3.5 border-b border-border">
                     <span>回复速度最长 (秒)</span>
                     <div class="flex items-center gap-3">
-                        <button @click="replyMaxDelay = Math.max(replyMinDelay, replyMaxDelay - 10)" class="w-7 h-7 rounded-lg bg-bg flex items-center justify-center text-muted active:bg-border">−</button>
+                        <button @click="replyMaxDelay = Math.max(replyMinDelay, replyMaxDelay - 10)" class="w-7 h-7 rounded-full bg-bg flex items-center justify-center text-muted active:bg-border">−</button>
                         <span class="w-10 text-center font-mono font-medium">{{ replyMaxDelay }}</span>
-                        <button @click="replyMaxDelay = Math.min(600, replyMaxDelay + 10)" class="w-7 h-7 rounded-lg bg-bg flex items-center justify-center text-muted active:bg-border">+</button>
+                        <button @click="replyMaxDelay = Math.min(600, replyMaxDelay + 10)" class="w-7 h-7 rounded-full bg-bg flex items-center justify-center text-muted active:bg-border">+</button>
                     </div>
                 </div>
                 <div class="flex items-center justify-between p-3.5 border-b border-border">
                     <span>回复条数最少</span>
                     <div class="flex items-center gap-3">
-                        <button @click="replyMinCount = Math.max(1, replyMinCount - 1)" class="w-7 h-7 rounded-lg bg-bg flex items-center justify-center text-muted active:bg-border">−</button>
+                        <button @click="replyMinCount = Math.max(1, replyMinCount - 1)" class="w-7 h-7 rounded-full bg-bg flex items-center justify-center text-muted active:bg-border">−</button>
                         <span class="w-10 text-center font-mono font-medium">{{ replyMinCount }}</span>
-                        <button @click="replyMinCount = Math.min(replyMaxCount, replyMinCount + 1)" class="w-7 h-7 rounded-lg bg-bg flex items-center justify-center text-muted active:bg-border">+</button>
+                        <button @click="replyMinCount = Math.min(replyMaxCount, replyMinCount + 1)" class="w-7 h-7 rounded-full bg-bg flex items-center justify-center text-muted active:bg-border">+</button>
                     </div>
                 </div>
                 <div class="flex items-center justify-between p-3.5">
                     <span>回复条数最多</span>
                     <div class="flex items-center gap-3">
-                        <button @click="replyMaxCount = Math.max(replyMinCount, replyMaxCount - 1)" class="w-7 h-7 rounded-lg bg-bg flex items-center justify-center text-muted active:bg-border">−</button>
+                        <button @click="replyMaxCount = Math.max(replyMinCount, replyMaxCount - 1)" class="w-7 h-7 rounded-full bg-bg flex items-center justify-center text-muted active:bg-border">−</button>
                         <span class="w-10 text-center font-mono font-medium">{{ replyMaxCount }}</span>
-                        <button @click="replyMaxCount = Math.min(20, replyMaxCount + 1)" class="w-7 h-7 rounded-lg bg-bg flex items-center justify-center text-muted active:bg-border">+</button>
+                        <button @click="replyMaxCount = Math.min(20, replyMaxCount + 1)" class="w-7 h-7 rounded-full bg-bg flex items-center justify-center text-muted active:bg-border">+</button>
                     </div>
                 </div>
                 <div class="p-3.5 flex flex-col gap-2 border-t border-border">
                     <div class="flex items-center justify-between">
                         <span>他抽塔罗的概率</span>
                         <div class="flex items-center gap-3">
-                            <button @click="settings.tarotRate = Math.max(0, (settings.tarotRate || 0) - 5)" class="w-7 h-7 rounded-lg bg-bg flex items-center justify-center text-muted active:bg-border">−</button>
+                            <button @click="settings.tarotRate = Math.max(0, (settings.tarotRate || 0) - 5)" class="w-7 h-7 rounded-full bg-bg flex items-center justify-center text-muted active:bg-border">−</button>
                             <span class="w-10 text-center font-mono font-medium">{{ settings.tarotRate || 0 }}%</span>
-                            <button @click="settings.tarotRate = Math.min(100, (settings.tarotRate || 0) + 5)" class="w-7 h-7 rounded-lg bg-bg flex items-center justify-center text-muted active:bg-border">+</button>
+                            <button @click="settings.tarotRate = Math.min(100, (settings.tarotRate || 0) + 5)" class="w-7 h-7 rounded-full bg-bg flex items-center justify-center text-muted active:bg-border">+</button>
                         </div>
                     </div>
                     <span class="text-[10px] text-muted/80 leading-relaxed block w-full text-left">功能说明：8% 大约聊十来条冒一张。塔罗、推歌、送礼和问卷共用一次抽取，一轮最多一张、两分钟内不会连着推，所以不会反复冒卡片。塔罗页「发到聊天」不受限制。</span>
@@ -4471,9 +4637,9 @@ html, body { overscroll-behavior-y: none; }
                     <div class="flex items-center justify-between">
                         <span>他推歌的概率</span>
                         <div class="flex items-center gap-3">
-                            <button @click="settings.songRate = Math.max(0, (settings.songRate == null ? 8 : settings.songRate) - 5)" class="w-7 h-7 rounded-lg bg-bg flex items-center justify-center text-muted active:bg-border">−</button>
+                            <button @click="settings.songRate = Math.max(0, (settings.songRate == null ? 8 : settings.songRate) - 5)" class="w-7 h-7 rounded-full bg-bg flex items-center justify-center text-muted active:bg-border">−</button>
                             <span class="w-10 text-center font-mono font-medium">{{ settings.songRate == null ? 8 : settings.songRate }}%</span>
-                            <button @click="settings.songRate = Math.min(100, (settings.songRate == null ? 8 : settings.songRate) + 5)" class="w-7 h-7 rounded-lg bg-bg flex items-center justify-center text-muted active:bg-border">+</button>
+                            <button @click="settings.songRate = Math.min(100, (settings.songRate == null ? 8 : settings.songRate) + 5)" class="w-7 h-7 rounded-full bg-bg flex items-center justify-center text-muted active:bg-border">+</button>
                         </div>
                     </div>
                     <span class="text-[10px] text-muted/80 leading-relaxed block w-full text-left">功能说明：概率按你发的每条消息算，8% 大约聊十来条冒一张。和塔罗、推歌、送礼、问卷共用一次抽取，一轮最多一张、两分钟内不会连着推。他自己搜一首、或从你歌单里挑一首，在主聊天发一张卡片给你；点「现在听」就播，点「等会再听」先留着。音乐页「让他推一首」不受限制。</span>
@@ -4482,9 +4648,9 @@ html, body { overscroll-behavior-y: none; }
                     <div class="flex items-center justify-between">
                         <span>他主动送礼的概率</span>
                         <div class="flex items-center gap-3">
-                            <button @click="settings.giftRate = Math.max(0, (settings.giftRate == null ? 0 : settings.giftRate) - 5)" class="w-7 h-7 rounded-lg bg-bg flex items-center justify-center text-muted active:bg-border">−</button>
+                            <button @click="settings.giftRate = Math.max(0, (settings.giftRate == null ? 0 : settings.giftRate) - 5)" class="w-7 h-7 rounded-full bg-bg flex items-center justify-center text-muted active:bg-border">−</button>
                             <span class="w-10 text-center font-mono font-medium">{{ settings.giftRate == null ? 0 : settings.giftRate }}%</span>
-                            <button @click="settings.giftRate = Math.min(100, (settings.giftRate == null ? 0 : settings.giftRate) + 5)" class="w-7 h-7 rounded-lg bg-bg flex items-center justify-center text-muted active:bg-border">+</button>
+                            <button @click="settings.giftRate = Math.min(100, (settings.giftRate == null ? 0 : settings.giftRate) + 5)" class="w-7 h-7 rounded-full bg-bg flex items-center justify-center text-muted active:bg-border">+</button>
                         </div>
                     </div>
                     <span class="text-[10px] text-muted/80 leading-relaxed block w-full text-left">功能说明：默认 0，不自动送，免得老冒卡片。想偶尔收到惊喜可以调高；和塔罗、推歌、问卷共用一次抽取，一轮最多一张、两分钟内不会连着推。商场里「让他挑一件送我」、点「想要」发给他的卡片都不受这个限制，他买下时都会带一句只属于那样东西的话。</span>
@@ -4493,9 +4659,9 @@ html, body { overscroll-behavior-y: none; }
                     <div class="flex items-center justify-between">
                         <span>他点助眠音的概率</span>
                         <div class="flex items-center gap-3">
-                            <button @click="settings.sleepRate = Math.max(0, (settings.sleepRate || 0) - 5)" class="w-7 h-7 rounded-lg bg-bg flex items-center justify-center text-muted active:bg-border">−</button>
+                            <button @click="settings.sleepRate = Math.max(0, (settings.sleepRate || 0) - 5)" class="w-7 h-7 rounded-full bg-bg flex items-center justify-center text-muted active:bg-border">−</button>
                             <span class="w-10 text-center font-mono font-medium">{{ settings.sleepRate || 0 }}%</span>
-                            <button @click="settings.sleepRate = Math.min(100, (settings.sleepRate || 0) + 5)" class="w-7 h-7 rounded-lg bg-bg flex items-center justify-center text-muted active:bg-border">+</button>
+                            <button @click="settings.sleepRate = Math.min(100, (settings.sleepRate || 0) + 5)" class="w-7 h-7 rounded-full bg-bg flex items-center justify-center text-muted active:bg-border">+</button>
                         </div>
                     </div>
                     <span class="text-[10px] text-muted/80 leading-relaxed block w-full text-left">功能说明：只在「睡眠」页生效——开始睡眠时他自己先放一组，之后睡眠聊天里按这个概率再点，叠进来直接响，你不用点。主聊天和陪伴里不会自动点；陪伴里的音只能你自己选。</span>
@@ -4517,9 +4683,9 @@ html, body { overscroll-behavior-y: none; }
     <div class="flex items-center justify-between">
         <span>他收集字卡的概率</span>
         <div class="flex items-center gap-3">
-            <button @click="settings.learnRate = Math.max(0, settings.learnRate - 10)" class="w-7 h-7 rounded-lg bg-bg flex items-center justify-center text-muted active:bg-border">−</button>
+            <button @click="settings.learnRate = Math.max(0, settings.learnRate - 10)" class="w-7 h-7 rounded-full bg-bg flex items-center justify-center text-muted active:bg-border">−</button>
             <span class="w-10 text-center font-mono font-medium">{{ settings.learnRate }}%</span>
-            <button @click="settings.learnRate = Math.min(100, settings.learnRate + 10)" class="w-7 h-7 rounded-lg bg-bg flex items-center justify-center text-muted active:bg-border">+</button>
+            <button @click="settings.learnRate = Math.min(100, settings.learnRate + 10)" class="w-7 h-7 rounded-full bg-bg flex items-center justify-center text-muted active:bg-border">+</button>
         </div>
     </div>
     <span class="text-[10px] text-muted/80 leading-relaxed block w-full text-left">功能说明：新增角色概率，将用户说过的话添加至字卡库，并且会创造独立分组的功能，可以自行选择删除或者是修改。</span>
@@ -4727,6 +4893,16 @@ html, body { overscroll-behavior-y: none; }
                 <div class="diag-arrow"><i data-lucide="chevron-right"></i></div>
             </div>
 
+            <div class="diag-card" @click="boostStorage">
+                <div class="diag-icon"><i data-lucide="database"></i></div>
+                <div class="diag-content">
+                    <div class="diag-title">加大存储容量</div>
+                    <div class="diag-desc">申请持久化存储、查看真实配额；记录上限已放宽，图片更清晰</div>
+                    <span class="diag-tag">查看容量</span>
+                </div>
+                <div class="diag-arrow"><i data-lucide="chevron-right"></i></div>
+            </div>
+
             <div class="diag-card" @click="diagnoseStorage">
                 <div class="diag-icon"><i data-lucide="hard-drive"></i></div>
                 <div class="diag-content">
@@ -4845,7 +5021,7 @@ html, body { overscroll-behavior-y: none; }
                 </div>
                 <div class="qa-filters">
                     <button class="qa-chip" :class="{on: qaFilter === 'all'}" @click="qaFilter = 'all'">全部 {{ qaSystem.length + qaCustom.length }}</button>
-                    <button class="qa-chip" :class="{on: qaFilter === 'sys'}" @click="qaFilter = 'sys'">系统 {{ qaSystem.length }}</button>
+                    <button class="qa-chip" :class="{on: qaFilter === 'sys'}" @click="qaFilter = 'sys'">内置 {{ qaSystem.length }}</button>
                     <button class="qa-chip" :class="{on: qaFilter === 'mine'}" @click="qaFilter = 'mine'">自建 {{ qaCustom.length }}</button>
                 </div>
                 <button class="qa-ask-btn" @click="qaRandomAsk()">让他随便问我一道 ♡</button>
@@ -4856,7 +5032,7 @@ html, body { overscroll-behavior-y: none; }
                             <span class="qa-no">NO.{{ String(i+1).padStart(2,'0') }}</span>
                             <div class="qa-q">{{ p.q }}</div>
                         </div>
-                        <span class="qa-tag" :class="p.mine ? 'mine' : 'sys'">{{ p.mine ? '自建' : '系统' }}</span>
+                        <span class="qa-tag" :class="p.mine ? 'mine' : 'sys'">{{ p.mine ? '自建' : '内置' }}</span>
                     </div>
                     <div class="qa-count">{{ p.opts.length }} 种回答方向 · 各一句他的回话</div>
                     <div class="qa-opts"><div v-for="(o, j) in p.opts" :key="j" class="qa-opt">{{ o }}</div></div>
@@ -5251,9 +5427,6 @@ html, body { overscroll-behavior-y: none; }
         <div class="msg-menu-card" :style="msgMenuPos">
             <div class="msg-menu-cap">
                 <span>☾ 这条消息</span>
-                <button class="msg-menu-x" @click="showMsgMenu = false" aria-label="关闭">
-                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-                </button>
             </div>
             <button class="msg-menu-item" @click="replyToMsg">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17H7a4 4 0 0 1 0-8h2"/><path d="M15 7h2a4 4 0 0 1 0 8h-2"/><path d="M8 12h8"/></svg>
@@ -5459,21 +5632,21 @@ html, body { overscroll-behavior-y: none; }
 </div>
 
 <!-- ===== [MOD-08] 音乐 · 黑胶播放器 ===== -->
-<div v-else-if="currentView === 'music'" key="music" class="absolute inset-0 flex flex-col z-20">
-    <header class="h-14 flex items-center justify-between px-4 border-b border-white/10 shrink-0" style="background:rgba(10,10,12,.82); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);">
-        <button @click="switchView('home')" class="p-2 -ml-2 text-white/85 flex-none"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
-        <span class="flex-1 text-center text-[13px] font-medium tracking-widest serif-text" style="color:#fff;">音乐</span>
+<div v-else-if="currentView === 'music'" key="music" class="absolute inset-0 flex flex-col z-20 music-page" :class="{ 'vp-dark': settings.darkMode }">
+    <header class="music-head h-14 flex items-center justify-between px-4 shrink-0">
+        <button @click="switchView('home')" class="p-2 -ml-2 music-head-ink flex-none"><i data-lucide="chevron-left" class="w-5 h-5"></i></button>
+        <span class="flex-1 text-center text-[13px] font-medium tracking-widest serif-text music-head-ink">音乐</span>
         <div class="flex-none flex items-center gap-2">
             <div class="ms-mode-seg">
                 <span :class="{ on: settings.musicMode !== 'lyric' }" @click="settings.musicMode = 'tape'">磁带</span>
                 <span :class="{ on: settings.musicMode === 'lyric' }" @click="settings.musicMode = 'lyric'">歌词</span>
             </div>
-            <button class="p-2 text-white/70" @click="vinylShowList = !vinylShowList" title="播放列表">
+            <button class="p-2 music-head-ink" @click="vinylShowList = !vinylShowList" title="播放列表">
                 <i data-lucide="list-music" class="w-5 h-5"></i>
             </button>
         </div>
     </header>
-    <main class="flex-1 overflow-y-auto" style="background:radial-gradient(120% 80% at 50% -10%, rgba(80,70,110,.30) 0%, rgba(20,20,26,.92) 45%, #08080a 100%);">
+    <main class="music-main flex-1 overflow-y-auto">
         <!-- 搜歌：公开免密钥曲库，点结果试听，＋ 加入歌单 -->
         <div class="ms-wrap">
           <div class="ms-bar">
@@ -5554,8 +5727,7 @@ html, body { overscroll-behavior-y: none; }
                         <div v-else class="vc-default">
                             <!-- 内联 SVG：不依赖图标库运行时替换，刚进页面就长这样，不会先空一下 -->
                             <svg class="vc-disc" viewBox="0 0 48 48" width="60" height="60" fill="none"
-                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                                 style="color:rgba(255,255,255,.35)">
+                                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="24" cy="24" r="18"/>
                                 <circle cx="24" cy="24" r="4"/>
                                 <path d="M12 17a13 13 0 0 1 5-3.4"/>
@@ -5639,8 +5811,8 @@ html, body { overscroll-behavior-y: none; }
                     <i data-lucide="skip-back" class="w-[26px] h-[26px]"></i>
                 </div>
                 <div class="vinyl-play-btn" @click="togglePlay">
-                    <svg v-if="!syncState.isPlaying" class="play-icon" viewBox="0 0 24 24" width="20" height="20" fill="#111"><polygon points="6,4 20,12 6,20"/></svg>
-                    <svg v-else viewBox="0 0 24 24" width="20" height="20" fill="#111"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+                    <svg v-if="!syncState.isPlaying" class="play-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><polygon points="6,4 20,12 6,20"/></svg>
+                    <svg v-else viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
                 </div>
                 <div class="vinyl-ctrl-btn" @click="nextSong" title="下一首">
                     <i data-lucide="skip-forward" class="w-[26px] h-[26px]"></i>
@@ -5669,7 +5841,7 @@ html, body { overscroll-behavior-y: none; }
                     <svg v-if="!autoCoverLoading" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72"/><path d="m14 7 3 3"/><path d="M5 6v4"/><path d="M19 14v4"/><path d="M10 2v2"/><path d="M7 8H3"/><path d="M21 16h-4"/><path d="M11 3H9"/>
                     </svg>
-                    <span v-else class="w-4 h-4 rounded-full border-2 border-white/30 border-t-white animate-spin"></span>
+                    <span v-else class="w-4 h-4 rounded-full vp-spin animate-spin"></span>
                     <span>{{ autoCoverLoading ? '抓取中' : '抓取封面' }}</span>
                 </button>
             </div>
@@ -7489,6 +7661,76 @@ createApp({
         const apiStatusMsg = ref('');
         const diagnoseResult = ref('');
 
+        // ===== 存储容量档位 =====
+        // 浏览器给网页的配额由系统决定，代码不能凭空造空间；能做的是两件事：
+        // ① 申请「持久化存储」，让浏览器别在空间紧张时把本站数据清掉、并尽量给更大配额；
+        // ② 别让代码自己先把记录砍掉 —— 以前一堆写死的 30/50/120/200/300 才是「存不下」的主因。
+        const CAP = {
+            watchHistory: 300,   qaBank: 2000,  shopOrders: 500, shopCustom: 1000,
+            watchMsgs: 1000, companionMsgs: 1000, sleepChat: 1000, sleepHistory: 300, tarot: 1000
+        };
+        // 图片清晰度档：显示尺寸不变，只把源图留得更细；表情包仍是 WebP，比 JPEG 省地方
+        const IMG = {
+            avatar:    { max: 512,  q: 0.86 },
+            wallpaper: { max: 1600, q: 0.84 },
+            anniv:     { max: 960,  q: 0.86 },
+            video:     { max: 720,  q: 0.82 },
+            icon:      { max: 320,  q: 0.86 },
+            cover:     { max: 512,  q: 0.86 },
+            redpack:   { max: 960,  q: 0.84 },
+            photo:     { max: 1280, q: 0.84 },
+            journal:   { max: 960,  q: 0.86 },
+            sticker:   { max: 480,  q: 0.90, webp: true },
+            custom:    { max: 480,  q: 0.90, webp: true }
+        };
+        const storageInfo = ref(null);
+        const readStorageInfo = async () => {
+            const info = { supported: false, persisted: false, usage: 0, quota: 0 };
+            try {
+                if (navigator.storage && navigator.storage.estimate) {
+                    info.supported = true;
+                    const est = await navigator.storage.estimate();
+                    info.usage = est.usage || 0; info.quota = est.quota || 0;
+                }
+                if (navigator.storage && navigator.storage.persisted) info.persisted = !!(await navigator.storage.persisted());
+            } catch (e) {}
+            storageInfo.value = info;
+            return info;
+        };
+        // 冷启动静默申请一次，不弹任何提示；不支持的浏览器直接跳过
+        const requestPersist = async () => {
+            try {
+                if (navigator.storage && navigator.storage.persisted && await navigator.storage.persisted()) { await readStorageInfo(); return; }
+                if (navigator.storage && navigator.storage.persist) await navigator.storage.persist();
+            } catch (e) {}
+            try { await readStorageInfo(); } catch (e) {}
+        };
+        const boostStorage = async () => {
+            const before = await readStorageInfo();
+            let granted = before.persisted;
+            try {
+                if (!granted && navigator.storage && navigator.storage.persist) granted = !!(await navigator.storage.persist());
+            } catch (e) {}
+            const a = await readStorageInfo();
+            const pct = a.quota ? (a.usage / a.quota * 100).toFixed(2) + '%' : '—';
+            diagnoseResult.value = [
+                '===== 存储容量 =====',
+                '已用：' + fmtBytes(a.usage),
+                '浏览器配额：' + (a.quota ? fmtBytes(a.quota) : '当前环境未提供'),
+                '占用比例：' + pct,
+                '持久化存储：' + (a.persisted || granted
+                    ? '✅ 已开启（系统清理缓存时不会自动删掉本站数据）'
+                    : '⚠️ 浏览器未授予（无痕模式 / 部分浏览器不支持，不影响正常使用）'),
+                '',
+                '记录上限已放宽：观影 300 · 问卷 2000 · 订单 500 · 自制 1000 · 塔罗 1000 · 睡前归档 300 · 聊天 1000 条',
+                '图片更清晰：表情包 480px WebP · 聊天图片 1280px · 壁纸 1600px · 头像 512px',
+                '===================='
+            ].join('\n');
+            return a;
+        };
+        // 冷启动静默申请一次，不弹提示；不支持的浏览器直接跳过
+        setTimeout(() => { try { requestPersist(); } catch (e) {} }, 1600);
+
         const globalWallpaper = ref('');
         const chatWallpaper = ref('');
         const customBubbleCSS = ref('');
@@ -7497,7 +7739,7 @@ createApp({
         const setWallpaper = (type, e) => {
             const file = e.target.files[0];
             if (!file) return;
-            compressImage(file, 1080, 0.7).then(async (base64) => {
+            compressImage(file, IMG.wallpaper.max, IMG.wallpaper.q).then(async (base64) => {
                 if (type === 'global') { globalWallpaper.value = base64; await localforage.setItem('liubai_wallpaper_global', base64); }
                 else if (type === 'chat') { chatWallpaper.value = base64; await localforage.setItem('liubai_wallpaper_chat', base64); }
             });
@@ -7672,7 +7914,7 @@ createApp({
                 // 图标格只有 56px，压到 256px 足够清晰。
                 // 原图直接塞 base64 动辄几 MB，容易顶到浏览器本地存储配额导致写入失败/被截断，
                 // 下次读回来就是坏数据 —— 这正是格子变空框的常见来源。
-                const b64 = await compressImage(file, 256, 0.82);
+                const b64 = await compressImage(file, IMG.icon.max, IMG.icon.q);
                 if (!b64) return;
                 homeIcons[key].img = b64;
                 await localforage.setItem('liubai_home_icons', JSON.parse(JSON.stringify(homeIcons)));
@@ -7831,7 +8073,7 @@ createApp({
         // ================= [MOD-06] 一起观影：历史记录 =================
         const watchHistory = ref([]);
         const loadWatchHistory = async () => { try { const saved = await localforage.getItem('liubai_watch_history'); if (saved) watchHistory.value = saved; } catch (e) {} };
-        const addToHistory = async (type, name, url) => { watchHistory.value = watchHistory.value.filter(h => h.url !== url); watchHistory.value.unshift({ type, name, url, time: Date.now() }); if (watchHistory.value.length > 30) watchHistory.value.pop(); await localforage.setItem('liubai_watch_history', watchHistory.value); };
+        const addToHistory = async (type, name, url) => { watchHistory.value = watchHistory.value.filter(h => h.url !== url); watchHistory.value.unshift({ type, name, url, time: Date.now() }); if (watchHistory.value.length > CAP.watchHistory) watchHistory.value.pop(); await localforage.setItem('liubai_watch_history', watchHistory.value); };
         const clearWatchHistory = async () => { if (!confirm('确定清空所有观影历史吗？')) return; watchHistory.value = []; await localforage.removeItem('liubai_watch_history'); };
         const playHistory = (item) => {
             if (item.type === 'bili') { watchSetup.tab = 'bili'; watchSetup.biliUrl = item.url; pullBili(); }
@@ -8483,7 +8725,7 @@ createApp({
         };
         // ===== [MOD-21] 问卷库：他反向问我，一题备好几种回话 =====
         // 题干一律是「他问你」，你在卡片里自由写回答，他再按你写的方向挑一句回你。
-        // 系统题的 5 句按固定方向排：①你说顺/好 ②你说累/不好 ③你不想讲/还行
+        // 内置题的 5 句按固定方向排：①你说顺/好 ②你说累/不好 ③你不想讲/还行
         // ④你把话反问回去 ⑤中性兜底（答什么都能接）。绝不替你把答案说出来，也不回答题干本身，
         // 这样就不会出现「他自己问、自己又答一遍」的自问自答。
         const QA_SYSTEM = [
@@ -8531,14 +8773,14 @@ createApp({
         const qaSave = () => {
             if (qaSaveTimer) clearTimeout(qaSaveTimer);
             qaSaveTimer = setTimeout(() => {
-                try { localforage.setItem('liubai_qa_bank_db', JSON.parse(JSON.stringify(qaCustom.value.slice(0, 300)))); } catch (e) {}
+                try { localforage.setItem('liubai_qa_bank_db', JSON.parse(JSON.stringify(qaCustom.value.slice(0, CAP.qaBank)))); } catch (e) {}
             }, 250);
         };
         const qaLoad = async () => {
             try {
                 const v = await localforage.getItem('liubai_qa_bank_db');
                 if (Array.isArray(v)) qaCustom.value = v.filter(x => x && typeof x.q === 'string' && x.q.trim()
-                    && (Array.isArray(x.opts) || typeof x.a === 'string')).slice(0, 300).map(qaNorm);
+                    && (Array.isArray(x.opts) || typeof x.a === 'string')).slice(0, CAP.qaBank).map(qaNorm);
             } catch (e) {}
         };
         const qaAll = computed(() => qaCustom.value.concat(qaSystem.value));
@@ -8614,7 +8856,7 @@ createApp({
         const qaBuildMsg = (p) => ({
             id: genId(), sender: 'them', type: 'qa', q: p.q,
             opts: (p.opts || []).slice(0, 8),   // 他备好的几句，聊天卡里不露出来
-            qaSys: p.mine === false,             // 系统题按 5 种回答方向排过序；自建题没有固定顺序
+            qaSys: p.mine === false,             // 内置题按 5 种回答方向排过序；自建题没有固定顺序
             draft: '', mine: null, his: null, picked: null, timestamp: Date.now()
         });
         // 手动：让他问我（不掷骰、不占冷却、不触发自动回复）
@@ -8783,12 +9025,12 @@ createApp({
             shopSaveTimer = setTimeout(() => {
                 try { localforage.setItem('liubai_shop_wallet', Number(shopWallet.value) || 0); } catch (e) {}
                 try { localforage.setItem('liubai_shop_cart', JSON.parse(JSON.stringify(shopCart.value))); } catch (e) {}
-                try { localforage.setItem('liubai_shop_orders', JSON.parse(JSON.stringify(shopOrders.value.slice(0, 30)))); } catch (e) {}
+                try { localforage.setItem('liubai_shop_orders', JSON.parse(JSON.stringify(shopOrders.value.slice(0, CAP.shopOrders)))); } catch (e) {}
             }, 250);
         };
         // 自制商品：照片压成 WebP 后存这一份，聊天消息里的快照只带一份小图，不重复占空间
         const shopSaveCustom = () => {
-            try { localforage.setItem('liubai_shop_custom_db', JSON.parse(JSON.stringify(shopCustom.value.slice(0, 120)))); } catch (e) {}
+            try { localforage.setItem('liubai_shop_custom_db', JSON.parse(JSON.stringify(shopCustom.value.slice(0, CAP.shopCustom)))); } catch (e) {}
         };
         const shopNormCustom = (x) => ({
             id: (x && typeof x.id === 'string' && x.id) ? x.id : genId(),
@@ -8805,7 +9047,7 @@ createApp({
                 const v = await localforage.getItem('liubai_shop_custom_db');
                 if (Array.isArray(v)) shopCustom.value = v
                     .filter(x => x && typeof x.id === 'string' && String(x.name || '').trim())
-                    .slice(0, 120).map(shopNormCustom);
+                    .slice(0, CAP.shopCustom).map(shopNormCustom);
             } catch (e) {}
         };
         const shopLoad = async () => {
@@ -8815,13 +9057,13 @@ createApp({
                 const c = await localforage.getItem('liubai_shop_cart');
                 if (Array.isArray(c)) shopCart.value = c.filter(x => x && x.id && x.item && typeof x.qty === 'number');
                 const o = await localforage.getItem('liubai_shop_orders');
-                if (Array.isArray(o)) shopOrders.value = o.filter(x => x && x.item).slice(0, 30);
+                if (Array.isArray(o)) shopOrders.value = o.filter(x => x && x.item).slice(0, CAP.shopOrders);
             } catch (e) {}
             await shopLoadCustom();
         };
         const shopAddOrder = (item, label) => {
             shopOrders.value.unshift({ id: genId(), item, label, at: Date.now() });
-            if (shopOrders.value.length > 30) shopOrders.value = shopOrders.value.slice(0, 30);
+            if (shopOrders.value.length > CAP.shopOrders) shopOrders.value = shopOrders.value.slice(0, CAP.shopOrders);
             shopSave();
         };
 
@@ -8885,7 +9127,7 @@ createApp({
             shopMakeBusy.value = true;
             try {
                 // 复用项目里的图片压缩：320px WebP，保留透明底，单张通常十几 KB
-                shopMakeForm.img = await compressImage(f, 320, 0.82, true);
+                shopMakeForm.img = await compressImage(f, IMG.custom.max, IMG.custom.q, true);
                 shopSay('封面放好啦');
             } catch (err) { shopSay('这张图没读进来，换一张试试'); }
             shopMakeBusy.value = false;
@@ -9172,15 +9414,16 @@ createApp({
 
         // 【修复】自适应压缩：不再固定 480px/0.72（大图仍可能几百 KB），
         // 改为按"字节预算"逐级降尺寸+降质量，直到压进上限为止，保证每张封面占用可控。
-        const compressVinylCover = (file, maxBytes = 45 * 1024) => {
+        const compressVinylCover = (file, maxBytes = 90 * 1024) => {
             return new Promise((resolve) => {
                 const img = new Image(); const url = URL.createObjectURL(file);
                 img.onload = () => {
                     URL.revokeObjectURL(url);
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
-                    // 封面实际显示约 152px（唱片直径 230px × 66%），按 3 倍屏算 400px 已足够清晰
-                    const steps = [ { size: 400, q: 0.72 }, { size: 340, q: 0.68 }, { size: 280, q: 0.64 }, { size: 220, q: 0.58 }, { size: 170, q: 0.52 }, { size: 130, q: 0.45 } ];
+                    // 封面实际显示约 152px（唱片直径 230px × 66%），3 倍屏下 512px 更锐利；
+                    // 预算放宽到 90KB，仍按「体积不够再降一档」逐级兜底
+                    const steps = [ { size: IMG.cover.max, q: IMG.cover.q }, { size: 420, q: 0.82 }, { size: 340, q: 0.76 }, { size: 260, q: 0.68 }, { size: 200, q: 0.60 }, { size: 150, q: 0.50 } ];
                     let best = '', bestLen = Infinity;
                     for (const s of steps) {
                         let { width, height } = img;
@@ -9341,6 +9584,21 @@ createApp({
             list.forEach(x => { if (x && !seen.has(x)) { seen.add(x); out.push(x); } });
             return { display: d || c || p || '我的位置', full: out.join(' · '), district: d, city: c, province: p };
         };
+        // 显示层再兜一次：旧存档 / 反查可能写回「江西 · 上饶市 · 吉安」这类错链路。
+        // 仅当主标题是裸名（不带行政后缀）时，丢掉与它词干不配套的中间市级段；
+        // 「北京市 · 朝阳区」「江西 · 吉安市 · 吉安县」这种合法链路原样保留。
+        const iwCleanFull = (full, cityName) => {
+            const s = String(full || '').trim();
+            if (!s || /[A-Za-z]{3,}/.test(s)) return '';
+            const name = String(cityName || '').trim();
+            if (!name || /(自治区|自治州|自治县|省|市|地区|盟|县|区|旗)$/.test(name)) return s;
+            const ns = stemOf(name);
+            return s.split(/\s*·\s*/).filter(Boolean).filter(p => {
+                if (!/(市|自治州|地区|盟)$/.test(p)) return true;
+                const ps = stemOf(p);
+                return !ps || !ns || ps === ns || ps.includes(ns) || ns.includes(ps);
+            }).join(' · ');
+        };
         const virtualWeather = reactive({ cityName: '', temp: 0, desc: '', humidity: 0, wind: 0, updateTime: '', icon: 'cloud', hourly: [], daily: [], _salt: 0, _lastGenTime: 0 });
         const virtualCities = ref([]);
         const searchQueryMy = ref(''); const searchResultsMy = ref([]); const searchDoneMy = ref(false);
@@ -9425,9 +9683,9 @@ createApp({
             const m = myWeather;
             const ih = m.icon || (/雨/.test(m.desc) ? 'cloud-rain' : /雪/.test(m.desc) ? 'cloud-snow' :
                 /雾/.test(m.desc) ? 'cloud-fog' : /晴/.test(m.desc) ? 'sun' : /云|阴/.test(m.desc) ? 'cloud' : 'cloud');
-            const full = myGeo.full || '';
-            // 链路和主标题完全一样就别重复写一遍；含海外罗马字的脏链路直接不显示
-            const sub = (full && full !== m.cityName && !/[A-Za-z]{3,}/.test(full)) ? full : '';
+            // 链路和主标题完全一样就别重复写一遍；脏链路（海外罗马字 / 错挂上级市）一并清掉
+            const full = iwCleanFull(myGeo.full || '', m.cityName);
+            const sub = (full && full !== m.cityName) ? full : '';
             return { side:'my', has: !!m.cityName, city: m.cityName || '我的天空',
                 sub, tag: myGeo.source === 'custom' ? '真实 · 自定义' : '真实 · 实时',
                 temp: m.temp, tempInt: m.temp === null ? null : Math.round(Number(m.temp) || 0),
@@ -9464,25 +9722,61 @@ createApp({
             myRecentCities.value = [c].concat(myRecentCities.value.filter(x => x.name !== c.name)).slice(0, 8);
             try { localStorage.setItem('liubai_weather_recent_my', JSON.stringify(myRecentCities.value)); } catch (e) {}
         };
+        // ===== 天气快照：每次取数成功留一份，断网/刷新时主温度不会空着 =====
+        // 之前切城市只清了 temp，湿度/风速/体感/描述还挂着上一座城市的旧值，
+        // 请求一失败就成了「大温度 --、四宫格却有数」的割裂状态。这里整组一起清、整组一起回填。
+        const WEATHER_SNAP_KEY = 'liubai_weather_snapshot_v1';
+        const WX_FIELDS = ['temp','feelsLike','humidity','wind','desc','icon','hourly','forecast','updateTime'];
+        const iwClearWeather = () => {
+            WX_FIELDS.forEach(k => { myWeather[k] = (k === 'hourly' || k === 'forecast') ? [] : null; });
+            myWeather.desc = ''; myWeather.icon = 'cloud'; myWeather.error = '';
+        };
+        const iwReadSnaps = () => {
+            try { const v = JSON.parse(localStorage.getItem(WEATHER_SNAP_KEY) || '{}'); return (v && typeof v === 'object') ? v : {}; } catch (e) { return {}; }
+        };
+        const iwSaveSnapshot = () => {
+            if (myWeather.temp === null || myWeather.temp === undefined || !myWeather.cityName) return;
+            try {
+                const all = iwReadSnaps(), w = {};
+                WX_FIELDS.forEach(k => { w[k] = myWeather[k]; });
+                all[myWeather.cityName] = { at: Date.now(), w };
+                // 只留最近 12 座城市，别把 localStorage 撑大
+                const keys = Object.keys(all).sort((a,b) => (all[b].at||0) - (all[a].at||0)).slice(0, 12);
+                const keep = {}; keys.forEach(k => { keep[k] = all[k]; });
+                localStorage.setItem(WEATHER_SNAP_KEY, JSON.stringify(keep));
+            } catch (e) {}
+        };
+        const iwRestoreSnapshot = (cityName, quiet) => {
+            if (!cityName) return false;
+            const s = iwReadSnaps()[cityName];
+            if (!s || !s.w || s.w.temp === null || s.w.temp === undefined) return false;
+            WX_FIELDS.forEach(k => { if (s.w[k] !== undefined) myWeather[k] = s.w[k]; });
+            if (!quiet) myWeather.updateTime = (s.w.updateTime || '之前') + ' · 暂时没连上，先看着上次的';
+            myWeather.error = '';
+            return true;
+        };
+
         // 选中任何地方都走这里：城市名、行政链路、坐标、以及下面所有天气数据一次性整体替换，
         // 不再出现「上面写着 A、底下却挂着 B 的链路 / 上一座城市的预报」。
         const iwApplyMyPlace = (c) => {
             if (!c || !c.name) return;
             const label = c.name;
+            iwClearWeather();                              // 整组清空，不留上一座城市的残留
             myWeather.cityName = label;                     // 上面：主标题
-            myWeather.error = '';
-            myWeather.hourly = []; myWeather.forecast = []; // 下面：先清掉上一座城市的序列
-            myWeather.temp = null; myWeather.icon = 'cloud';
             if (c.latitude && c.longitude) {
                 myCoords.value = { lat: c.latitude, lon: c.longitude };
                 const g = normGeoParts(c.province || '', c.city || '', c.district || label);
                 Object.assign(myGeo, { district:g.district, city:g.city, province:g.province,
                     full:c.full || g.full || label, source:'search' });    // 副标题跟主标题同源
+                const had = iwRestoreSnapshot(label, true); // 有旧快照先垫上，主温度不空
+                if (had) myWeather.updateTime = '上次更新 · 正在取新的…';
                 fetchRealWeather(c.latitude, c.longitude, null);           // 名字已设好，别再被旧值覆盖
             } else {
                 myCoords.value = { lat:null, lon:null };
                 Object.assign(myGeo, { district:label, city:'', province:'', full:label, source:'custom' });
-                myWeather.desc = '还没取到天气'; myWeather.updateTime = '可点右上角定位取真实天气';
+                const had = iwRestoreSnapshot(label, true);
+                if (!had) { myWeather.desc = '还没取到天气'; myWeather.updateTime = '可点右上角定位取真实天气'; }
+                else myWeather.updateTime = '上次更新';
             }
             weatherManageOpen.value = false;                // 选完收起面板，立刻看到整页换掉
             weatherSide.value = 'my';
@@ -9516,6 +9810,8 @@ createApp({
                 try { const sd = localStorage.getItem('liubai_weather_side'); if (sd === 'them') weatherSide.value = 'them'; } catch (e) {}
                 if (saved.myCityName) {
                     myWeather.cityName = saved.myCityName;
+                    // 刷新后先把上次成功的完整天气填回来，主温度、四宫格一次到位，再后台取新的
+                    iwRestoreSnapshot(saved.myCityName, true);
                     // 老存档没有「最近城市」：把当前这个补进去，一进来就能随时切地区
                     if (!myRecentCities.value.length) iwRememberMy({
                         name: saved.myCityName, admin: (saved.myGeo || {}).full || '',
@@ -9544,8 +9840,9 @@ createApp({
                     if (!saved.myGeo || !saved.myGeo.full) {
                         reverseGeocodePrecise(myCoords.value.lat, myCoords.value.lon).then(g => {
                             if (!g || !g.full || /[A-Za-z]{3,}/.test(g.full)) return;
-                            // 只补链路，不擅自改主标题名字
-                            Object.assign(myGeo, { district: g.district || '', city: g.city || '', province: g.province || '', full: g.full, source: g.source || '' });
+                            // 只补链路，不擅自改主标题名字；顺手按行政层级规范化，别写回错挂的上级市
+                            const g2 = normGeoParts(g.province || '', g.city || '', g.district || myWeather.cityName || '');
+                            Object.assign(myGeo, { district: g2.district, city: g2.city, province: g2.province, full: g2.full, source: g.source || '' });
                         }).catch(() => {});
                     }
                 }
@@ -9648,7 +9945,23 @@ createApp({
             myWeather.loading = true; myWeather.error = ''; myCoords.value = { lat, lon };
             try {
                 const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&hourly=temperature_2m,weather_code&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto&forecast_days=7`;
-                const res = await fetch(url); const data = await res.json(); const cur = data.current; if (!cur) throw new Error('无数据');
+                // 单次请求带超时，失败再试一次：手机上很多「抽风」只是瞬时抖动
+                const once = async () => {
+                    const ctl = new AbortController();
+                    const timer = setTimeout(() => ctl.abort(), 9000);
+                    try {
+                        const res = await fetch(url, { signal: ctl.signal });
+                        if (!res.ok) throw new Error('HTTP ' + res.status);
+                        return await res.json();
+                    } finally { clearTimeout(timer); }
+                };
+                let data = null, lastErr = null;
+                for (let attempt = 0; attempt < 2 && !data; attempt++) {
+                    try { data = await once(); } catch (e) { lastErr = e; if (attempt === 0) await new Promise(r => setTimeout(r, 500)); }
+                }
+                if (!data) throw lastErr || new Error('获取失败');
+                const cur = data.current;
+                if (!cur || !isFinite(Number(cur.temperature_2m))) throw new Error('无温度数据');
                 // 只有明确给了名字才改；后台静默刷新传 null，绝不把用户刚选的城市覆盖回旧存档名
                 if (cityName) myWeather.cityName = cityName;
                 else if (!myWeather.cityName) myWeather.cityName = '我的位置';
@@ -9683,7 +9996,12 @@ createApp({
                 myWeather.forecast = fc;
                 const now = new Date(); myWeather.updateTime = `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')} 更新`;
                 myWeather.error = '';
-            } catch(e) { if (!isSilent) myWeather.error = (window.__isNetErr && window.__isNetErr(e)) ? '暂时没连上，稍后再看' : '获取失败，请检查网络'; } finally { myWeather.loading = false; }
+                iwSaveSnapshot();                          // 成功后留档，下次断网/刷新主温度照样在
+            } catch(e) {
+                // 取数失败：优先用这座城市上次成功的完整快照，而不是留下半截旧数据
+                const restored = iwRestoreSnapshot(myWeather.cityName);
+                if (!restored && !isSilent) myWeather.error = (window.__isNetErr && window.__isNetErr(e)) ? '暂时没连上，稍后再看' : '获取失败，请检查网络';
+            } finally { myWeather.loading = false; }
         };
 
         // ---------- 地名搜索：多源并行（Open-Meteo / Nominatim / Photon）+ 后缀变体，可搜到县区 ----------
@@ -9703,6 +10021,74 @@ createApp({
             '江苏','浙江','安徽','福建','江西','山东','河南','湖北','湖南','广东','海南',
             '四川','贵州','云南','陕西','甘肃','青海','台湾','内蒙古','广西','西藏','宁夏',
             '新疆','香港','澳门'];
+
+        // 内置离线城市库：网络三源全挂时也能搜到（最细到县区），坐标取市中心近似值
+        const CN_CITY_DB_RAW = [
+            '北京|北京|39.9|116.41',
+            '天津|天津|39.13|117.2',
+            '上海|上海|31.23|121.47',
+            '重庆|重庆|29.56|106.55',
+            '石家庄|河北|38.04|114.51', '唐山|河北|39.63|118.18', '秦皇岛|河北|39.94|119.6', '邯郸|河北|36.63|114.54', '邢台|河北|37.07|114.5', '保定|河北|38.87|115.46', '张家口|河北|40.77|114.88', '承德|河北|40.95|117.96', '沧州|河北|38.3|116.84', '廊坊|河北|39.54|116.68', '衡水|河北|37.74|115.67', '雄安|河北|38.99|115.85',
+            '太原|山西|37.87|112.55', '大同|山西|40.09|113.3', '阳泉|山西|37.86|113.58', '长治|山西|36.2|113.12', '晋城|山西|35.5|112.85', '朔州|山西|39.33|112.43', '晋中|山西|37.69|112.75', '运城|山西|35.03|111.0', '忻州|山西|38.42|112.73', '临汾|山西|36.09|111.52', '吕梁|山西|37.52|111.14',
+            '呼和浩特|内蒙古|40.84|111.75', '包头|内蒙古|40.66|109.84', '乌海|内蒙古|39.65|106.79', '赤峰|内蒙古|42.26|118.89', '通辽|内蒙古|43.65|122.24', '鄂尔多斯|内蒙古|39.61|109.78', '呼伦贝尔|内蒙古|49.21|119.77', '巴彦淖尔|内蒙古|40.75|107.39', '乌兰察布|内蒙古|41.02|113.13', '锡林郭勒|内蒙古|43.93|116.05', '兴安盟|内蒙古|46.08|122.05', '阿拉善盟|内蒙古|38.85|105.73',
+            '沈阳|辽宁|41.8|123.43', '大连|辽宁|38.91|121.61', '鞍山|辽宁|41.11|122.99', '抚顺|辽宁|41.88|123.96', '本溪|辽宁|41.29|123.77', '丹东|辽宁|40.13|124.39', '锦州|辽宁|41.1|121.13', '营口|辽宁|40.67|122.24', '阜新|辽宁|42.02|121.67', '辽阳|辽宁|41.27|123.17', '盘锦|辽宁|41.12|122.07', '铁岭|辽宁|42.22|123.73', '朝阳|辽宁|41.57|120.45', '葫芦岛|辽宁|40.71|120.84',
+            '长春|吉林|43.82|125.32', '吉林|吉林|43.84|126.55', '四平|吉林|43.17|124.35', '辽源|吉林|42.9|125.14', '通化|吉林|41.73|125.94', '白山|吉林|41.94|126.43', '松原|吉林|45.14|124.82', '白城|吉林|45.62|122.49', '延边|吉林|42.9|129.51',
+            '哈尔滨|黑龙江|45.8|126.53', '齐齐哈尔|黑龙江|47.35|123.92', '鸡西|黑龙江|45.3|130.97', '鹤岗|黑龙江|47.33|130.28', '双鸭山|黑龙江|46.64|131.16', '大庆|黑龙江|46.59|125.0', '伊春|黑龙江|47.73|128.9', '佳木斯|黑龙江|46.8|130.36', '七台河|黑龙江|45.77|131.0', '牡丹江|黑龙江|44.58|129.6', '黑河|黑龙江|50.25|127.53', '绥化|黑龙江|46.64|126.98', '大兴安岭|黑龙江|52.34|124.7',
+            '南京|江苏|32.06|118.8', '无锡|江苏|31.49|120.31', '徐州|江苏|34.26|117.19', '常州|江苏|31.81|119.97', '苏州|江苏|31.3|120.58', '南通|江苏|31.98|120.89', '连云港|江苏|34.6|119.22', '淮安|江苏|33.61|119.02', '盐城|江苏|33.35|120.16', '扬州|江苏|32.39|119.42', '镇江|江苏|32.19|119.42', '泰州|江苏|32.46|119.92', '宿迁|江苏|33.96|118.28', '昆山|江苏|31.39|120.98', '江阴|江苏|31.92|120.28',
+            '杭州|浙江|30.27|120.15', '宁波|浙江|29.87|121.55', '温州|浙江|27.99|120.7', '嘉兴|浙江|30.75|120.76', '湖州|浙江|30.89|120.09', '绍兴|浙江|30.0|120.58', '金华|浙江|29.08|119.65', '衢州|浙江|28.94|118.87', '舟山|浙江|29.99|122.21', '台州|浙江|28.66|121.42', '丽水|浙江|28.47|119.92', '义乌|浙江|29.31|120.08',
+            '合肥|安徽|31.82|117.23', '芜湖|安徽|31.34|118.38', '蚌埠|安徽|32.92|117.39', '淮南|安徽|32.63|117.0', '马鞍山|安徽|31.67|118.51', '淮北|安徽|33.95|116.8', '铜陵|安徽|30.95|117.81', '安庆|安徽|30.53|117.05', '黄山|安徽|29.72|118.34', '滁州|安徽|32.3|118.32', '阜阳|安徽|32.89|115.81', '宿州|安徽|33.65|116.98', '六安|安徽|31.75|116.5', '亳州|安徽|33.85|115.78', '池州|安徽|30.66|117.49', '宣城|安徽|30.95|118.76',
+            '福州|福建|26.07|119.3', '厦门|福建|24.48|118.09', '莆田|福建|25.43|119.01', '三明|福建|26.27|117.64', '泉州|福建|24.87|118.68', '漳州|福建|24.51|117.65', '南平|福建|26.64|118.18', '龙岩|福建|25.1|117.03', '宁德|福建|26.66|119.55', '平潭|福建|25.5|119.79',
+            '南昌|江西|28.68|115.86', '景德镇|江西|29.27|117.18', '萍乡|江西|27.62|113.85', '九江|江西|29.71|116.0', '新余|江西|27.82|114.93', '鹰潭|江西|28.24|117.03', '赣州|江西|25.83|114.93', '吉安|江西|27.11|114.99', '宜春|江西|27.82|114.39', '抚州|江西|27.98|116.36', '上饶|江西|28.45|117.94', '吉安县|江西|27.05|114.9', '泰和|江西|26.79|114.91', '井冈山|江西|26.57|114.17',
+            '济南|山东|36.65|117.12', '青岛|山东|36.07|120.38', '淄博|山东|36.81|118.06', '枣庄|山东|34.86|117.32', '东营|山东|37.43|118.67', '烟台|山东|37.46|121.45', '潍坊|山东|36.71|119.16', '济宁|山东|35.41|116.59', '泰安|山东|36.2|117.09', '威海|山东|37.51|122.12', '日照|山东|35.42|119.53', '临沂|山东|35.1|118.36', '德州|山东|37.44|116.36', '聊城|山东|36.46|115.98', '滨州|山东|37.38|117.97', '菏泽|山东|35.24|115.48',
+            '郑州|河南|34.75|113.63', '开封|河南|34.8|114.31', '洛阳|河南|34.62|112.45', '平顶山|河南|33.77|113.19', '安阳|河南|36.1|114.39', '鹤壁|河南|35.75|114.3', '新乡|河南|35.3|113.93', '焦作|河南|35.22|113.24', '濮阳|河南|35.76|115.03', '许昌|河南|34.03|113.85', '漯河|河南|33.58|114.02', '三门峡|河南|34.78|111.19', '南阳|河南|32.99|112.53', '商丘|河南|34.41|115.65', '信阳|河南|32.15|114.09', '周口|河南|33.62|114.65', '驻马店|河南|32.98|114.02', '济源|河南|35.09|112.6',
+            '武汉|湖北|30.59|114.31', '黄石|湖北|30.2|115.04', '十堰|湖北|32.63|110.8', '宜昌|湖北|30.69|111.29', '襄阳|湖北|32.01|112.12', '鄂州|湖北|30.39|114.89', '荆门|湖北|31.04|112.2', '孝感|湖北|30.93|113.92', '荆州|湖北|30.33|112.24', '黄冈|湖北|30.45|114.87', '咸宁|湖北|29.84|114.32', '随州|湖北|31.69|113.38', '恩施|湖北|30.27|109.49',
+            '长沙|湖南|28.23|112.94', '株洲|湖南|27.83|113.15', '湘潭|湖南|27.83|112.94', '衡阳|湖南|26.89|112.57', '邵阳|湖南|27.24|111.47', '岳阳|湖南|29.36|113.13', '常德|湖南|29.05|111.7', '张家界|湖南|29.13|110.48', '益阳|湖南|28.55|112.36', '郴州|湖南|25.77|113.01', '永州|湖南|26.42|111.61', '怀化|湖南|27.55|109.98', '娄底|湖南|27.7|112.0', '湘西|湖南|28.31|109.74',
+            '广州|广东|23.13|113.26', '韶关|广东|24.81|113.6', '深圳|广东|22.54|114.06', '珠海|广东|22.27|113.58', '汕头|广东|23.35|116.68', '佛山|广东|23.02|113.12', '江门|广东|22.58|113.09', '湛江|广东|21.27|110.36', '茂名|广东|21.66|110.92', '肇庆|广东|23.05|112.47', '惠州|广东|23.11|114.42', '梅州|广东|24.29|116.12', '汕尾|广东|22.79|115.38', '河源|广东|23.74|114.7', '阳江|广东|21.86|111.98', '清远|广东|23.68|113.06', '东莞|广东|23.02|113.75', '中山|广东|22.52|113.38', '潮州|广东|23.66|116.62', '揭阳|广东|23.55|116.37', '云浮|广东|22.93|112.04',
+            '南宁|广西|22.82|108.32', '柳州|广西|24.31|109.42', '桂林|广西|25.27|110.3', '梧州|广西|23.48|111.28', '北海|广西|21.48|109.12', '防城港|广西|21.61|108.35', '钦州|广西|21.98|108.62', '贵港|广西|23.11|109.6', '玉林|广西|22.63|110.17', '百色|广西|23.9|106.62', '贺州|广西|24.4|111.55', '河池|广西|24.69|108.09', '来宾|广西|23.75|109.23', '崇左|广西|22.38|107.36',
+            '海口|海南|20.04|110.32', '三亚|海南|18.25|109.51', '三沙|海南|16.83|112.34', '儋州|海南|19.52|109.58', '五指山|海南|18.78|109.52', '琼海|海南|19.25|110.47', '文昌|海南|19.61|110.8', '万宁|海南|18.8|110.4', '东方|海南|19.1|108.65', '陵水|海南|18.5|110.04',
+            '成都|四川|30.57|104.07', '自贡|四川|29.34|104.78', '攀枝花|四川|26.58|101.72', '泸州|四川|28.87|105.44', '德阳|四川|31.13|104.4', '绵阳|四川|31.47|104.68', '广元|四川|32.44|105.84', '遂宁|四川|30.53|105.59', '内江|四川|29.58|105.06', '乐山|四川|29.55|103.76', '南充|四川|30.84|106.11', '眉山|四川|30.08|103.85', '宜宾|四川|28.77|104.62', '广安|四川|30.47|106.63', '达州|四川|31.21|107.47', '雅安|四川|29.98|103.0', '巴中|四川|31.87|106.75', '资阳|四川|30.13|104.63', '阿坝|四川|31.9|102.22', '甘孜|四川|30.05|101.96', '凉山|四川|27.89|102.26',
+            '贵阳|贵州|26.65|106.63', '六盘水|贵州|26.59|104.83', '遵义|贵州|27.73|106.93', '安顺|贵州|26.25|105.95', '毕节|贵州|27.28|105.29', '铜仁|贵州|27.72|109.19', '黔西南|贵州|25.09|104.9', '黔东南|贵州|26.58|107.98', '黔南|贵州|26.26|107.52',
+            '昆明|云南|25.04|102.71', '曲靖|云南|25.49|103.8', '玉溪|云南|24.35|102.55', '保山|云南|25.11|99.17', '昭通|云南|27.34|103.72', '丽江|云南|26.87|100.23', '普洱|云南|22.78|100.97', '临沧|云南|23.88|100.09', '楚雄|云南|25.04|101.53', '红河|云南|23.36|103.37', '文山|云南|23.37|104.24', '西双版纳|云南|22.0|100.8', '大理|云南|25.61|100.27', '德宏|云南|24.43|98.58', '怒江|云南|25.82|98.85', '迪庆|云南|27.83|99.71',
+            '拉萨|西藏|29.65|91.13', '日喀则|西藏|29.27|88.88', '昌都|西藏|31.14|97.18', '林芝|西藏|29.65|94.36', '山南|西藏|29.24|91.77', '那曲|西藏|31.48|92.06', '阿里|西藏|32.5|80.1',
+            '西安|陕西|34.26|108.94', '铜川|陕西|34.9|108.98', '宝鸡|陕西|34.36|107.14', '咸阳|陕西|34.33|108.71', '渭南|陕西|34.5|109.51', '延安|陕西|36.59|109.49', '汉中|陕西|33.07|107.02', '榆林|陕西|38.29|109.73', '安康|陕西|32.69|109.03', '商洛|陕西|33.87|109.94',
+            '兰州|甘肃|36.06|103.83', '嘉峪关|甘肃|39.77|98.29', '金昌|甘肃|38.52|102.19', '白银|甘肃|36.54|104.14', '天水|甘肃|34.58|105.72', '武威|甘肃|37.93|102.64', '张掖|甘肃|38.93|100.45', '平凉|甘肃|35.54|106.67', '酒泉|甘肃|39.73|98.51', '庆阳|甘肃|35.71|107.64', '定西|甘肃|35.58|104.59', '陇南|甘肃|33.39|104.93', '临夏|甘肃|35.6|103.21', '甘南|甘肃|34.98|102.91',
+            '西宁|青海|36.62|101.78', '海东|青海|36.5|102.11', '海北|青海|36.95|100.9', '黄南|青海|35.52|102.02', '海南州|青海|36.28|100.62', '果洛|青海|34.47|100.25', '玉树|青海|33.0|97.01', '海西|青海|37.29|97.37',
+            '银川|宁夏|38.49|106.23', '石嘴山|宁夏|39.02|106.38', '吴忠|宁夏|37.99|106.21', '固原|宁夏|35.79|106.24', '中卫|宁夏|37.51|105.19',
+            '乌鲁木齐|新疆|43.83|87.62', '克拉玛依|新疆|45.6|84.87', '吐鲁番|新疆|42.95|89.19', '哈密|新疆|42.83|93.51', '昌吉|新疆|44.01|87.31', '博尔塔拉|新疆|44.9|82.08', '巴音郭楞|新疆|41.76|86.15', '阿克苏|新疆|41.17|80.26', '克孜勒苏|新疆|39.71|76.17', '喀什|新疆|39.47|75.99', '和田|新疆|37.11|79.92', '伊犁|新疆|43.92|81.32', '塔城|新疆|46.75|82.99', '阿勒泰|新疆|47.85|88.14',
+            '香港|香港|22.32|114.17',
+            '澳门|澳门|22.2|113.54',
+            '台北|台湾|25.03|121.57', '高雄|台湾|22.63|120.3', '台中|台湾|24.15|120.68', '台南|台湾|23.0|120.22', '新北|台湾|25.01|121.46', '桃园|台湾|24.99|121.31'
+        ];
+        // 本地匹配：把「广西南宁」「吉安县」「海南三亚」这类连写拆开，按名字/词干找内置库
+        const CN_CITIES = CN_CITY_DB_RAW.map(r => {
+            const [name, province, lat, lon] = r.split('|');
+            const lv = ADMIN_LEVEL_OF(name);
+            return { name, province, lat: Number(lat), lon: Number(lon),
+                lv, level: lv === 3 ? 3 : 2,
+                admin: shortProvince(province) + ' · ' + name, country: '中国', from: 'local' };
+        });
+        const localCities = (q) => {
+            const k = stemOf(String(q || '').trim().replace(/[\s,，、\/|]+/g, '')) || String(q || '').trim();
+            if (!k) return [];
+            // 连写「广西南宁」：先剥掉开头的省名，再拿剩下的词去匹配
+            let rest = k;
+            for (const p of CN_PROVINCES) {
+                if (k.startsWith(p) && k.length > p.length) { rest = k.slice(p.length); break; }
+            }
+            const keys = [k, rest, stemOf(rest)].filter((v,i,a)=>v && a.indexOf(v)===i);
+            const hits = CN_CITIES.filter(c => keys.some(key =>
+                c.name === key || stemOf(c.name) === key || (key.length >= 2 && (c.name.includes(key) || key.includes(stemOf(c.name))))
+            ));
+            // 精确/词干命中的排前面，且同名「市」优先于「县」
+            hits.sort((a,b)=>{
+                const ea = (a.name===k||stemOf(a.name)===k)?0:1, eb=(b.name===k||stemOf(b.name)===k)?0:1;
+                if(ea!==eb) return ea-eb;
+                return (a.level===2?0:1)-(b.level===2?0:1);
+            });
+            return hits.slice(0, 8).map(c => ({ name:c.name, district: c.level===3?c.name:'', city:'',
+                province:c.province, level:c.level, admin:c.admin, country:'中国',
+                latitude:c.lat, longitude:c.lon, from:'local' }));
+        };
         const isProvinceWord = (s) => CN_PROVINCES.some(p =>
             s === p || s === p + '省' || s === p + '市' ||
             (p.length <= 3 && (s === p + '自治区' || s === p + '壮族自治区' || s === p + '回族自治区' || s === p + '维吾尔自治区')));
@@ -9797,8 +10183,28 @@ createApp({
             return 0;
         };
         const LEVEL_LABEL = { 1: '省', 2: '市', 3: '县区', 4: '乡镇村' };
+        // 搜过的城市留一份本地缓存，断网时照样能点选
+        const PLACE_CACHE_KEY = 'liubai_place_cache_v1';
+        const loadPlaceCache = () => {
+            try { const v = JSON.parse(localStorage.getItem(PLACE_CACHE_KEY) || '[]'); return Array.isArray(v) ? v : []; } catch (e) { return []; }
+        };
+        const savePlaceCache = (arr) => {
+            try {
+                const old = loadPlaceCache();
+                const m = new Map();
+                old.concat(arr).forEach(x => { if (x && x.name && typeof x.latitude === 'number') m.set(x.name + '|' + x.province, x); });
+                localStorage.setItem(PLACE_CACHE_KEY, JSON.stringify([...m.values()].slice(-120)));
+            } catch (e) {}
+        };
+        const cachedPlaces = (q) => {
+            const k = stemOf(String(q || '').trim()) || String(q || '').trim();
+            if (!k) return [];
+            return loadPlaceCache().filter(c => c.name && (c.name.includes(k) || k.includes(stemOf(c.name))))
+                .slice(0, 6).map(c => ({ ...c, from: 'cache' }));
+        };
         const searchPlaces = async (q) => {
-            const out = [];
+            // 本地库 + 历史缓存先垫上：三个境外源全超时也不会一个都搜不到
+            const out = localCities(q).concat(cachedPlaces(q));
             const isCJK = /[\u4e00-\u9fa5]/.test(q);
             const cc = isCJK ? '&countrycodes=cn' : '';
             // 中文地名一律只收中国结果。之前「海南市」会撞上日本和歌山县 Kainan Shi，
@@ -9861,7 +10267,9 @@ createApp({
                         out.push({ name, district, city, province: p.state || '', level: (district ? 3 : 2), admin: joinAdmin(p.state || '', city, name), country: p.country || '', latitude: latF, longitude: lonF, from: 'ph' });
                     })).catch(() => {})
             ));
-            await Promise.all(tasks);
+            // 最多等 3 秒：境外源慢/被墙时，先拿本地库已有的结果返回，不让用户干等一排空
+            await Promise.race([Promise.all(tasks), new Promise(r => setTimeout(r, 3000))]);
+            const raw = out.slice();
             // 【修复】裸地名挂在异名市下，多半是同名村/镇被误当成了行政区。
             // 例：搜「吉安」有源返回「上饶市 · 吉安」，其实要的是吉安市 / 吉安县。
             // 候选里若有「同词干 + 带行政后缀」的正规结果，直接丢掉可疑项；
@@ -9872,12 +10280,12 @@ createApp({
                     && ADMIN_LEVEL_OF(x.name) === 0;
             };
             const clean = [];
-            out.forEach(x => {
+            raw.forEach(x => {
                 if (!x.name) return;
                 if (x.level === 4) return;                    // 乡镇村一律不进结果，最细只到县区
                 if (isLooseTown(x)) {
                     const st = stemOf(x.name);
-                    const hasProper = out.some(y => y !== x && y.name && stemOf(y.name) === st && ADMIN_LEVEL_OF(y.name) > 0);
+                    const hasProper = raw.some(y => y !== x && y.name && stemOf(y.name) === st && ADMIN_LEVEL_OF(y.name) > 0);
                     if (hasProper) return;                    // 有正规结果，这条不要
                     x.city = ''; x.level = 2;                 // 没有就只留「省 · 名」
                     x.admin = joinAdmin(x.province, '', x.name);
@@ -9970,6 +10378,31 @@ createApp({
                     });
                 } catch (e) {}
             }
+            // 网络全挂、本地库也没精确命中：再宽松找一次同省/同词干的城市
+            if (!top.length) {
+                const fbQ = stemOf(pq.district || pq.city || pq.province || q) || String(q || '').trim();
+                const loose = CN_CITIES.filter(c => fbQ && (stemOf(c.name).includes(fbQ) || fbQ.includes(stemOf(c.name)) || c.province.includes(fbQ)))
+                    .slice(0, 5);
+                loose.forEach(c => top.push({ name:c.name, district:c.level===3?c.name:'', city:'', province:c.province,
+                    level:c.level, levelText:LEVEL_LABEL[c.level], admin:c.admin, country:'中国',
+                    latitude:c.lat, longitude:c.lon, from:'local-loose' }));
+            }
+            // 最后保底：实在找不到也给出一个可点的自定义项，绝不再回一句「没找到」
+            if (!top.length) {
+                const nm = String(q || '').trim().replace(/[\s,，、\/|]+/g, '');
+                if (nm) {
+                    const prov = CN_PROVINCES.find(p => nm.startsWith(p)) || '';
+                    const near = CN_CITIES.find(c => c.province === prov);
+                    top.push({ name: nm, district: '', city: '', province: prov, level: 2,
+                        levelText: '自定义', admin: shortProvince(prov) || '自定义城市', country: '中国',
+                        latitude: near ? near.lat : null, longitude: near ? near.lon : null, from: 'local-custom' });
+                }
+            }
+            // 成功结果留档：下次断网也能搜到
+            const cacheable = top.filter(x => x && typeof x.latitude === 'number' && typeof x.longitude === 'number')
+                .map(x => ({ name:x.name, district:x.district, city:x.city, province:x.province,
+                    level:x.level, admin:x.admin, country:x.country, latitude:x.latitude, longitude:x.longitude }));
+            if (cacheable.length) savePlaceCache(cacheable);
             return top;
         };
 
@@ -10390,7 +10823,7 @@ createApp({
             if (el) { const prev = el.style.scrollBehavior; el.style.scrollBehavior = 'auto'; el.scrollTop = el.scrollHeight; el.style.scrollBehavior = prev; }
         });
         const cpPersistMsgs = () => {
-            localforage.setItem('liubai_companion_msgs', JSON.parse(JSON.stringify({ scene: cpScene.value, msgs: cpMessages.value.slice(-200) }))).catch(() => {});
+            localforage.setItem('liubai_companion_msgs', JSON.parse(JSON.stringify({ scene: cpScene.value, msgs: cpMessages.value.slice(-CAP.companionMsgs) }))).catch(() => {});
         };
         const cpPersistRecent = () => {
             localforage.setItem('liubai_companion_recent', JSON.parse(JSON.stringify(cpRecent.value.slice(0, 12)))).catch(() => {});
@@ -11287,7 +11720,7 @@ createApp({
         const SLP_CHAT_KEY = 'liubai_sleep_chat';
         const SLP_HIST_KEY = 'liubai_sleep_history';
         const slpSaveChat = async () => {
-            try { await localforage.setItem(SLP_CHAT_KEY, JSON.parse(JSON.stringify(slpChatMsgs.value.slice(-200)))); } catch (e) {}
+            try { await localforage.setItem(SLP_CHAT_KEY, JSON.parse(JSON.stringify(slpChatMsgs.value.slice(-CAP.sleepChat)))); } catch (e) {}
         };
         const slpClearCurrentChat = async () => {
             slpChatMsgs.value = [];
@@ -11295,7 +11728,7 @@ createApp({
         };
         // 归档这一觉：聊天跟睡醒卡片绑在一起存进历史，然后把当前聊天清空。
         const slpArchiveChat = async (summary) => {
-            const msgs = JSON.parse(JSON.stringify(slpChatMsgs.value.slice(-200)));
+            const msgs = JSON.parse(JSON.stringify(slpChatMsgs.value.slice(-CAP.sleepChat)));
             if (msgs.length) {
                 // 冷启动后立刻结束也安全：先把本机已有的历史并进来，别覆盖掉
                 if (!slpHistory.value.length) {
@@ -11312,7 +11745,7 @@ createApp({
                     quality: summary.quality ? { label: summary.quality.label } : null,
                     msgs
                 };
-                slpHistory.value = [item, ...slpHistory.value.filter(x => x && x.id !== item.id)].slice(0, 50);
+                slpHistory.value = [item, ...slpHistory.value.filter(x => x && x.id !== item.id)].slice(0, CAP.sleepHistory);
                 try { await localforage.setItem(SLP_HIST_KEY, JSON.parse(JSON.stringify(slpHistory.value))); } catch (e) {}
             }
             await slpClearCurrentChat();
@@ -11332,9 +11765,9 @@ createApp({
                 const legacy = {
                     id: 'slp_legacy_' + Date.now(), startAt: Date.now() - 3600000, endAt: Date.now(),
                     dateText: '以前的一觉', timeRange: '以前的聊天', durText: '旧记录', no: '☾',
-                    quality: null, msgs: v.slice(-200)
+                    quality: null, msgs: v.slice(-CAP.sleepChat)
                 };
-                slpHistory.value = [legacy, ...slpHistory.value].slice(0, 50);
+                slpHistory.value = [legacy, ...slpHistory.value].slice(0, CAP.sleepHistory);
                 await localforage.setItem(SLP_HIST_KEY, JSON.parse(JSON.stringify(slpHistory.value)));
             } catch (e) {}
             await slpClearCurrentChat();
@@ -11737,7 +12170,7 @@ createApp({
                 replyMinCount: replyMinCount.value,
                 replyMaxCount: replyMaxCount.value
             }).catch(() => {});
-            localforage.setItem('liubai_watch_messages', watchMessages.value.slice(-200)).catch(() => {});
+            localforage.setItem('liubai_watch_messages', watchMessages.value.slice(-CAP.watchMsgs)).catch(() => {});
             localforage.setItem('liubai_video_image_string', videoCall.myImage || '').catch(() => {});
             localforage.setItem('liubai_avatar_them', profiles.them.avatar || '').catch(() => {});
             localforage.setItem('liubai_avatar_me', profiles.me.avatar || '').catch(() => {});
@@ -12105,7 +12538,7 @@ createApp({
             return canvas.toDataURL('image/jpeg', quality);
         };
 
-        const compressImage = (file, maxSize = 1080, quality = 0.7, preferWebp = false) => {
+        const compressImage = (file, maxSize = IMG.photo.max, quality = IMG.photo.q, preferWebp = false) => {
             return new Promise(async (resolve) => {
                 let _o = 1;
                 try { _o = await readExifOrientation(file); } catch (e) { _o = 1; }
@@ -12184,7 +12617,7 @@ createApp({
             files.forEach(async (file) => {
                 // 表情包按 320px / 质量 0.82 存成 WebP：聊天气泡最大 140px，2~3 倍屏也够清晰；
                 // WebP 保留透明底，同画质下比 JPEG 更小，单张通常只有十几到几十 KB
-                const compressedBase64 = await compressImage(file, 320, 0.82, true);
+                const compressedBase64 = await compressImage(file, IMG.sticker.max, IMG.sticker.q, true);
                 if (stickers.value.includes(compressedBase64) || newStickers.includes(compressedBase64)) {
                     loadedCount++;
                     if (loadedCount === files.length) {
@@ -12397,6 +12830,30 @@ createApp({
                 lines.push(`字卡分组: ${replyGroups.value.length} 组，共 ${replyGroups.value.reduce((a,g)=>a+g.replies.length,0)} 条`);
                 lines.push(`表情包: ${stickers.value.length} 个`);
                 lines.push(`头像 me: ${profiles.me.avatar ? '有' : '无'}, them: ${profiles.them.avatar ? '有' : '无'}`);
+                lines.push('');
+                lines.push('--- 浏览器真实配额 ---');
+                try {
+                    const info = await readStorageInfo();
+                    if (info.supported) {
+                        lines.push(`已用: ${fmtBytes(info.usage)} / 配额: ${fmtBytes(info.quota)}`);
+                        lines.push(`占用: ${info.quota ? (info.usage / info.quota * 100).toFixed(2) + '%' : '—'}`);
+                    } else lines.push('当前浏览器不提供配额信息');
+                    lines.push(`持久化存储: ${info.persisted ? '✅ 已开启' : '未开启（可在「加大存储容量」里申请）'}`);
+                } catch (e) { lines.push('配额读取失败: ' + e.message); }
+                // 全量统计 IndexedDB，不再只列固定的那几个 key
+                try {
+                    const allKeys = await localforage.keys();
+                    let idbTotal = 0;
+                    for (const k of allKeys) {
+                        try {
+                            const v = await localforage.getItem(k);
+                            const txt = v ? (typeof v === 'string' ? v : JSON.stringify(v)) : '';
+                            idbTotal += txt ? new Blob([txt]).size : 0;
+                        } catch (e) {}
+                    }
+                    lines.push(`IndexedDB: ${allKeys.length} 项，约 ${fmtBytes(idbTotal)}`);
+                } catch (e) { lines.push('IndexedDB 统计失败: ' + e.message); }
+                lines.push(`记录上限: 问卷 ${CAP.qaBank} · 订单 ${CAP.shopOrders} · 自制 ${CAP.shopCustom} · 塔罗 ${CAP.tarot} · 睡前归档 ${CAP.sleepHistory}`);
                 lines.push('====================');
                 diagnoseResult.value = lines.join('\n');
                 try { await navigator.clipboard.writeText(lines.join('\n')); diagnoseResult.value = '✅ 已复制到剪贴板\n\n' + lines.join('\n'); } catch (e) {}
@@ -12434,7 +12891,7 @@ createApp({
                         removed++;
                     }
                 }
-                const lsKeep = new Set(['liubai_theme_dark','liubai_sync_profiles','liubai_sync_settings','liubai_sync_replyGroups','liubai_sync_emojiList','liubai_sync_letters','liubai_playlist_string','liubai_watch_string','liubai_waiting_letter','liubai_weather_data_v2','liubai_weather_side','liubai_weather_recent_my','liubai_card_cd']);
+                const lsKeep = new Set(['liubai_theme_dark','liubai_sync_profiles','liubai_sync_settings','liubai_sync_replyGroups','liubai_sync_emojiList','liubai_sync_letters','liubai_playlist_string','liubai_watch_string','liubai_waiting_letter','liubai_weather_data_v2','liubai_weather_side','liubai_weather_recent_my','liubai_weather_snapshot_v1','liubai_place_cache_v1','liubai_card_cd']);
                 for (let i = localStorage.length - 1; i >= 0; i--) {
                     const k = localStorage.key(i);
                     if (k && k.startsWith('liubai_') && !lsKeep.has(k)) {
@@ -12456,27 +12913,27 @@ createApp({
 
         const compressAllImages = async () => {
             if (compressRunning.value) return;
-            if (!confirm('将把本站在本地存过的所有图片重新压缩一遍（头像、壁纸、表情包、磁带封面、聊天图片等）。\n\n图片不会丢失；表情包改用更清晰的 WebP、保留透明底，小图跳过以免越压越糊。\n\n确定继续吗？')) return;
+            if (!confirm('将把本站在本地存过的所有图片按更清晰的档位整理一遍（头像、壁纸、表情包、磁带封面、聊天图片等）。\n\n图片不会丢失；表情包用清晰 WebP、保留透明底，小图跳过以免越压越糊。已经压糊的旧图不会自动变清晰，重新导入原图即可。\n\n确定继续吗？')) return;
             compressRunning.value = true;
             diagnoseResult.value = '正在扫描本地图片…';
 
             // 每一项：名字 / 读值 / 写值 / 最大边 / 质量 / 体积阈值(字节)
             const jobs = [
-                { name: '我的头像',   get: () => profiles.me.avatar,      set: v => profiles.me.avatar = v,      max: 400,  q: 0.72, min: 12000 },
-                { name: 'TA 的头像',  get: () => profiles.them.avatar,    set: v => profiles.them.avatar = v,    max: 400,  q: 0.72, min: 12000 },
-                { name: '全局壁纸',   get: () => globalWallpaper.value,   set: v => globalWallpaper.value = v,   max: 1080, q: 0.72, min: 80000 },
-                { name: '聊天壁纸',   get: () => chatWallpaper.value,     set: v => chatWallpaper.value = v,     max: 1080, q: 0.72, min: 80000 },
-                { name: '纪念日图',   get: () => anniversaryImg.value,    set: v => anniversaryImg.value = v,    max: 640,  q: 0.72, min: 40000 },
-                { name: '视频画面',   get: () => videoCall.myImage,       set: v => videoCall.myImage = v,       max: 480,  q: 0.66, min: 30000 }
+                { name: '我的头像',   get: () => profiles.me.avatar,      set: v => profiles.me.avatar = v,      max: IMG.avatar.max,    q: IMG.avatar.q,    min: 12000 },
+                { name: 'TA 的头像',  get: () => profiles.them.avatar,    set: v => profiles.them.avatar = v,    max: IMG.avatar.max,    q: IMG.avatar.q,    min: 12000 },
+                { name: '全局壁纸',   get: () => globalWallpaper.value,   set: v => globalWallpaper.value = v,   max: IMG.wallpaper.max, q: IMG.wallpaper.q, min: 80000 },
+                { name: '聊天壁纸',   get: () => chatWallpaper.value,     set: v => chatWallpaper.value = v,     max: IMG.wallpaper.max, q: IMG.wallpaper.q, min: 80000 },
+                { name: '纪念日图',   get: () => anniversaryImg.value,    set: v => anniversaryImg.value = v,    max: IMG.anniv.max,     q: IMG.anniv.q,     min: 40000 },
+                { name: '视频画面',   get: () => videoCall.myImage,       set: v => videoCall.myImage = v,       max: IMG.video.max,     q: IMG.video.q,     min: 30000 }
             ];
             const listJobs = [
-                { name: '表情包',     arr: () => stickers.value,          field: null,      max: 320,  q: 0.82, min: 20000, selfItem: true, webp: true },
-                { name: '磁带封面',   arr: () => syncPlaylist.value,      field: 'cover',   max: 400,  q: 0.70, min: 20000 },
-                { name: '聊天图片',   arr: () => messages.value,          field: 'url',     max: 800,  q: 0.70, min: 60000, onlyType: 'image' },
-                { name: '聊天表情',   arr: () => messages.value,          field: 'sticker', max: 320,  q: 0.82, min: 20000, onlyType: 'sticker', webp: true },
-                { name: '红包封面',   arr: () => messages.value,          field: 'cover',   max: 640,  q: 0.70, min: 30000 },
-                { name: '陪伴图片',   arr: () => cpMessages.value,        field: 'content', max: 800,  q: 0.70, min: 60000, onlyType: 'image' },
-                { name: '观影图片',   arr: () => watchMessages.value,     field: 'url',     max: 800,  q: 0.70, min: 60000, onlyType: 'image' }
+                { name: '表情包',     arr: () => stickers.value,          field: null,      max: IMG.sticker.max, q: IMG.sticker.q, min: 20000, selfItem: true, webp: true },
+                { name: '磁带封面',   arr: () => syncPlaylist.value,      field: 'cover',   max: IMG.cover.max,   q: IMG.cover.q,   min: 20000 },
+                { name: '聊天图片',   arr: () => messages.value,          field: 'url',     max: IMG.photo.max,   q: IMG.photo.q,   min: 60000, onlyType: 'image' },
+                { name: '聊天表情',   arr: () => messages.value,          field: 'sticker', max: IMG.sticker.max, q: IMG.sticker.q, min: 20000, onlyType: 'sticker', webp: true },
+                { name: '红包封面',   arr: () => messages.value,          field: 'cover',   max: IMG.redpack.max, q: IMG.redpack.q, min: 30000 },
+                { name: '陪伴图片',   arr: () => cpMessages.value,        field: 'content', max: IMG.photo.max,   q: IMG.photo.q,   min: 60000, onlyType: 'image' },
+                { name: '观影图片',   arr: () => watchMessages.value,     field: 'url',     max: IMG.photo.max,   q: IMG.photo.q,   min: 60000, onlyType: 'image' }
             ];
             // 首页图标是对象字典，单独处理
             const iconKeys = () => Object.keys(homeIcons || {});
@@ -12547,7 +13004,7 @@ createApp({
                     if (before < 12000) continue;
                     scanned++;
                     try {
-                        const neo = await recompressB64(old, 240, 0.72);
+                        const neo = await recompressB64(old, IMG.icon.max, IMG.icon.q);
                         const after = b64Bytes(neo);
                         if (neo && after < before * 0.95) { item.img = neo; bump('首页图标', before - after); totalSaved += before - after; totalCount++; }
                     } catch (e) {}
@@ -12562,7 +13019,7 @@ createApp({
                 await localforage.setItem('liubai_anniversary_img', anniversaryImg.value || '').catch(() => {});
                 await localforage.setItem('liubai_home_icons', JSON.parse(JSON.stringify(homeIcons))).catch(() => {});
                 await localforage.setItem('liubai_stickers_db', JSON.parse(JSON.stringify(stickers.value))).catch(() => {});
-                await localforage.setItem('liubai_companion_msgs', JSON.parse(JSON.stringify({ scene: cpScene.value, msgs: cpMessages.value.slice(-200) }))).catch(() => {});
+                await localforage.setItem('liubai_companion_msgs', JSON.parse(JSON.stringify({ scene: cpScene.value, msgs: cpMessages.value.slice(-CAP.companionMsgs) }))).catch(() => {});
 
                 // ⑤ 汇总报告
                 const head = totalCount > 0
@@ -12581,14 +13038,14 @@ createApp({
         };
 
         const compressStickersOnly = async () => {
-            if (!confirm('将把较大的表情包转成清晰的 WebP（保留透明底、体积更小），小图跳过以免越压越糊。以前被压糊的旧图无法自动变清晰，建议删掉后重新导入原图。确定继续吗？')) return;
+            if (!confirm('将把较大的表情包按更清晰的 WebP 档位整理（保留透明底），小图跳过以免越压越糊。以前被压糊的旧图无法自动变清晰，建议删掉后重新导入原图。确定继续吗？')) return;
             let count = 0, saved = 0;
             for (let i = 0; i < stickers.value.length; i++) {
                 const s = stickers.value[i];
                 // 小于 12KB 的多半是以前压过的小图，再压只会更糊，直接跳过
                 if (!s || !s.startsWith('data:image') || b64Bytes(s) <= 12000) continue;
                 try {
-                    const base64 = await recompressB64(s, 320, 0.82, true);
+                    const base64 = await recompressB64(s, IMG.sticker.max, IMG.sticker.q, true);
                     const before = b64Bytes(s), after = b64Bytes(base64);
                     // 收益不足 5% 就不替换，避免反复点击导致画质持续劣化
                     if (base64 && after < before * 0.95) {
@@ -12622,7 +13079,7 @@ createApp({
                 await localforage.setItem('liubai_journal_db', JSON.parse(JSON.stringify(jbDb.value)));
                 await localforage.setItem('liubai_journal_them_auto', jbThemAuto.value);
                 await localforage.setItem('liubai_journal_them_pending', JSON.parse(JSON.stringify(jbThemPending.value)));
-                await localforage.setItem('liubai_tarot_db', JSON.parse(JSON.stringify(trHistory.value.slice(0, 300))));
+                await localforage.setItem('liubai_tarot_db', JSON.parse(JSON.stringify(trHistory.value.slice(0, CAP.tarot))));
             } catch (e) {}
             // 下面这些是本机存的数据，重置时不重写，但也不能当废料删掉
             try {
@@ -12690,6 +13147,8 @@ createApp({
                     weatherData: localStorage.getItem('liubai_weather_data_v2'),
                     weatherSide: localStorage.getItem('liubai_weather_side'),
                     weatherRecentMy: localStorage.getItem('liubai_weather_recent_my'),
+                    weatherSnapshot: localStorage.getItem(WEATHER_SNAP_KEY),
+                    placeCache: localStorage.getItem(PLACE_CACHE_KEY),
                     qaBank: await localforage.getItem('liubai_qa_bank_db')
                 };
                 const blob = new Blob([JSON.stringify(dataToExport, null, 2)], { type: 'application/json' });
@@ -12730,17 +13189,19 @@ createApp({
                         if (Array.isArray(data.tarot)) await localforage.setItem('liubai_tarot_db', data.tarot);
                         if (Array.isArray(data.sleepRecipes)) await localforage.setItem('liubai_sleep_recipes', data.sleepRecipes);
                           if (Array.isArray(data.sleepChat)) await localforage.setItem('liubai_sleep_chat', data.sleepChat);
-                          if (Array.isArray(data.sleepHistory)) await localforage.setItem('liubai_sleep_history', data.sleepHistory.filter(x => x && Array.isArray(x.msgs)).slice(0, 50));
+                          if (Array.isArray(data.sleepHistory)) await localforage.setItem('liubai_sleep_history', data.sleepHistory.filter(x => x && Array.isArray(x.msgs)).slice(0, CAP.sleepHistory));
                           if (data.sleepVols && typeof data.sleepVols === 'object') await localforage.setItem('liubai_sleep_vols', data.sleepVols);
                           if (data.sleepSession && typeof data.sleepSession === 'object') await localforage.setItem('liubai_sleep_session', data.sleepSession);
                           if (data.sleepSummary && typeof data.sleepSummary === 'object') await localforage.setItem('liubai_sleep_summary', data.sleepSummary);
                           if (typeof data.shopWallet === 'number') await localforage.setItem('liubai_shop_wallet', data.shopWallet);
                           if (Array.isArray(data.shopCart)) await localforage.setItem('liubai_shop_cart', data.shopCart);
                           if (Array.isArray(data.shopOrders)) await localforage.setItem('liubai_shop_orders', data.shopOrders);
-                          if (Array.isArray(data.shopCustom)) await localforage.setItem('liubai_shop_custom_db', data.shopCustom.filter(x => x && typeof x.id === 'string' && String(x.name || '').trim()).slice(0, 120));
+                          if (Array.isArray(data.shopCustom)) await localforage.setItem('liubai_shop_custom_db', data.shopCustom.filter(x => x && typeof x.id === 'string' && String(x.name || '').trim()).slice(0, CAP.shopCustom));
                           if (typeof data.weatherData === 'string') localStorage.setItem('liubai_weather_data_v2', data.weatherData);
                           if (typeof data.weatherSide === 'string') localStorage.setItem('liubai_weather_side', data.weatherSide);
                           if (typeof data.weatherRecentMy === 'string') localStorage.setItem('liubai_weather_recent_my', data.weatherRecentMy);
+                          if (typeof data.weatherSnapshot === 'string') localStorage.setItem(WEATHER_SNAP_KEY, data.weatherSnapshot);
+                          if (typeof data.placeCache === 'string') localStorage.setItem(PLACE_CACHE_KEY, data.placeCache);
                           if (Array.isArray(data.qaBank)) await localforage.setItem('liubai_qa_bank_db', data.qaBank.filter(it => it && typeof it.q === 'string' && (Array.isArray(it.opts) || typeof it.a === 'string')));
                         alert('全量备份导入成功，正在重新加载页面...'); window.location.reload();
                     } else alert('未知的文件格式。');
@@ -12750,7 +13211,7 @@ createApp({
         };
 
         // ================= [MOD-11B] 视频通话：画面 / 悬浮窗拖拽 / 自动来电 =================
-        const onMyVideoImage = (e) => { const f = e.target.files && e.target.files[0]; e.target.value = ''; if (!f) return; compressImage(f, 480, 0.6).then(base64 => { videoCall.myImage = base64; saveAll(); }); };
+        const onMyVideoImage = (e) => { const f = e.target.files && e.target.files[0]; e.target.value = ''; if (!f) return; compressImage(f, IMG.video.max, IMG.video.q).then(base64 => { videoCall.myImage = base64; saveAll(); }); };
         const clearMyVideoImage = () => { if (!videoCall.myImage) return; if (!confirm('移除当前画面？')) return; videoCall.myImage = ''; saveAll(); };
         const startTimer = () => { stopTimer(); videoCall.timer = setInterval(() => { if (videoCall.status === 'connected') videoCall.duration = Math.floor((Date.now() - videoCall.startAt) / 1000); }, 500); };
         const stopTimer = () => { if (videoCall.timer) { clearInterval(videoCall.timer); videoCall.timer = null; } };
@@ -13043,7 +13504,7 @@ createApp({
             const input = document.createElement('input'); input.type = 'file'; input.accept = 'image/*';
             input.onchange = async (e) => {
                 const file = e.target.files[0]; if (!file) return;
-                const base64 = await compressImage(file, 1080, 0.7);
+                const base64 = await compressImage(file, IMG.anniv.max, IMG.anniv.q);
                 anniversaryImg.value = base64;
                 await localforage.setItem('liubai_anniversary_img', base64);
             };
@@ -13470,7 +13931,7 @@ createApp({
             const reader = new FileReader();
             reader.onload = async (ev) => {
                 let src = ev.target.result;
-                try { const c = await recompressB64(src, 640, 0.72); if (c) src = c; } catch (err) {}
+                try { const c = await recompressB64(src, IMG.journal.max, IMG.journal.q); if (c) src = c; } catch (err) {}
                 jbAdd({ kind: 'photo', src, size: 96, rot: Math.round(Math.random() * 10 - 5) });
                 jbSay('照片贴上了 · 按住可以拖走');
             };
@@ -14253,7 +14714,7 @@ createApp({
 
         // ---------- 存档 ----------
         const trPersist = async () => {
-            try { await localforage.setItem('liubai_tarot_db', JSON.parse(JSON.stringify(trHistory.value.slice(0, 300)))); } catch (e) {}
+            try { await localforage.setItem('liubai_tarot_db', JSON.parse(JSON.stringify(trHistory.value.slice(0, CAP.tarot)))); } catch (e) {}
         };
         const trSnapshot = () => ({
             id: genId(),
@@ -14269,7 +14730,7 @@ createApp({
             if (trSavedId.value) return;
             const rec = trSnapshot();
             trHistory.value.unshift(rec);
-            if (trHistory.value.length > 300) trHistory.value.length = 300;
+            if (trHistory.value.length > CAP.tarot) trHistory.value.length = CAP.tarot;
             trSavedId.value = rec.id;
             await trPersist();
         };
@@ -15414,7 +15875,7 @@ createApp({
             const file = e.target.files && e.target.files[0];
             e.target.value = '';
             if (!file) return;
-            compressImage(file, 900, 0.75).then(async (b64) => {
+            compressImage(file, IMG.photo.max, IMG.photo.q).then(async (b64) => {
                 if (n === 1) { hpImg1.value = b64; await localforage.setItem('liubai_hp_img1', b64); }
                 else if (n === 2) { hpImg2.value = b64; await localforage.setItem('liubai_hp_img2', b64); }
                 else if (n === 3) { hpImg3.value = b64; await localforage.setItem('liubai_hp_img3', b64); }
@@ -15538,7 +15999,7 @@ createApp({
             input.onchange = async (e) => {
                 const file = e.target.files[0]; if (!file) return;
                 // 头像显示已放大到 40px，源图提到 320px 并用 WebP，高倍屏下边缘更锐利
-                const base64 = await compressImage(file, 320, 0.82, true);
+                const base64 = await compressImage(file, IMG.sticker.max, IMG.sticker.q, true);
                 profiles[role].avatar = base64; saveAll();
             };
             input.click();
@@ -15661,6 +16122,7 @@ createApp({
             watchHistory, clearWatchHistory, playHistory,
             chatState, switchView, handleSend, forceReply, deleteMsg, editName, editAvatar, shouldShowAvatar, formatTime,
             toggleSearch, executeSearch, jumpSearch, toggleDarkMode, toggleSound, clearChat, exportData, importData, diagnoseStorage, cleanOrphanKeys,
+            storageInfo, boostStorage, requestPersist,
             statData, replyMinDelay, replyMaxDelay, replyMinCount, replyMaxCount,
             stickers, showMorePanel, showStickerPanel, showRedPacketModal, openedRP, newRP,
             addSticker, deleteSticker, sendSticker, openStickerPanel, setRPCover, sendRedPacket,
