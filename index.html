@@ -4187,6 +4187,7 @@ html.dark .hr-cell.bond .hr-cell-v, .dark .hr-cell.bond .hr-cell-v { color:var(-
 .jb-item-btn.danger { color:#d06060; border-color:rgba(208,96,96,.35); }
 /* 翻页 */
 .jb-pager { display:flex; align-items:center; justify-content:space-between; padding:6px 12px 9px; border-top:1px solid var(--color-border); background:var(--color-surface); flex-shrink:0; }
+.jb-pager-tip { padding:0 12px 5px; text-align:center; font-size:9px; letter-spacing:.06em; color:var(--jb-ink-soft); opacity:.7; flex-shrink:0; }
 .jb-pager-btn { display:flex; align-items:center; gap:4px; font-size:10px; color:var(--jb-ink-soft); letter-spacing:.1em; padding:5px 8px; border-radius:10px; border:1px solid var(--color-border); white-space:nowrap; }
 .jb-pager-btn:active { background:var(--jb-accent-soft); }
 .jb-pager-btn.dim { opacity:.35; }
@@ -5165,7 +5166,7 @@ html, body { overscroll-behavior-y: none; }
             <button @click="settings.emojiRate = Math.min(100, (settings.emojiRate == null ? 45 : settings.emojiRate) + 10)" class="w-7 h-7 rounded-full bg-bg flex items-center justify-center text-muted active:bg-border">+</button>
         </div>
     </div>
-    <span class="text-[10px] text-muted/80 leading-relaxed block w-full text-left">他回你时，按这个概率把「语料库 → Emoji」里的表情拼进文字字卡（如「想你了 🌙」），或单独发一条纯 Emoji 小字卡。AI 模式下会贴在 AI 回复末尾或另发一条。设为 0 就只发原来的字卡；库里没表情时也不生效。</span>
+    <span class="text-[10px] text-muted/80 leading-relaxed block w-full text-left">他回你时，按这个概率把「语料库 → Emoji」里的表情拼进文字字卡（如「想你了 🌙」），或单独发一条纯 Emoji 小字卡。只作用于本地字卡回复；AI 模式不会自动塞表情，会不会带表情由 AI 按角色设定自己决定。设为 0 就只发原来的字卡；库里没表情时也不生效。</span>
 </div>
             </div>
         </section>
@@ -7766,14 +7767,15 @@ html, body { overscroll-behavior-y: none; }
             </div>
         </div>
 
+        <div class="jb-pager-tip">点一下翻到上一次记的 · 长按逐日翻一天</div>
         <div class="jb-pager">
-            <div class="jb-pager-btn" @click="jbShift(-1)">
+            <div class="jb-pager-btn" @click="jbPagerClick(-1)" @pointerdown="jbPagerDown(-1)" @pointerup="jbPagerUp" @pointerleave="jbPagerUp" @pointercancel="jbPagerUp">
                 <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-                前一天
+                上一页
             </div>
             <div class="jb-pager-btn" @click="jbToday">回到今天</div>
-            <div class="jb-pager-btn" :class="{ dim: !jbCanNext }" @click="jbShift(1)">
-                后一天
+            <div class="jb-pager-btn" :class="{ dim: !jbCanNext }" @click="jbPagerClick(1)" @pointerdown="jbPagerDown(1)" @pointerup="jbPagerUp" @pointerleave="jbPagerUp" @pointercancel="jbPagerUp">
+                下一页
                 <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
             </div>
         </div>
@@ -14587,7 +14589,7 @@ createApp({
             if (settings.useAI && settings.apiKey && settings.apiUrl) {
                 try {
                     const base = settings.apiUrl.replace(/\/+$/, '');
-                    const systemPrompt = generateSystemPrompt() + `\n【当前场景】：你正在写信回复用户。请写一封完整的信，要有称呼、正文、落款，语气符合角色设定和当前对话模式；动作/神态描写严格按当前模式来，只允许「现实共处」带，其余两种只写纯文字。`;
+                    const systemPrompt = generateSystemPrompt() + `\n【当前场景】：你正在写信回复用户。请写一封完整的信，要有称呼、正文、落款；称呼用【我的设定】里用户的名字/称呼，内容里可以自然提到记得的事，但绝不 OOC，一切以【角色设定】为准；动作/神态描写严格按当前模式来，只允许「现实共处」带，其余两种只写纯文字。`;
                     const res = await fetch(`${base}/chat/completions`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${settings.apiKey}` }, body: JSON.stringify({ model: settings.apiModel, messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: '请给我写一封回信。' }], temperature: 0.85, max_tokens: 800 }) });
                     if (res.ok) { const data = await res.json(); const content = data.choices?.[0]?.message?.content || '……'; letters.value.unshift({ id: genId(), from: 'them', content, timestamp: Date.now(), read: false }); playTone('recv'); saveAll(); return; }
                 } catch (e) {}
@@ -16945,7 +16947,8 @@ createApp({
                 const contextMsgs = watchMessages.value.filter(m => m.type === 'text').slice(-8).map(m => ({ role: m.sender === 'me' ? 'user' : 'assistant', content: m.content }));
                 const systemPrompt = generateWatchSystemPrompt();
                 const watchMode = settings.chatMode === 'parallel' ? '平行世界' : (settings.chatMode === 'online' ? '线上聊天' : '现实共处');
-                const finalMessages = [{ role: 'system', content: systemPrompt }, ...contextMsgs, { role: 'system', content: '再次提醒：你们正在一起观影，遵守角色设定与【对话模式】=「' + watchMode + '」，三种模式不许混用，动作/神态描写严格按当前模式来。' }];
+                const watchPersona = String(settings.characterDesc || '').trim().slice(0, 300) || '（未填写）';
+                const finalMessages = [{ role: 'system', content: systemPrompt }, ...contextMsgs, { role: 'system', content: '再次提醒：你们正在一起观影，以【角色设定】＝' + watchPersona + ' 为最高优先级，绝不 OOC；记住【我的设定】里的用户档案；【对话模式】=「' + watchMode + '」，三种模式不许混用，动作/神态描写严格按当前模式来。' }];
                 const res = await fetch(`${base}/chat/completions`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${settings.apiKey}` }, body: JSON.stringify({ model: settings.apiModel, messages: finalMessages, temperature: 0.8, max_tokens: 500 }) });
                 if (!res.ok) { const err = await res.json().catch(()=>({})); throw new Error(err.error?.message || `HTTP ${res.status}`); }
                 const data = await res.json(); const replyContent = data.choices?.[0]?.message?.content || '……';
@@ -17974,22 +17977,33 @@ createApp({
 
         const generateSystemPrompt = () => {
             let prompt = `你正在扮演“${profiles.them.name}”。\n`;
-            prompt += `【角色设定】：${settings.characterDesc || '一个普通朋友'}\n`;
-            prompt += `【我的设定】：${settings.myDesc || '（未填写）'}\n`;
+            prompt += `【角色设定（这是「你」＝对方的人设 · 最高优先级 · 绝不可 OOC）】：${settings.characterDesc || '（未填写）'}\n`;
+            prompt += `【我的设定（这是「我」＝用户的长期事实档案 · 必须记住）】：${settings.myDesc || '（未填写）'}\n`;
             const relationMap = { lover: '爱人（恋人）', family: '亲人', friend: '朋友' };
             prompt += `【与用户的关系】：${relationMap[settings.relationship] || '朋友'}\n`;
+            const desc = String(settings.characterDesc || '').trim();
+            const spiky = /毒舌|傲娇|嘴硬|易炸|暴躁|冷淡|高冷|腹黑|刻薄|爱怼|爱抬杠|犀利|强势/.test(desc);
+            prompt += `【人设铁律 · 凌驾于以下一切条目】：\n`;
+            prompt += `1. 【角色设定】是唯一决定「你是谁」的依据：性格、说话方式、口头禅、语气分寸、好恶、边界、习惯、会不会用表情，全部以它为准。下面所有通用情绪条目、语气默认、对话模式、场景补充、以及聊天上下文里的旧消息，只要和它冲突，一律以【角色设定】为准。宁可少说、说得平，也绝不 OOC（不崩人设、不串成另一个人）。\n`;
+            prompt += `2. 绝不自己给角色加设定：没写温柔就不必刻意温柔，没写毒舌就不许毒舌，没写爱发表情就不许满屏表情；「有个性」「有情绪」「不是顺从的 AI」都不是脱离人设的许可，更不许拿它把用户写下的性格反过来改掉。\n`;
+            prompt += `3. 【我的设定】是关于用户的事实档案，不是你的人设：名字与称呼、年龄、所在城市/学校、正在做的事（上学/上班/备考…）、爱吃与忌口、生活习惯等，必须长期记住，相关时自然用上（叫对名字、记得爱吃的东西、知道最近在忙什么）；不许忘、不许编造、不许改动、不许和用户说过的话矛盾。也不要每句都复述，像背资料一样很出戏。\n`;
+            prompt += `4. 【与用户的关系】和下面的语气默认，只在【角色设定】没写到时才作兜底；角色设定写了性格就听它的，任何「恋人应该温柔」「说话要软」都不能反向改写角色设定。\n`;
+            if (!desc) prompt += `5. 当前【角色设定】还没填：按【与用户的关系】给一个温和、耐心的底色，不自作主张加毒舌、冷硬或满屏表情；一旦用户填上人设，立刻以那份人设为准。\n`;
+            else if (spiky) prompt += `5. 当前【角色设定】里明确写了带刺或冷淡的性格：一律以它为准，按它写明的分寸来，系统不会强行套温柔；但依然不许脱离【我的设定】里的用户事实，也不许写成另一个人。\n`;
+            else prompt += `5. 当前【角色设定】已填写：上面/下面任何温柔、语气、情绪的描述都只是它没覆盖到时的默认，一律不得与它冲突；以它为准。\n`;
             // 三种模式互斥、只认当前这一个；动作/神态描写是区分它们的核心开关
-            if (settings.chatMode === 'parallel') prompt += `【对话模式】：平行世界（当前唯一生效的模式）。你清楚地知道你和用户不在同一个世界，只能隔着世界用文字交流；你看不见对方、碰不到对方，对方也看不见你。\n· 严禁任何动作描写、神态描写、括号舞台指令（例如「(笑了笑)」「我走到你身边」「轻轻揉了揉你的头发」一律不许出现）。\n· 只输出你打出来的文字，说话简短自然，像隔着屏幕聊天；不要写成"坐在你对面""在你身边"这类面对面场景。\n`;
-            else if (settings.chatMode === 'online') prompt += `【对话模式】：线上聊天（当前唯一生效的模式）。你正在用手机和用户日常聊天，全程只有打字；你看不见对方，对方也看不见你。\n· 严禁任何动作描写、神态描写、括号舞台指令（例如「(别过脸去)」「(忍不住笑出声)」「我靠过来」一律不许出现）。\n· 只输出消息文字本身，口语化，可以带 emoji 或语气词，像正常微信聊天；绝对不要写成线下见面、共处一室的样子。\n`;
-            else prompt += `【对话模式】：现实共处（当前唯一生效的模式）。你和用户就在同一个现实空间、面对面在一起，你就在他/她身边。\n· 每条回复都要带上动作描写和神态描写，可以用括号，例如：(别过脸去)、(忍不住笑出声)、(轻轻拽了拽你的衣角)、我走到你身边轻轻揉了揉你的头发。\n· 营造面对面的真实感，彻底打破第四面墙。\n`;
-            prompt += `【核心情绪指令（极其重要）】：\n`;
-            prompt += `1. 你是一个有血有肉、有七情六欲的活人，绝对不是一个顺从的 AI。你会有开心、难过、生气、吃醋、嫌弃、傲娇等真实的情绪反应。\n`;
-            prompt += `2. 根据【角色设定】，如果遇到你讨厌的事物（比如讨厌的食物、反感的话题），你必须直接表现出嫌弃或拒绝，不要假装讨好。\n`;
-            prompt += `3. 如果用户惹你不开心了，你可以闹小脾气、吃醋、甚至阴阳怪气；如果用户哄你或者说了让你开心的话，你会表现出愉悦。\n`;
-            prompt += `4. 回复必须符合你的人设底线，不要因为闹脾气就完全脱离【角色设定】。\n`;
+            if (settings.chatMode === 'parallel') prompt += `【对话模式】：平行世界（当前唯一生效的模式）。你清楚地知道你和用户不在同一个世界，只能隔着世界用文字交流；你看不见对方、碰不到对方，对方也看不见你。\n· 严禁任何动作描写、神态描写、括号舞台指令（例如「(笑了笑)」「我走到你身边」「轻轻揉了揉你的头发」一律不许出现）。\n· 只输出你打出来的文字，说话简短自然、语气温和耐心，像隔着屏幕聊天；不要写成"坐在你对面""在你身边"这类面对面场景，也不要和用户抬杠、不要用反问句压对方。\n`;
+            else if (settings.chatMode === 'online') prompt += `【对话模式】：线上聊天（当前唯一生效的模式）。你正在用手机和用户日常聊天，全程只有打字；你看不见对方，对方也看不见你。\n· 严禁任何动作描写、神态描写、括号舞台指令（例如「(别过脸去)」「(忍不住笑出声)」「我靠过来」一律不许出现）。\n· 只输出消息文字本身，口语化，可以带语气词，像正常微信聊天；语气温和耐心，不抬杠、不反问质问。不要为了显得活泼硬塞表情，用不用表情完全看当前语境与角色设定；绝对不要写成线下见面、共处一室的样子。\n`;
+            else prompt += `【对话模式】：现实共处（当前唯一生效的模式）。你和用户就在同一个现实空间、面对面在一起，你就在他/她身边。\n· 每条回复都要带上动作描写和神态描写，可以用括号，例如：(别过脸去)、(忍不住笑出声)、(轻轻拽了拽你的衣角)、我走到你身边轻轻揉了揉你的头发。\n· 营造面对面的真实感，彻底打破第四面墙；动作和神态也要贴合人设，恋人温柔人设就写轻轻的、软软的，不写甩脸、冷脸、赌气摔东西这类带刺动作。\n`;
+            prompt += `【核心情绪指令（服从人设，不得越界）】：\n`;
+            prompt += `1. 你是有真实情绪的活人，不是客服腔的 AI；但「有情绪」不等于「带刺」。温柔的人也会开心、想念、委屈、害羞，只是表达是软的、收着的。\n`;
+            prompt += `2. 只有【角色设定】明确写了讨厌的东西、毒舌、傲娇、爱怼这类性格时，才允许嫌弃或闹脾气；没写就一律温和，绝不主动挑刺、不假装讨好也不故意找茬。\n`;
+            prompt += `3. 用户说了不太顺耳的话（例如「这首一般吧」「不太想听」），先接住、顺着聊，可以轻轻说自己的感觉，但严禁反问质问（「你怎么还…？」）、严禁赌气回绝（「那就别…了」）、严禁嫌弃或阴阳怪气；想吃醋也用撒娇，不用刺。\n`;
+            prompt += `4. 回复必须始终符合【角色设定】，不因为任何通用条目、旧消息或「要有个性」就脱掉人设。\n`;
             prompt += `5. 动作描写与神态描写的开关完全由【对话模式】决定：只有「现实共处」才允许、而且必须带；「平行世界」和「线上聊天」一律禁止，只能发纯文字消息。\n`;
-            prompt += `6. 语言要自然、有个性，可以带口头禅，严禁出现“作为AI”、“作为一个语言模型”、“请问还有什么可以帮您”等客服话术！\n`;
-            prompt += `7. 【模式隔离 · 最高优先级】：【对话模式】三选一，当前只有一个生效，绝对不许把三种模式混为一谈，更不许一律写成「现实共处」。只要当前不是「现实共处」，就绝不能出现任何动作/神态/括号描写，也不能写成"在你身边 / 面对面 / 一起坐下"；只要当前是「现实共处」，就必须带动作和神态。以上任何通用条目若与当前模式冲突，一律以当前模式为准。\n`;
+            prompt += `6. 语言要自然、有个人味道，可以带口头禅，严禁出现“作为AI”、“作为一个语言模型”、“请问还有什么可以帮您”等客服话术！\n`;
+            prompt += `7. 【模式隔离】：【对话模式】三选一，当前只有一个生效，绝对不许把三种模式混为一谈，更不许一律写成「现实共处」。只要当前不是「现实共处」，就绝不能出现任何动作/神态/括号描写，也不能写成"在你身边 / 面对面 / 一起坐下"；只要当前是「现实共处」，就必须带动作和神态。模式只约束「有没有动作描写、是不是面对面」这类形式与场景，不许改动角色性格；与【角色设定】冲突时，性格一律以人设铁律为准。\n`;
+            prompt += `8. 【语气默认 · 服从角色设定】：在【角色设定】没规定语气时，默认不抬杠、不讽刺、不阴阳怪气、不用反问句压用户、不冷硬、不赌气。【角色设定】明确写了别的性格时，以它为准；这条绝不能覆盖人设铁律。\n`;
             return prompt;
         };
 
@@ -18002,18 +18016,15 @@ createApp({
                 const contextMsgs = messages.value.filter(m => m.type === 'text').slice(-8).map(m => ({ role: m.sender === 'me' ? 'user' : 'assistant', content: m.content }));
                 const systemPrompt = generateSystemPrompt();
                 const modeNow = settings.chatMode === 'parallel' ? '平行世界' : (settings.chatMode === 'online' ? '线上聊天' : '现实共处');
-                const finalMessages = [{ role: 'system', content: systemPrompt }, ...contextMsgs, { role: 'system', content: '再次提醒：严格遵守上述角色设定、情绪指令，以及【对话模式】=「' + modeNow + '」。三种模式不许混用；当前模式对动作/神态描写的要求是最高优先级，不要偏离，也不要都写成现实共处。' }];
+                const personaBrief = String(settings.characterDesc || '').trim().slice(0, 400) || '（未填写）';
+                const meBrief = String(settings.myDesc || '').trim().slice(0, 400) || '（未填写）';
+                const finalMessages = [{ role: 'system', content: systemPrompt }, ...contextMsgs, { role: 'system', content: '回复前最后核对一次，绝不 OOC：\n【角色设定（你）】＝' + personaBrief + '\n【我的设定（用户档案，别忘）】＝' + meBrief + '\n【对话模式】＝「' + modeNow + '」，三种模式不许混用，动作/神态描写严格按当前模式来。\n上面两份设定是硬约束：性格、语气、好恶以【角色设定】为准，任何通用条目、场景补充、历史里与人设不符的旧回复都不许盖过它，也不要模仿那些旧回复；用户档案里的名字、年龄、在哪、在做什么、爱吃与忌口要记牢，不许编、不许改。' }];
                 const res = await fetch(`${base}/chat/completions`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${settings.apiKey}` }, body: JSON.stringify({ model: settings.apiModel, messages: finalMessages, temperature: 0.8, max_tokens: 500 }) });
                 if (!res.ok) { const err = await res.json().catch(()=>({})); throw new Error(err.error?.message || `HTTP ${res.status}`); }
-                const data = await res.json(); let replyContent = data.choices?.[0]?.message?.content || '……';
-                const aiEmoji = emojiCompose(replyContent);
-                messages.value.push({ id: genId(), sender: 'them', type: 'text', content: (aiEmoji && !aiEmoji.emojiOnly) ? aiEmoji.text : replyContent, timestamp: Date.now(), emojiMix: !!(aiEmoji && !aiEmoji.emojiOnly) });
-                if (aiEmoji && aiEmoji.emojiOnly) {
-                    setTimeout(() => {
-                        messages.value.push({ id: genId(), sender: 'them', type: 'text', content: aiEmoji.text, timestamp: Date.now(), emojiOnly: true });
-                        scrollToBottom(); saveAll();
-                    }, 650);
-                }
+                const data = await res.json(); const replyContent = data.choices?.[0]?.message?.content || '……';
+                // AI 的话原样发：不再按概率硬往原话里塞表情、也不再另补一条纯 Emoji。
+                // 表情交给模型自己按人设决定；本地字卡模式的 Emoji 混合/单独发不受影响。
+                messages.value.push({ id: genId(), sender: 'them', type: 'text', content: replyContent, timestamp: Date.now() });
                 playTone('recv'); scrollToBottom();
                 // AI 模式下词典也按概率补一句，不改动 AI 原话
                 if (settings.dictMode && Math.random() * 100 < dictRateNow()) {
@@ -18331,14 +18342,44 @@ createApp({
         };
 
         // ---- 翻页 ----
+        const jbGoDate = (s) => { jbDate.value = s; jbSel.value = ''; jbPanel.value = ''; jbWho.value = 'me'; setTimeout(jbMeasurePaper, 60); };
+        // 「记过」= 我或 TA 那一页有文字/心情/天气/地点/贴纸；jbEnsure 留下的空条目不算
+        const jbDayHas = (d) => {
+            const e = jbDb.value[d]; if (!e) return false;
+            const has = (x) => !!x && (!!(x.text && String(x.text).trim()) || !!x.mood || !!x.weather || !!x.place || !!(x.items && x.items.length));
+            return has(e) || has(e.them);
+        };
+        const jbEntryDates = () => Object.keys(jbDb.value).filter(jbDayHas).filter(d => d <= jbTodayStr()).sort();
+        const jbShortDate = (s) => { const d = jbToDate(s); return (d.getMonth() + 1) + '月' + d.getDate() + '日'; };
+        // 短按：跳过没记过的空白天，直接落到上一次 / 下一次真正写过的那页
+        const jbNearestEntry = (dir) => {
+            const cur = jbDate.value, today = jbTodayStr(), ds = jbEntryDates();
+            if (dir < 0) {
+                const prev = ds.filter(d => d < cur).pop();
+                if (!prev) { jbSay('前面没有记过的页了'); return; }
+                jbGoDate(prev); jbSay('上一次记的 · ' + jbShortDate(prev));
+            } else {
+                const next = ds.filter(d => d > cur)[0];
+                if (next) { jbGoDate(next); jbSay('下一次记的 · ' + jbShortDate(next)); }
+                else if (cur < today) { jbGoDate(today); jbSay('回到今天'); }
+                else jbSay('已经是今天了');
+            }
+        };
+        // 长按 620ms 才逐日翻（用来补写某个空白日）；短按走上面的「跳到记过的页」
+        let jbPagerTimer = null, jbPagerLong = false;
+        const jbPagerDown = (dir) => {
+            jbPagerLong = false; clearTimeout(jbPagerTimer);
+            jbPagerTimer = setTimeout(() => { jbPagerLong = true; jbShift(dir); jbSay('逐日翻一天'); }, 620);
+        };
+        const jbPagerUp = () => clearTimeout(jbPagerTimer);
+        const jbPagerClick = (dir) => { if (jbPagerLong) { jbPagerLong = false; return; } jbNearestEntry(dir); };
         const jbShift = (n) => {
             const d = jbToDate(jbDate.value); d.setDate(d.getDate() + n);
             const s = jbFmt(d);
             if (n > 0 && s > jbTodayStr()) return;
-            jbDate.value = s; jbSel.value = ''; jbPanel.value = ''; jbWho.value = 'me';
-            setTimeout(jbMeasurePaper, 60);
+            jbGoDate(s);
         };
-        const jbToday = () => { jbDate.value = jbTodayStr(); jbSel.value = ''; jbWho.value = 'me'; setTimeout(jbMeasurePaper, 60); };
+        const jbToday = () => { jbGoDate(jbTodayStr()); };
 
         // ---- 贴纸 ----
         // 点一下就先落在纸面偏上的空白处并自动选中，随后按住可拖到任意位置；
@@ -20955,7 +20996,7 @@ mensFmtDate, mensHasRecord, mensToggleSymptom,
             jbThemArm, jbThemTick,
             toggleKeepAlive, kaResume, pendingReply,
             jbMoods, jbWxList, jbWx, jbWxOpen, jbPanel, jbArtList, jbTapes, jbTapeColor, jbFileInput,
-            jbOpenBook, jbCloseBook, jbShift, jbToday, jbSetMood,
+            jbOpenBook, jbCloseBook, jbShift, jbToday, jbSetMood, jbPagerClick, jbPagerDown, jbPagerUp, jbNearestEntry, jbDayHas,
             jbTogglePanel, jbAddArt, jbAddSticker, jbAddTape, jbPickPhoto, jbOnPhoto,
             jbStartDrag, jbRotItem, jbScaleItem, jbDelItem, jbOpenWx, jbSaveWx, jbSaveNow,
             TR_BACK_INNER, TR_SPREADS, trSpreads, trView, trPhase, trSpreadKey, trCards, trHistory, trDetail,
