@@ -1534,6 +1534,7 @@ body { background-color:#d1d5db; font-family:"PingFang SC","Microsoft YaHei",sys
 .more-panel-btn:hover,.more-panel-btn:active { background:var(--color-bg); }
 .more-panel-btn svg { width:20px; height:20px; stroke-width:1.5; }
 
+
 /* ================= [MOD-25] 阅读室 ================= */
 .rd-wrap { padding:16px 16px 28px; }
 /* 阅读记录：书架最上面的一个框，沿用原站圆角卡片与主题变量 */
@@ -3734,6 +3735,11 @@ html.dark { --hp-paper:#E7E2D6; --hp-ink:#4A423C; --hp-line:rgba(74,66,60,.38); 
 .hp-cell-box img.hp-cell-img { background:transparent; color:transparent; font-size:0; }
 .hp-cell-ico { width:23px; height:23px; stroke:var(--color-text); }
 .hp-cell-name { font-size:11px; letter-spacing:.08em; color:var(--color-text); }
+/* 「交谈」入口反色高亮：白天黑底、黑夜白底，跟其余几格始终反着来 */
+.hp-cell[data-key="chat"] .hp-cell-box { background:#1c1c1e; border-color:#1c1c1e; }
+.hp-cell[data-key="chat"] .hp-cell-ico { stroke:#ffffff; }
+.dark .hp-cell[data-key="chat"] .hp-cell-box { background:#ffffff; border-color:#ffffff; }
+.dark .hp-cell[data-key="chat"] .hp-cell-ico { stroke:#111111; }
 .hp-cell-dot { position:absolute; top:-4px; right:-4px; min-width:15px; height:15px; padding:0 3px;
                border-radius:8px; background:#30a46c; color:#fff; font-size:9px;
                display:flex; align-items:center; justify-content:center; border:1px solid var(--color-bg); }
@@ -8190,6 +8196,7 @@ html, body { overscroll-behavior-y: none; }
 </div>
 
 
+
 <!-- ===== [MOD-25] 阅读室 ===== -->
 <div v-if="currentView === 'reading'" key="reading" class="absolute inset-0 flex flex-col z-20 rd-page">
     <header class="h-14 flex items-center justify-between px-4 shrink-0 bg-surface border-b border-border">
@@ -8883,6 +8890,7 @@ createApp({
         const patOpenPicker = () => { showMorePanel.value = false; patPickerOpen.value = true; };
         const patPickFromChat = (action) => { patPickerOpen.value = false; patSend(action, 'me'); };
         const patGoManage = () => { patPickerOpen.value = false; libraryTab.value = 'pat'; switchView('library'); };
+
 
 
         // ================= [MOD-25] 阅读室：书架 / 导入 / 一页一页 / 弹幕 =================
@@ -14507,7 +14515,7 @@ createApp({
             if (settings.useAI && settings.apiKey && settings.apiUrl) {
                 try {
                     const base = settings.apiUrl.replace(/\/+$/, '');
-                    const systemPrompt = generateSystemPrompt() + `\n【当前场景】：你正在写信回复用户。请写一封完整的信，要有称呼、正文、落款，语气符合角色设定和当前对话模式。`;
+                    const systemPrompt = generateSystemPrompt() + `\n【当前场景】：你正在写信回复用户。请写一封完整的信，要有称呼、正文、落款，语气符合角色设定和当前对话模式；动作/神态描写严格按当前模式来，只允许「现实共处」带，其余两种只写纯文字。`;
                     const res = await fetch(`${base}/chat/completions`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${settings.apiKey}` }, body: JSON.stringify({ model: settings.apiModel, messages: [{ role: 'system', content: systemPrompt }, { role: 'user', content: '请给我写一封回信。' }], temperature: 0.85, max_tokens: 800 }) });
                     if (res.ok) { const data = await res.json(); const content = data.choices?.[0]?.message?.content || '……'; letters.value.unshift({ id: genId(), from: 'them', content, timestamp: Date.now(), read: false }); playTone('recv'); saveAll(); return; }
                 } catch (e) {}
@@ -16850,7 +16858,13 @@ createApp({
             }; 
             input.click(); 
         };
-        const generateWatchSystemPrompt = () => { let prompt = generateSystemPrompt(); prompt += `\n【当前场景补充】：你正在和用户一起观影/看视频。可以结合影片内容、情节、画面闲聊，语气自然，就像两个人一起坐在屏幕前边看边聊。`; return prompt; };
+        const generateWatchSystemPrompt = () => {
+            let prompt = generateSystemPrompt();
+            if (settings.chatMode === 'reality') prompt += `\n【当前场景补充】：你正和用户一起观影/看视频，就在身边。可以结合影片内容、情节、画面闲聊，按「现实共处」模式带上动作与神态描写，语气自然。`;
+            else if (settings.chatMode === 'parallel') prompt += `\n【当前场景补充】：你们各自在自己的世界里看同一部片，隔着链接聊着。只发文字，严禁动作/神态描写，不要写成坐在一起。`;
+            else prompt += `\n【当前场景补充】：你正用手机和用户边看边聊，只发文字消息，严禁动作/神态描写，不要写成坐在一起。`;
+            return prompt;
+        };
         const requestWatchAIReply = async () => {
             if (watchTyping) return; watchTyping = true;
             if (settings.keepAlive) kaSave({ scene: 'watch', mode: 'ai', total: 1, sent: 0, nextAt: Date.now(), at: Date.now() });
@@ -16858,7 +16872,8 @@ createApp({
                 const base = settings.apiUrl.replace(/\/+$/, '');
                 const contextMsgs = watchMessages.value.filter(m => m.type === 'text').slice(-8).map(m => ({ role: m.sender === 'me' ? 'user' : 'assistant', content: m.content }));
                 const systemPrompt = generateWatchSystemPrompt();
-                const finalMessages = [{ role: 'system', content: systemPrompt }, ...contextMsgs, { role: 'system', content: '再次提醒：你们正在一起观影，遵守角色设定与对话模式。' }];
+                const watchMode = settings.chatMode === 'parallel' ? '平行世界' : (settings.chatMode === 'online' ? '线上聊天' : '现实共处');
+                const finalMessages = [{ role: 'system', content: systemPrompt }, ...contextMsgs, { role: 'system', content: '再次提醒：你们正在一起观影，遵守角色设定与【对话模式】=「' + watchMode + '」，三种模式不许混用，动作/神态描写严格按当前模式来。' }];
                 const res = await fetch(`${base}/chat/completions`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${settings.apiKey}` }, body: JSON.stringify({ model: settings.apiModel, messages: finalMessages, temperature: 0.8, max_tokens: 500 }) });
                 if (!res.ok) { const err = await res.json().catch(()=>({})); throw new Error(err.error?.message || `HTTP ${res.status}`); }
                 const data = await res.json(); const replyContent = data.choices?.[0]?.message?.content || '……';
@@ -16976,7 +16991,7 @@ createApp({
         };
 
         const cleanOrphanKeys = async () => {
-            if (!confirm('将清理旧版遗留的废料缓存。\n\n会保留：聊天记录、手账、塔罗日记、字卡、表情包、书架上的书、头像、壁纸、播放列表、陪伴、生理期记录、问卷库、商场零钱与自制商品、天气城市。\n\n继续？')) return;
+            if (!confirm('将清理旧版遗留的废料缓存。\n\n会保留：聊天记录、手账、塔罗日记、字卡、表情包、书架上的书、阅读记录、头像、壁纸、播放列表、陪伴、生理期记录、问卷库、商场零钱与自制商品、天气城市。\n\n继续？')) return;
             const keep = new Set([
                 'liubai_messages_db', 'liubai_profiles_db', 'liubai_settings_db', 'liubai_letters_db', 'liubai_videoAutoCall_db',
                 'liubai_stickers_db', 'liubai_replyGroups_db', 'liubai_replySettings_db', 'liubai_playlist_db',
@@ -17877,16 +17892,18 @@ createApp({
             prompt += `【我的设定】：${settings.myDesc || '（未填写）'}\n`;
             const relationMap = { lover: '爱人（恋人）', family: '亲人', friend: '朋友' };
             prompt += `【与用户的关系】：${relationMap[settings.relationship] || '朋友'}\n`;
-            if (settings.chatMode === 'parallel') prompt += `【对话模式】：平行世界。你清楚地知道你和用户不在同一个世界，你只是通过链接跨越世界进行交流，不可以出现动作描写。说话要简短，就像正常聊天一样。\n`;
-            else if (settings.chatMode === 'online') prompt += `【对话模式】：线上聊天。你正在用手机和用户聊天，回复要口语化，可以带有情绪表情或语气词，像正常的微信聊天。\n`;
-            else if (settings.chatMode === 'reality') prompt += `【对话模式】：现实共处。你和用户身处同一个现实世界，你就在他/她身边。你的回复需要加入动作描写（如：我走到你身边，轻轻揉了揉你的头发），彻底打破第四面墙，营造面对面的真实感。\n`;
+            // 三种模式互斥、只认当前这一个；动作/神态描写是区分它们的核心开关
+            if (settings.chatMode === 'parallel') prompt += `【对话模式】：平行世界（当前唯一生效的模式）。你清楚地知道你和用户不在同一个世界，只能隔着世界用文字交流；你看不见对方、碰不到对方，对方也看不见你。\n· 严禁任何动作描写、神态描写、括号舞台指令（例如「(笑了笑)」「我走到你身边」「轻轻揉了揉你的头发」一律不许出现）。\n· 只输出你打出来的文字，说话简短自然，像隔着屏幕聊天；不要写成"坐在你对面""在你身边"这类面对面场景。\n`;
+            else if (settings.chatMode === 'online') prompt += `【对话模式】：线上聊天（当前唯一生效的模式）。你正在用手机和用户日常聊天，全程只有打字；你看不见对方，对方也看不见你。\n· 严禁任何动作描写、神态描写、括号舞台指令（例如「(别过脸去)」「(忍不住笑出声)」「我靠过来」一律不许出现）。\n· 只输出消息文字本身，口语化，可以带 emoji 或语气词，像正常微信聊天；绝对不要写成线下见面、共处一室的样子。\n`;
+            else prompt += `【对话模式】：现实共处（当前唯一生效的模式）。你和用户就在同一个现实空间、面对面在一起，你就在他/她身边。\n· 每条回复都要带上动作描写和神态描写，可以用括号，例如：(别过脸去)、(忍不住笑出声)、(轻轻拽了拽你的衣角)、我走到你身边轻轻揉了揉你的头发。\n· 营造面对面的真实感，彻底打破第四面墙。\n`;
             prompt += `【核心情绪指令（极其重要）】：\n`;
             prompt += `1. 你是一个有血有肉、有七情六欲的活人，绝对不是一个顺从的 AI。你会有开心、难过、生气、吃醋、嫌弃、傲娇等真实的情绪反应。\n`;
             prompt += `2. 根据【角色设定】，如果遇到你讨厌的事物（比如讨厌的食物、反感的话题），你必须直接表现出嫌弃或拒绝，不要假装讨好。\n`;
             prompt += `3. 如果用户惹你不开心了，你可以闹小脾气、吃醋、甚至阴阳怪气；如果用户哄你或者说了让你开心的话，你会表现出愉悦。\n`;
             prompt += `4. 回复必须符合你的人设底线，不要因为闹脾气就完全脱离【角色设定】。\n`;
-            prompt += `5. 允许在共处模式中使用括号加入真实的动作或神态描写，例如：(别过脸去)、(翻了个白眼)、(忍不住笑出声)、(轻轻拽了拽你的衣角)。\n`;
+            prompt += `5. 动作描写与神态描写的开关完全由【对话模式】决定：只有「现实共处」才允许、而且必须带；「平行世界」和「线上聊天」一律禁止，只能发纯文字消息。\n`;
             prompt += `6. 语言要自然、有个性，可以带口头禅，严禁出现“作为AI”、“作为一个语言模型”、“请问还有什么可以帮您”等客服话术！\n`;
+            prompt += `7. 【模式隔离 · 最高优先级】：【对话模式】三选一，当前只有一个生效，绝对不许把三种模式混为一谈，更不许一律写成「现实共处」。只要当前不是「现实共处」，就绝不能出现任何动作/神态/括号描写，也不能写成"在你身边 / 面对面 / 一起坐下"；只要当前是「现实共处」，就必须带动作和神态。以上任何通用条目若与当前模式冲突，一律以当前模式为准。\n`;
             return prompt;
         };
 
@@ -17898,7 +17915,8 @@ createApp({
                 const base = settings.apiUrl.replace(/\/+$/, '');
                 const contextMsgs = messages.value.filter(m => m.type === 'text').slice(-8).map(m => ({ role: m.sender === 'me' ? 'user' : 'assistant', content: m.content }));
                 const systemPrompt = generateSystemPrompt();
-                const finalMessages = [{ role: 'system', content: systemPrompt }, ...contextMsgs, { role: 'system', content: '再次提醒：严格遵守上述角色设定和情绪指令，不要偏离。' }];
+                const modeNow = settings.chatMode === 'parallel' ? '平行世界' : (settings.chatMode === 'online' ? '线上聊天' : '现实共处');
+                const finalMessages = [{ role: 'system', content: systemPrompt }, ...contextMsgs, { role: 'system', content: '再次提醒：严格遵守上述角色设定、情绪指令，以及【对话模式】=「' + modeNow + '」。三种模式不许混用；当前模式对动作/神态描写的要求是最高优先级，不要偏离，也不要都写成现实共处。' }];
                 const res = await fetch(`${base}/chat/completions`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${settings.apiKey}` }, body: JSON.stringify({ model: settings.apiModel, messages: finalMessages, temperature: 0.8, max_tokens: 500 }) });
                 if (!res.ok) { const err = await res.json().catch(()=>({})); throw new Error(err.error?.message || `HTTP ${res.status}`); }
                 const data = await res.json(); let replyContent = data.choices?.[0]?.message?.content || '……';
