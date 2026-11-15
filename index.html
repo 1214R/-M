@@ -4,6 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>空境</title>
+<!-- 站点图标（浏览器收藏夹 / 新标签页快捷方式显示的「封面」）-->
+<link id="lbIcon" rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20192%20192%22%3E%3Crect%20width%3D%22192%22%20height%3D%22192%22%20rx%3D%2242%22%20fill%3D%22%231c1c1e%22%2F%3E%3Ctext%20x%3D%2296%22%20y%3D%22128%22%20text-anchor%3D%22middle%22%20font-family%3D%22serif%22%20font-size%3D%2294%22%20fill%3D%22%23ffffff%22%3E%E7%A9%BA%3C%2Ftext%3E%3C%2Fsvg%3E">
+<link id="lbIconApple" rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20192%20192%22%3E%3Crect%20width%3D%22192%22%20height%3D%22192%22%20rx%3D%2242%22%20fill%3D%22%231c1c1e%22%2F%3E%3Ctext%20x%3D%2296%22%20y%3D%22128%22%20text-anchor%3D%22middle%22%20font-family%3D%22serif%22%20font-size%3D%2294%22%20fill%3D%22%23ffffff%22%3E%E7%A9%BA%3C%2Ftext%3E%3C%2Fsvg%3E">
+<script>
+/* 这段必须尽量早、且同步执行：浏览器抓图标时，页面里得已经是自定义的那张 */
+(function () {
+  window.__LB_DEFAULT_ICON__ = 'data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20192%20192%22%3E%3Crect%20width%3D%22192%22%20height%3D%22192%22%20rx%3D%2242%22%20fill%3D%22%231c1c1e%22%2F%3E%3Ctext%20x%3D%2296%22%20y%3D%22128%22%20text-anchor%3D%22middle%22%20font-family%3D%22serif%22%20font-size%3D%2294%22%20fill%3D%22%23ffffff%22%3E%E7%A9%BA%3C%2Ftext%3E%3C%2Fsvg%3E';
+  try {
+    var t = localStorage.getItem('liubai_site_title');
+    if (t) document.title = t;
+    var ic = localStorage.getItem('liubai_site_icon');
+    if (ic) {
+      var a = document.getElementById('lbIcon'), b = document.getElementById('lbIconApple');
+      if (a) { a.href = ic; a.type = 'image/png'; }
+      if (b) { b.href = ic; }
+    }
+  } catch (e) {}
+})();
+</script>
 <!-- 【优化】提前与 CDN 建连，省掉 DNS + TCP + TLS 的往返时间（国内访问境外 CDN 尤为明显） -->
 <!-- 【优化】Google Fonts 改为异步加载：media="print" 让它不阻塞渲染，加载完再切回 all。
      字体加载慢或失败时直接降级到系统字体，不会卡住页面 -->
@@ -1505,6 +1524,18 @@ body { background-color:#d1d5db; font-family:"PingFang SC","Microsoft YaHei",sys
 .emoji-safe { font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji","EmojiOne Color","Android Emoji",sans-serif; }
 .dark body { background-color:#050505; }
 ::-webkit-scrollbar { width:0; }
+/* [MOD-07] 记忆洞察 · 言语占比 */
+.ins-ratio-t { font-family:'Noto Serif SC','Noto Serif SC Offline',serif;
+  font-size:12px; letter-spacing:.14em; color:var(--color-muted); margin-bottom:18px; }
+.ins-ratio-bar { display:flex; width:100%; height:9px; border-radius:999px; overflow:hidden;
+  background:var(--color-border); }
+.ins-ratio-me { flex:none; height:100%; background:var(--color-text); transition:width .4s ease; }
+.ins-ratio-them { flex:none; height:100%; background:#b4b4ba; transition:width .4s ease; }
+.dark .ins-ratio-them { background:#54545b; }
+.ins-ratio-legend { display:flex; justify-content:space-between; align-items:baseline; gap:10px;
+  margin-top:15px; font-size:11px; color:var(--color-muted); }
+.ins-ratio-legend span { max-width:48%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.ins-ratio-empty { margin-top:8px; font-size:10px; color:var(--color-muted); opacity:.7; }
 .app-container { width:100vw; height:100vh; height:100dvh; background:var(--color-bg); position:relative; display:flex; flex-direction:column; overflow:hidden; overscroll-behavior:none; }
 @media (min-width:768px) { .app-container { width:375px; height:812px; max-height:100vh; max-height:100dvh; border-radius:40px; box-shadow:0 25px 50px -12px rgba(0,0,0,.25), inset 0 0 0 8px #000; border:1px solid #333; } }
 .msg-bubble { display:inline-block!important; padding:8px 12px!important; border-radius:20px!important; color:rgba(0,0,0,.85)!important; position:relative!important; background:rgba(255,255,255,.72)!important; -webkit-backdrop-filter:none!important; backdrop-filter:none!important; line-height:1.45!important; border:1px solid rgba(255,255,255,.6)!important; box-shadow:0 2px 6px rgba(0,0,0,.04), inset 0 1px 0 rgba(255,255,255,.8)!important; word-wrap:break-word; max-width:100%; }
@@ -5305,6 +5336,34 @@ html, body { overscroll-behavior-y: none; }
             </div>
         </section>
         <p class="text-[10px] text-muted text-center opacity-70 mt-4">注：壁纸会自动保存在本地，为了界面体验，建议上传浅色或低对比度图片。</p>
+        <section>
+            <h3 class="text-[11px] font-semibold text-muted tracking-widest px-2 mb-2">站点图标 (浏览器封面)</h3>
+            <div class="bg-surface border border-border rounded-xl overflow-hidden text-[13px]">
+                <div class="p-4 flex items-center gap-3">
+                    <img :src="siteIcon || defaultSiteIcon" class="w-14 h-14 rounded-xl border border-border object-cover flex-none">
+                    <div class="flex-1 min-w-0">
+                        <div class="text-[12px] text-text">收藏夹 / 新标签页里那个小方块</div>
+                        <div class="text-[10px] text-muted mt-1 leading-relaxed">换完把旧快捷方式删掉、重新添加一次才会更新（浏览器会缓存图标）。</div>
+                    </div>
+                </div>
+                <label class="flex items-center justify-between p-4 cursor-pointer relative hover:bg-bg border-t border-border">
+                    <span>上传自己的图标 / 封面</span>
+                    <i data-lucide="image" class="w-4 h-4 text-muted"></i>
+                    <input type="file" accept="image/*" @change="setSiteIcon($event)" class="absolute inset-0 opacity-0 cursor-pointer">
+                </label>
+                <div class="p-4 border-t border-border">
+                    <div class="text-[10px] text-muted mb-2">快捷方式下面显示的名字</div>
+                    <div class="flex gap-2">
+                        <input v-model="siteTitle" @input="saveSiteTitle" maxlength="16" placeholder="空境"
+                               class="flex-1 min-w-0 bg-bg border border-border rounded-lg px-3 py-2 text-[12px] text-text outline-none">
+                        <button v-if="siteIcon" @click="clearSiteIcon"
+                                class="flex-none px-3 py-2 text-[12px] rounded-lg bg-bg border border-border text-text">恢复默认</button>
+                    </div>
+                    <div v-if="siteIconHint" class="text-[10px] text-muted mt-2">{{ siteIconHint }}</div>
+                </div>
+            </div>
+            <p class="text-[10px] text-muted px-2 mt-2 leading-relaxed opacity-80">注：用本地文件直接打开时，个别浏览器仍会自己画一个字母图标；放到网页地址（https）上打开最稳。「添加到主屏幕」各家规则不同，收藏夹快捷方式最可靠。</p>
+        </section>
     </main>
 
     <main v-show="settingsTab === 'diagnose'" class="flex-1 overflow-y-auto pb-12">
@@ -6205,6 +6264,19 @@ html, body { overscroll-behavior-y: none; }
         <div class="grid grid-cols-2 gap-4 text-center">
             <div class="bg-surface p-4 rounded-xl border border-border"><div class="text-xs text-muted mb-1">只言片语</div><div class="text-2xl font-serif text-text">{{ messages.length }}</div></div>
             <div class="bg-surface p-4 rounded-xl border border-border"><div class="text-xs text-muted mb-1">初次相遇</div><div class="text-[11px] font-serif text-text mt-2">{{ statData.firstTime }}</div></div>
+        </div>
+        <!-- 言语占比：按双方文字字数真实统计，空态不硬凑 50/50 -->
+        <div class="bg-surface p-5 rounded-xl border border-border">
+            <div class="ins-ratio-t">言语占比</div>
+            <div class="ins-ratio-bar">
+                <div class="ins-ratio-me" :style="{ width: statData.speech.me + '%' }"></div>
+                <div class="ins-ratio-them" :style="{ width: statData.speech.them + '%' }"></div>
+            </div>
+            <div class="ins-ratio-legend">
+                <span>{{ profiles.me.name }}: {{ statData.speech.me }}%</span>
+                <span>{{ profiles.them.name }}: {{ statData.speech.them }}%</span>
+            </div>
+            <div v-if="!statData.speech.total" class="ins-ratio-empty">还没有说过话，先聊两句吧</div>
         </div>
         <div class="bg-surface p-5 rounded-xl border border-border">
             <div class="text-[11px] tracking-widest text-muted uppercase mb-4">思绪浮现</div>
@@ -16991,7 +17063,7 @@ createApp({
         };
 
         const cleanOrphanKeys = async () => {
-            if (!confirm('将清理旧版遗留的废料缓存。\n\n会保留：聊天记录、手账、塔罗日记、字卡、表情包、书架上的书、阅读记录、头像、壁纸、播放列表、陪伴、生理期记录、问卷库、商场零钱与自制商品、天气城市。\n\n继续？')) return;
+            if (!confirm('将清理旧版遗留的废料缓存。\n\n会保留：聊天记录、手账、塔罗日记、字卡、表情包、书架上的书、阅读记录、头像、壁纸、站点图标、播放列表、陪伴、生理期记录、问卷库、商场零钱与自制商品、天气城市。\n\n继续？')) return;
             const keep = new Set([
                 'liubai_messages_db', 'liubai_profiles_db', 'liubai_settings_db', 'liubai_letters_db', 'liubai_videoAutoCall_db',
                 'liubai_stickers_db', 'liubai_replyGroups_db', 'liubai_replySettings_db', 'liubai_playlist_db',
@@ -17023,7 +17095,7 @@ createApp({
                         removed++;
                     }
                 }
-                const lsKeep = new Set(['liubai_theme_dark','liubai_sync_profiles','liubai_sync_settings','liubai_sync_replyGroups','liubai_sync_emojiList','liubai_sync_letters','liubai_playlist_string','liubai_watch_string','liubai_waiting_letter','liubai_weather_data_v2','liubai_weather_side','liubai_weather_recent_my','liubai_weather_snapshot_v1','liubai_place_cache_v1','liubai_card_cd']);
+                const lsKeep = new Set(['liubai_theme_dark','liubai_sync_profiles','liubai_sync_settings','liubai_sync_replyGroups','liubai_sync_emojiList','liubai_sync_letters','liubai_playlist_string','liubai_watch_string','liubai_waiting_letter','liubai_weather_data_v2','liubai_weather_side','liubai_weather_recent_my','liubai_weather_snapshot_v1','liubai_place_cache_v1','liubai_card_cd','liubai_site_icon','liubai_site_title']);
                 for (let i = localStorage.length - 1; i >= 0; i--) {
                     const k = localStorage.key(i);
                     if (k && k.startsWith('liubai_') && !lsKeep.has(k)) {
@@ -17283,6 +17355,8 @@ createApp({
                     weatherRecentMy: localStorage.getItem('liubai_weather_recent_my'),
                     weatherSnapshot: localStorage.getItem(WEATHER_SNAP_KEY),
                     placeCache: localStorage.getItem(PLACE_CACHE_KEY),
+                    siteIcon: (() => { try { return localStorage.getItem(SITE_ICON_KEY) || ''; } catch (e) { return ''; } })(),
+                    siteTitle: (() => { try { return localStorage.getItem(SITE_TITLE_KEY) || ''; } catch (e) { return ''; } })(),
                     qaBank: await localforage.getItem('liubai_qa_bank_db'),
                     patActions: await localforage.getItem('liubai_pat_actions_db'),
                     readingBooks: await localforage.getItem('liubai_reading_books_db'),
@@ -17346,6 +17420,18 @@ createApp({
                           if (typeof data.weatherRecentMy === 'string') localStorage.setItem('liubai_weather_recent_my', data.weatherRecentMy);
                           if (typeof data.weatherSnapshot === 'string') localStorage.setItem(WEATHER_SNAP_KEY, data.weatherSnapshot);
                           if (typeof data.placeCache === 'string') localStorage.setItem(PLACE_CACHE_KEY, data.placeCache);
+                          if (typeof data.siteIcon === 'string') {
+                              try {
+                                  if (data.siteIcon) localStorage.setItem(SITE_ICON_KEY, data.siteIcon);
+                                  else localStorage.removeItem(SITE_ICON_KEY);
+                              } catch (e) {}
+                              siteIcon.value = data.siteIcon || '';
+                          }
+                          if (typeof data.siteTitle === 'string' && data.siteTitle) {
+                              try { localStorage.setItem(SITE_TITLE_KEY, data.siteTitle.slice(0, 16)); } catch (e) {}
+                              siteTitle.value = data.siteTitle.slice(0, 16);
+                          }
+                          applySiteIcon();
                           if (Array.isArray(data.qaBank)) await localforage.setItem('liubai_qa_bank_db', data.qaBank.filter(it => it && typeof it.q === 'string' && (Array.isArray(it.opts) || typeof it.a === 'string')));
                           if (Array.isArray(data.patActions)) await localforage.setItem('liubai_pat_actions_db', data.patActions.filter(a => a && typeof a.text === 'string' && a.text.trim()).slice(0, 100));
                           if (Array.isArray(data.readingBooks)) await localforage.setItem('liubai_reading_books_db', data.readingBooks.filter(b => b && typeof b.raw === 'string').slice(0, 60));
@@ -18036,6 +18122,66 @@ createApp({
         const toggleSearch = () => { chatState.isSearching = !chatState.isSearching; if (!chatState.isSearching) { chatState.keyword = ''; chatState.results = []; } };
         const executeSearch = () => { const k = chatState.keyword.trim(); if (!k) { chatState.results = []; return; } chatState.results = messages.value.filter(m => m.content && m.content.includes(k)).map(m => m.id); chatState.currentIdx = 0; };
         const jumpSearch = (dir) => { if (!chatState.results.length) return; chatState.currentIdx = (chatState.currentIdx + dir + chatState.results.length) % chatState.results.length; const el = document.getElementById('msg-' + chatState.results[chatState.currentIdx]); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' }); };
+        // ---- 站点图标 / 浏览器封面：head 里已尽早套过一次，这里管设置与备份 ----
+        const SITE_ICON_KEY = 'liubai_site_icon';
+        const SITE_TITLE_KEY = 'liubai_site_title';
+        const defaultSiteIcon = window.__LB_DEFAULT_ICON__ || '';
+        const siteIcon = ref('');
+        const siteTitle = ref(document.title || '空境');
+        const siteIconHint = ref('');
+        let siteHintTimer = null;
+        const siteSay = (t) => { siteIconHint.value = t; clearTimeout(siteHintTimer); siteHintTimer = setTimeout(() => { siteIconHint.value = ''; }, 2600); };
+        const applySiteIcon = () => {
+            const href = siteIcon.value || defaultSiteIcon;
+            const type = siteIcon.value ? 'image/png' : 'image/svg+xml';
+            const a = document.getElementById('lbIcon'), b = document.getElementById('lbIconApple');
+            if (a) { a.href = href; a.type = type; }
+            if (b) { b.href = href; }
+            document.title = siteTitle.value || '空境';
+        };
+        const loadSiteIcon = () => {
+            try {
+                siteIcon.value = localStorage.getItem(SITE_ICON_KEY) || '';
+                siteTitle.value = localStorage.getItem(SITE_TITLE_KEY) || document.title || '空境';
+            } catch (e) {}
+            applySiteIcon();
+        };
+        const saveSiteTitle = () => {
+            try { localStorage.setItem(SITE_TITLE_KEY, String(siteTitle.value || '空境').slice(0, 16)); } catch (e) {}
+            applySiteIcon();
+        };
+        const setSiteIcon = (e) => {
+            const f = e.target.files && e.target.files[0];
+            e.target.value = '';
+            if (!f) return;
+            const fr = new FileReader();
+            fr.onload = (ev) => {
+                const img = new Image();
+                img.onload = () => {
+                    const c = document.createElement('canvas'); c.width = 192; c.height = 192;
+                    const ctx = c.getContext('2d');
+                    const side = Math.min(img.width, img.height);
+                    ctx.drawImage(img, (img.width - side) / 2, (img.height - side) / 2, side, side, 0, 0, 192, 192);
+                    let out = c.toDataURL('image/png');
+                    if (out.length > 220 * 1024) out = c.toDataURL('image/jpeg', 0.86);
+                    try { localStorage.setItem(SITE_ICON_KEY, out); }
+                    catch (err) { siteSay('这张太大存不进本地，换张小一点的'); return; }
+                    siteIcon.value = out;
+                    applySiteIcon();
+                    siteSay('换好了 ♡ 记得重新添加一次快捷方式');
+                };
+                img.onerror = () => siteSay('这张图读不出来');
+                img.src = ev.target.result;
+            };
+            fr.onerror = () => siteSay('没读到这张图');
+            fr.readAsDataURL(f);
+        };
+        const clearSiteIcon = () => {
+            try { localStorage.removeItem(SITE_ICON_KEY); } catch (e) {}
+            siteIcon.value = '';
+            applySiteIcon();
+            siteSay('回到默认图标了');
+        };
         // ================= [MOD-18] 心情手账 =================
         // 全程手动：不生成任何文字、不做自动总结，只提供纸、笔、贴纸和印章。
         const jbMoods = [
@@ -20597,13 +20743,25 @@ createApp({
         // ================= [MOD-07] 洞察：聊天统计 =================
         const statData = computed(() => {
             const total = messages.value.length;
-            if (!total) return { firstTime: '尚未涉足', hotWords: [] };
+            const zeroSpeech = { me: 0, them: 0, meChars: 0, themChars: 0, total: 0 };
+            if (!total) return { firstTime: '尚未涉足', hotWords: [], speech: zeroSpeech };
             const first = messages.value[0]?.timestamp ? new Date(messages.value[0].timestamp).toLocaleDateString() : '—';
             const allText = messages.value.filter(m => m.content && m.type === 'text').map(m => m.content).join('');
             const words = allText.match(/[\u4e00-\u9fa5]{2,4}/g) || [];
             const freq = {}; words.forEach(w => freq[w] = (freq[w]||0)+1);
             const hot = Object.entries(freq).map(([k,v]) => ({ text:k, count:v })).sort((a,b) => b.count - a.count).slice(0, 8);
-            return { firstTime: first, hotWords: hot };
+            // 言语占比 = 双方文字消息的字数；四舍五入后让两段合计恰好 100%，进度条不留缝
+            let meChars = 0, themChars = 0;
+            messages.value.forEach(m => {
+                if (!m || m.type !== 'text' || !m.content) return;
+                if (m.sender !== 'me' && m.sender !== 'them') return;
+                const n = String(m.content).replace(/\s+/g, '').length;
+                if (m.sender === 'me') meChars += n; else themChars += n;
+            });
+            const sum = meChars + themChars;
+            const mePct = sum ? Math.round(meChars / sum * 100) : 0;
+            const speech = { me: mePct, them: sum ? 100 - mePct : 0, meChars, themChars, total: sum };
+            return { firstTime: first, hotWords: hot, speech };
         });
 
         watch([showMorePanel, showStickerPanel, showSurveyPanel, showRedPacketModal, openedRP, currentView, mailboxView, watchShowMorePanel, watchShowStickerPanel, sleepView, companionView, () => mensSheet.open, weatherSide, weatherManageOpen], () => { nextTick(() => { if (window.lucide) lucide.createIcons(); }); });
@@ -20613,6 +20771,7 @@ createApp({
 
         onMounted(async () => {
             try { localStorage.removeItem('liubai_anniversary_string'); } catch (e) {}
+            loadSiteIcon();
 
             window.addEventListener('beforeunload', () => { cpNoiseStop();
                 try { localStorage.setItem('liubai_sync_settings', JSON.stringify(settings)); } catch (e) {}
@@ -20822,6 +20981,7 @@ mensFmtDate, mensHasRecord, mensToggleSymptom,
             sgPlayNow, sgLater, sgPlayLater, themPushSong, themSearchSong, themPickPlaylist,
             pickEmojiToSend, insertEmojiNow, sendEmojiAsCard, sendAutoReply, autoGrow,
             hpTopMain, hpTopSub, hpEditTop,
+            defaultSiteIcon, siteIcon, siteTitle, siteIconHint, setSiteIcon, clearSiteIcon, saveSiteTitle, applySiteIcon, loadSiteIcon,
             hpNote1, hpNote2, hpNoteSty, hpNoteStyle, hpEditNote, hpNoteDown, hpNoteUp,
             hpAv1, hpAv2, hpFileAv1, hpFileAv2,
             hpFile1, hpFile2, hpFile3, hpFileAnniv, hpUpload, hpFlip, hpSetDays, hpGo, hpTs, hpTe,
