@@ -2457,10 +2457,13 @@ html.dark.theme-xinghua .music-page {
 .dict-card-hint { font-size:10px; color:var(--color-muted); padding:0 4px 9px; }
 .dict-count { font-size:10px; color:var(--color-muted); white-space:nowrap; align-self:center; }
 .dict-filters { display:flex; flex-wrap:wrap; gap:6px; padding-bottom:4px; margin-bottom:10px; }
-.dict-card { display:flex; align-items:center; gap:10px; padding:10px 12px; margin-bottom:7px;
-  border-radius:12px; border:1px solid var(--color-border); background:var(--color-surface); cursor:pointer; }
-.dict-card:active { opacity:.75; }
-.dict-word { flex:1; min-width:0; font-size:13.5px; color:var(--color-text); letter-spacing:.04em; word-break:break-all; }
+.dict-card { display:flex; align-items:center; gap:7px; padding:10px 12px; margin-bottom:7px;
+  border-radius:12px; border:1px solid var(--color-border); background:var(--color-surface); cursor:default; }
+.dict-word { flex:1; min-width:0; font-size:13.5px; color:var(--color-text); letter-spacing:.04em; word-break:break-all; cursor:pointer; }
+.dict-act { width:24px; height:24px; flex:none; border-radius:7px; font-size:11px; line-height:1;
+  border:1px solid var(--color-border); background:var(--color-bg); color:var(--color-muted);
+  display:flex; align-items:center; justify-content:center; cursor:pointer; }
+.dict-act:active { opacity:.7; }
 .dict-tag { font-size:10px; padding:2px 8px; border-radius:9px; white-space:nowrap;
   border:1px solid var(--color-border); color:var(--color-muted); background:var(--color-bg); }
 .dict-tag.mine { border-color:var(--color-accent); color:var(--color-accent); }
@@ -3991,6 +3994,11 @@ html.dark textarea, html.dark input { color: #ffffff !important; caret-color: #f
   word-break:break-word; box-shadow:0 2px 10px rgba(0,0,0,.04); }
 .pat-tip b { color:var(--color-text); font-weight:600; }
 .pat-line { font-size:10.5px; color:var(--color-muted); line-height:1.7; }
+.pat-edit-row { display:flex; align-items:center; gap:8px; margin-bottom:9px; }
+.pat-fix { flex:none; width:34px; height:34px; border-radius:10px; display:flex; align-items:center; justify-content:center;
+  border:1px solid var(--color-border); background:var(--color-bg); color:var(--color-text); font-size:13px; }
+.pat-edit-input { flex:1; min-width:0; background:var(--color-bg); color:var(--color-text); font-size:13px;
+  border:1px solid var(--color-border); border-radius:11px; padding:8px 10px; outline:none; }
 .more-panel.gm-two .more-panel-btn { width:100%; }
 /* ===== 聊天页设置：三条杠抽屉 / 拉黑 ===== */
 .chat-set-overlay { position:absolute; inset:0; z-index:70; display:flex; justify-content:flex-end;
@@ -6313,19 +6321,20 @@ html, body { overscroll-behavior-y: none; }
     <main class="flex-1 overflow-y-auto px-4 pb-24 space-y-3">
         <template v-if="libraryTab === 'pat'">
             <div class="text-[10px] text-muted/80 leading-relaxed px-1 pb-1">
-                仿微信的居中小灰字。<br>
-                前缀固定「我 / 他」，后面整句你自己填：名字、动作、任意内容都行。<br>
-                点字卡＝他发（他…）；聊天页三个点 →「拍一拍」＝你发（我…）。
+                仿微信的居中小灰字。两边各写各的：前缀「我」「他」写死，后面自己填。<br>
+                点卡片＝他发他那行；聊天页三个点 →「拍一拍」＝你发我那行。
             </div>
             <div v-for="a in patAll" :key="a.id" class="rounded-xl p-3 flex flex-col gap-2 border" :style="{ backgroundColor: settings.darkMode ? '#171719' : '#ffffff', borderColor: settings.darkMode ? '#2a2a2a' : '#e2e2e2' }">
                 <div class="flex items-start justify-between gap-2">
-                    <div class="flex-1 cursor-pointer" style="min-width:0" @click="patPickFromLibrary(a.text)">
-                        <div class="text-[14px] leading-relaxed whitespace-pre-wrap" :style="{ color: settings.darkMode ? '#ffffff' : '#000000' }">{{ a.builtin ? '拍了拍' : a.text }}</div>
-                        <div class="pat-line mt-1.5">{{ patFormat(a.text, 'me') }}</div>
-                        <div class="pat-line">{{ patFormat(a.text, 'them') }}</div>
+                    <div class="flex-1 cursor-pointer" style="min-width:0" @click="patPickFromLibrary(a)">
+                        <div class="pat-line pat-line-me">{{ patFormat(a, 'me') }}</div>
+                        <div class="pat-line">{{ patFormat(a, 'them') }}</div>
                     </div>
                     <div class="flex items-center gap-1 shrink-0">
                         <span class="text-[10px] px-2 py-0.5 rounded-full bg-bg border border-border text-muted">{{ a.builtin ? '默认' : '自定义' }}</span>
+                        <button v-if="!a.builtin" @click="patOpenEditor(a)" title="改一改" class="p-1.5 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-muted"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                        </button>
                         <button v-if="!a.builtin" @click="patDelete(a.id)" class="p-1.5 transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
                         </button>
@@ -6460,6 +6469,7 @@ html, body { overscroll-behavior-y: none; }
                     </div>
                     <button class="qa-ask-btn" style="margin-bottom:0" @click="dictHeSend">让他现在拼一句 ♡</button>
                 </div>
+                <div class="dict-card-hint" style="padding-top:12px">点词＝改这一条；想造句点「拼」或上面那颗按钮。内置词也能改、也能删。</div>
 
                 <div class="qa-tools">
                     <input v-model="dictQuery" class="qa-search" placeholder="搜一搜词…">
@@ -6471,10 +6481,14 @@ html, body { overscroll-behavior-y: none; }
                     <button class="qa-chip" :class="{on: dictCat === 'mine'}" @click="dictCat = 'mine'">自建 {{ dictCustom.length }}</button>
                 </div>
 
-                <div v-for="w in dictShown" :key="w.id" class="dict-card" @click="dictHeSendWord(w)">
-                    <span class="dict-word">{{ w.t }}</span>
-                    <span class="dict-tag" :class="{ mine: w.mine }">{{ w.mine ? '自建' : w.c }}</span>
-                    <button v-if="w.mine" class="dict-del" @click.stop="dictDel(w.id)" title="删掉这个词">×</button>
+                <div v-for="w in dictShown" :key="w.id" class="dict-card">
+                    <span class="dict-word" @click="dictOpenEdit(w)">{{ w.t }}</span>
+                    <span class="dict-tag" :class="{ mine: w.mine }">{{ w.mine ? '自建' : (w.edited ? '已改' : w.c) }}</span>
+                    <button class="dict-act" @click="dictOpenEdit(w)" title="改一改">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                    </button>
+                    <button class="dict-act dict-act-word" @click="dictHeSendWord(w)" title="用这个词拼一句">拼</button>
+                    <button class="dict-del" @click="dictDelAny(w)" title="删掉这个词">×</button>
                 </div>
                 <button v-if="!dictQuery.trim() && dictShown.length < dictFilteredCount" class="qa-ask-btn" @click="dictLimit += 400">再显示 400 个 · 还有 {{ dictFilteredCount - dictShown.length }} 个</button>
                 <div v-if="dictShown.length === 0" class="dict-empty">没找到这个词<br>换个字搜搜，或自己加一个</div>
@@ -6484,7 +6498,7 @@ html, body { overscroll-behavior-y: none; }
     </main>
 
     <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-bg via-bg to-transparent flex gap-3">
-        <button v-if="libraryTab === 'pat'" @click="patOpenEditor" class="flex-1 py-3 bg-accent text-bg font-medium rounded-xl text-[14px] shadow-sm">
+        <button v-if="libraryTab === 'pat'" @click="patOpenEditor()" class="flex-1 py-3 bg-accent text-bg font-medium rounded-xl text-[14px] shadow-sm">
             + 新增拍一拍文案
         </button>
         <button v-else-if="libraryTab === 'cards' || libraryTab === 'emoji'" @click="openCardEditor(null, activeGroupFilter !== 'all' && activeGroupFilter !== 'ungrouped' ? activeGroupFilter : '')" class="flex-1 py-3 bg-accent text-bg font-medium rounded-xl text-[14px] shadow-sm">
@@ -6536,6 +6550,22 @@ html, body { overscroll-behavior-y: none; }
         </div>
     </div>
 
+    <div v-if="dictEditOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4" @click.self="dictEditOpen = false">
+        <div class="bg-surface w-full max-w-sm rounded-2xl p-5 border border-border shadow-xl">
+            <h3 class="text-text text-[15px] font-medium mb-1">改这个词</h3>
+            <p class="text-[10px] text-muted leading-relaxed mb-3">改完立刻生效；拼句时也会用新词。内置词改写只存你这一份，不动原词库。</p>
+            <input v-model="dictEditText" @keyup.enter="dictSaveEdit" type="text" maxlength="24" class="w-full bg-bg text-text text-[14px] rounded-xl p-3 outline-none border border-border mb-3" placeholder="写个词">
+            <label class="block text-[12px] text-muted mb-2">归到哪一类</label>
+            <select v-model="dictEditCat" class="w-full bg-bg text-text text-[13px] rounded-lg p-2.5 outline-none border border-border mb-4">
+                <option v-for="c in dictCats" :key="c" :value="c">{{ c }}</option>
+            </select>
+            <div class="flex gap-2">
+                <button @click="dictEditOpen = false" class="flex-1 py-2.5 bg-bg border border-border text-text rounded-lg text-[13px]">取消</button>
+                <button @click="dictSaveEdit" class="flex-1 py-2.5 bg-accent text-bg rounded-lg text-[13px] font-medium">存好</button>
+            </div>
+        </div>
+    </div>
+
     <div v-if="showGroupManager" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
         <div class="bg-surface w-full max-w-sm rounded-2xl p-5 border border-border shadow-xl max-h-[80vh] flex flex-col">
             <h3 class="text-text text-[15px] font-medium mb-4 flex items-center gap-2"><i data-lucide="folder-cog" class="w-4 h-4 text-accent"></i> 分组管理</h3>
@@ -6561,12 +6591,22 @@ html, body { overscroll-behavior-y: none; }
         </div>
     </div>
 
-    <div v-if="patEditorOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+    <div v-if="patEditorOpen" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4" @click.self="patEditorOpen = false">
         <div class="bg-surface w-full max-w-sm rounded-2xl p-5 border border-border shadow-xl">
-            <h3 class="text-text text-[15px] font-medium mb-3">新增拍一拍文案</h3>
-            <p class="text-[10px] text-muted/80 leading-relaxed mb-3">只写「干了什么」：他发 xx＋动作＋你；你发 你＋动作＋xx，xx 自动换成他的名字。<br>例如：摸了摸头、轻轻抱了抱、戳了戳脸</p>
-            <input v-model="patDraft" @keyup.enter="patSaveCard" type="text" maxlength="60" class="w-full bg-bg text-text text-[14px] rounded-xl p-3 outline-none border border-border mb-2" placeholder="例如：拍了拍阿枝的肩 / 揉了揉眼睛 / 在发呆">
-            <div class="text-[10px] text-muted mb-4 leading-relaxed">只填后半句就行，前面会自动加「我」或「他」；名字、动作、任意内容都能写，不用自己写主语。</div>
+            <h3 class="text-text text-[15px] font-medium mb-2">{{ patEditingId ? '改这条拍一拍' : '新增拍一拍文案' }}</h3>
+            <p class="text-[10px] text-muted/80 leading-relaxed mb-3">两边分开填，前面的「我」「他」写死，后面整句你自己写。空着的那边默认「拍了拍」。</p>
+            <div class="pat-edit-row">
+                <span class="pat-fix">我</span>
+                <input v-model="patDraftMe" @keyup.enter="patSaveCard" type="text" maxlength="60" class="pat-edit-input" placeholder="拍一拍对方 / 揉了揉眼睛">
+            </div>
+            <div class="pat-edit-row">
+                <span class="pat-fix">他</span>
+                <input v-model="patDraftThem" @keyup.enter="patSaveCard" type="text" maxlength="60" class="pat-edit-input" placeholder="摸了摸我 / 在发呆，没理人">
+            </div>
+            <div class="text-[10px] text-muted leading-relaxed mb-4">
+                你发 → {{ patFormat({ me: patDraftMe || '拍了拍', them: patDraftThem || '拍了拍' }, 'me') }}<br>
+                他发 → {{ patFormat({ me: patDraftMe || '拍了拍', them: patDraftThem || '拍了拍' }, 'them') }}
+            </div>
             <div class="flex gap-2">
                 <button @click="patEditorOpen = false" class="flex-1 py-2.5 bg-bg border border-border text-text rounded-lg text-[13px]">取消</button>
                 <button @click="patSaveCard" class="flex-1 py-2.5 bg-accent text-bg rounded-lg text-[13px] font-medium">保存</button>
@@ -7136,11 +7176,11 @@ html, body { overscroll-behavior-y: none; }
                     <h3 class="text-text text-[15px] font-medium tracking-widest serif-text">拍一拍</h3>
                     <button @click="patPickerOpen = false" class="p-1 text-muted hover:text-text"><i data-lucide="x" class="w-4 h-4"></i></button>
                 </div>
-                <p class="text-[10px] text-muted/80 leading-relaxed mb-3">选一句，聊天里留下一条小灰字：你【干了什么】xx（xx＝{{ profiles.them.name }}）</p>
+                <p class="text-[10px] text-muted/80 leading-relaxed mb-3">选一句，聊天里留下一条小灰字：你发的那半句，前面写死一个「我」。</p>
                 <div class="flex-1 overflow-y-auto space-y-2 pr-1 mb-3">
-                    <button v-for="a in patAll" :key="a.id" @click="patPickFromChat(a.text)" class="w-full text-left p-3 rounded-xl border border-border bg-bg">
-                        <span class="block text-[13px] text-text">{{ patFormat(a.text, 'me') }}</span>
-                        <span class="block text-[10px] text-muted mt-1">{{ a.builtin ? '默认 · 拍了拍' : '自定义 · ' + a.text }}</span>
+                    <button v-for="a in patAll" :key="a.id" @click="patPickFromChat(a)" class="w-full text-left p-3 rounded-xl border border-border bg-bg">
+                        <span class="block text-[13px] text-text">{{ patFormat(a, 'me') }}</span>
+                        <span class="block text-[10px] text-muted mt-1">{{ a.builtin ? '默认' : '自定义' }} · 他那边：{{ patFormat(a, 'them') }}</span>
                     </button>
                 </div>
                 <button @click="patGoManage" class="w-full py-2.5 bg-bg border border-border text-text rounded-lg text-[13px] mb-2">＋ 去语料库添加文案</button>
@@ -10551,46 +10591,64 @@ createApp({
         const showCardEditor = ref(false);
         const editingCard = ref({ id: '', text: '', groupId: '' });
 
-        // ================= [MOD-22] 拍一拍文案（语料库单开一页 / 三个点入口） =================
-        // 自定义文案存「后半句」整句；发出时只补一个前缀「我 / 他」，别的都不自动加
+        // ================= [MOD-22] 拍一拍文案（两边分开填 / 语料库一页 / 三个点入口） =================
+        // 一条文案拆成两份：写死前缀「我」＋你填的后半句、写死前缀「他」＋你填的后半句，
+        // 两边各写各的，不再共用同一句话；旧存档里只有 text 的会自动拆成两边一样。
         const PAT_DB_KEY = 'liubai_pat_actions_db';
         const patActions = ref([]);
         const patEditorOpen = ref(false);
-        const patDraft = ref('');
+        const patEditingId = ref('');
+        const patDraftMe = ref('');
+        const patDraftThem = ref('');
         const patPickerOpen = ref(false);
         const patAll = computed(() => [
-            { id: '__pat_default__', text: '拍了拍', builtin: true },
-            ...patActions.value.map(a => ({ id: a.id, text: a.text, builtin: false }))
+            { id: '__pat_default__', me: '拍了拍', them: '拍了拍', builtin: true },
+            ...patActions.value.map(a => ({ id: a.id, me: a.me, them: a.them, builtin: false }))
         ]);
-        // 「我xxx / 他xxx」：只加主语，后面整句原样用你填的，名字、动作、随便什么都能写
-        const patFormat = (action, by) => {
-            const act = String(action || '拍了拍').trim();
-            return (by === 'them' ? '他' : '我') + act;
+        const patTail = (a, by) => {
+            const x = (typeof a === 'string') ? { me: a, them: a } : (a || {});
+            return String((by === 'them' ? x.them : x.me) || '拍了拍').trim() || '拍了拍';
         };
+        const patFormat = (a, by) => (by === 'them' ? '他' : '我') + patTail(a, by);
         const patSaveDB = () => { try { localforage.setItem(PAT_DB_KEY, JSON.parse(JSON.stringify(patActions.value))); } catch (e) {} };
         const patLoad = async () => {
             try {
                 const v = await localforage.getItem(PAT_DB_KEY);
                 if (Array.isArray(v)) patActions.value = v
-                    .filter(a => a && typeof a.text === 'string' && a.text.trim())
+                    .filter(a => a && (typeof a.me === 'string' || typeof a.them === 'string' || typeof a.text === 'string'))
                     .slice(0, 100)
-                    .map(a => ({ id: String(a.id || genId()), text: a.text.trim().slice(0, 60) }));
+                    .map(a => ({
+                        id: String(a.id || genId()),
+                        me: String(a.me || a.text || '拍了拍').trim().slice(0, 60),
+                        them: String(a.them || a.text || '拍了拍').trim().slice(0, 60)
+                    }));
             } catch (e) {}
         };
-        const patSend = (action, by) => {
-            const text = patFormat(action, by);
-            themPush({ id: genId(), sender: by === 'them' ? 'them' : 'me', type: 'pat', content: text, timestamp: Date.now(), patAction: String(action || '').trim(), patBy: by });
+        const patSend = (a, by) => {
+            const tail = patTail(a, by);
+            themPush({ id: genId(), sender: by === 'them' ? 'them' : 'me', type: 'pat', content: patFormat(a, by), timestamp: Date.now(), patAction: tail, patBy: by });
             try { playTone(by === 'them' ? 'recv' : 'send'); } catch (e) {}
             scrollToBottom();
             saveAll();
         };
-        const patOpenEditor = () => { patDraft.value = ''; patEditorOpen.value = true; };
+        const patOpenEditor = (a) => {
+            patEditingId.value = (a && !a.builtin) ? a.id : '';
+            patDraftMe.value = a ? patTail(a, 'me') : '';
+            patDraftThem.value = a ? patTail(a, 'them') : '';
+            patEditorOpen.value = true;
+        };
         const patSaveCard = () => {
-            const t = (patDraft.value || '').trim().replace(/\s+/g, ' ').slice(0, 60);
-            if (!t) { patEditorOpen.value = false; return; }
-            if (t === '拍了拍' || patActions.value.some(a => a.text === t)) { alert('这条文案已经有了。'); return; }
-            patActions.value.push({ id: genId(), text: t });
-            patSaveDB(); patDraft.value = ''; patEditorOpen.value = false;
+            const me = (patDraftMe.value || '').trim().replace(/\s+/g, ' ').slice(0, 60) || '拍了拍';
+            const them = (patDraftThem.value || '').trim().replace(/\s+/g, ' ').slice(0, 60) || '拍了拍';
+            if (patEditingId.value) {
+                const i = patActions.value.findIndex(a => a.id === patEditingId.value);
+                if (i >= 0) patActions.value[i] = { id: patActions.value[i].id, me, them };
+            } else {
+                if (patActions.value.some(a => a.me === me && a.them === them)) { alert('这条文案已经有了。'); return; }
+                patActions.value.push({ id: genId(), me, them });
+            }
+            patSaveDB();
+            patDraftMe.value = ''; patDraftThem.value = ''; patEditingId.value = ''; patEditorOpen.value = false;
             nextTick(() => { if (window.lucide) lucide.createIcons(); });
         };
         const patDelete = (id) => {
@@ -10598,9 +10656,9 @@ createApp({
             patActions.value = patActions.value.filter(a => a.id !== id);
             patSaveDB();
         };
-        const patPickFromLibrary = (action) => { patSend(action, 'them'); switchView('chat'); };
+        const patPickFromLibrary = (a) => { patSend(a, 'them'); switchView('chat'); };
         const patOpenPicker = () => { showMorePanel.value = false; patPickerOpen.value = true; };
-        const patPickFromChat = (action) => { patPickerOpen.value = false; patSend(action, 'me'); };
+        const patPickFromChat = (a) => { patPickerOpen.value = false; patSend(a, 'me'); };
         const patGoManage = () => { patPickerOpen.value = false; libraryTab.value = 'pat'; switchView('library'); };
 
 
@@ -13356,6 +13414,28 @@ createApp({
 };;;;;
 
         const dictCustom = ref([]);
+        // 内置词也能改、也能删：改写覆盖按内置 id 存，删除记进隐藏表；原词库数据不动
+        const DICT_EDITS_KEY = 'liubai_dict_edits_db';
+        const dictEdits = ref({});        // { 'b_名词_3': { t:'晚风', c:'名词' } }
+        const dictHidden = ref([]);       // 被删掉的内置词 id
+        const dictEditOpen = ref(false), dictEditId = ref(''), dictEditMine = ref(false);
+        const dictEditText = ref(''), dictEditCat = ref('名词');
+        const dictSaveEdits = () => { try { localforage.setItem(DICT_EDITS_KEY, JSON.parse(JSON.stringify({ edits: dictEdits.value, hidden: dictHidden.value }))); } catch (e) {} };
+        const dictEditsLoad = async () => {
+            try {
+                const v = await localforage.getItem(DICT_EDITS_KEY);
+                if (v && typeof v === 'object') {
+                    const e = (v.edits && typeof v.edits === 'object') ? v.edits : {};
+                    const clean = {};
+                    Object.keys(e).forEach(k => {
+                        const x = e[k];
+                        if (x && typeof x.t === 'string' && x.t.trim()) clean[k] = { t: x.t.trim().slice(0, 24), c: dictCats.includes(x.c) ? x.c : '名词' };
+                    });
+                    dictEdits.value = clean;
+                    dictHidden.value = Array.isArray(v.hidden) ? v.hidden.filter(x => typeof x === 'string').slice(0, 3000) : [];
+                }
+            } catch (e) {}
+        };
         const dictQuery = ref(''), dictCat = ref('all');
         const dictLimit = ref(160);   // 词库变大后分批渲染，别一次铺一千多个格子
         watch([dictCat, dictQuery], () => { dictLimit.value = 160; });
@@ -13364,9 +13444,35 @@ createApp({
         let dictToastTimer = null;
         const dictAll = computed(() => {
             const out = [];
-            dictCats.forEach(c => (DICT_BUILTIN[c] || []).forEach((t, i) => out.push({ id: 'b_' + c + '_' + i, t, c, mine: false })));
+            const hid = new Set(dictHidden.value);
+            dictCats.forEach(c => (DICT_BUILTIN[c] || []).forEach((t, i) => {
+                const id = 'b_' + c + '_' + i;
+                if (hid.has(id)) return;
+                const e = dictEdits.value[id];
+                out.push({ id, t: e ? e.t : t, c: e ? e.c : c, mine: false, edited: !!e });
+            }));
             dictCustom.value.forEach(w => { if (w && typeof w.t === 'string' && w.t.trim()) out.push({ id: w.id, t: w.t.trim(), c: dictCats.includes(w.c) ? w.c : '名词', mine: true }); });
             return out;
+        });
+        // 自动拼句也跟着改写/删除走：改过的用新词，删掉的不进句
+        const dictBuiltinById = (id) => {
+            const m = /^b_(.+)_(\d+)$/.exec(String(id || ''));
+            if (!m) return '';
+            const arr = DICT_BUILTIN[m[1]] || [];
+            return arr[Number(m[2])] || '';
+        };
+        const dictHiddenTexts = computed(() => {
+            const s = new Set();
+            dictHidden.value.forEach(id => { const t = dictBuiltinById(id); if (t) s.add(t); });
+            return s;
+        });
+        const dictRenames = computed(() => {
+            const o = {};
+            Object.keys(dictEdits.value).forEach(id => {
+                const old = dictBuiltinById(id), nw = dictEdits.value[id].t;
+                if (old && nw && old !== nw) o[old] = nw;
+            });
+            return o;
         });
         const dictFilteredCount = computed(() => {
             let arr = dictAll.value;
@@ -13413,14 +13519,50 @@ createApp({
             dictCustom.value = dictCustom.value.filter(w => w.id !== id);
             dictSave();
         };
+        const dictOpenEdit = (w) => {
+            if (!w) return;
+            dictEditId.value = w.id; dictEditMine.value = !!w.mine;
+            dictEditText.value = w.t;
+            dictEditCat.value = dictCats.includes(w.c) ? w.c : '名词';
+            dictEditOpen.value = true;
+        };
+        const dictSaveEdit = () => {
+            const t = (dictEditText.value || '').trim().replace(/\s+/g, ' ').slice(0, 24);
+            if (!t) { dictEditOpen.value = false; return; }
+            const c = dictCats.includes(dictEditCat.value) ? dictEditCat.value : '名词';
+            if (dictEditMine.value) {
+                const w = dictCustom.value.find(x => x.id === dictEditId.value);
+                if (w) { w.t = t; w.c = c; dictSave(); }
+            } else {
+                dictEdits.value = Object.assign({}, dictEdits.value, { [dictEditId.value]: { t, c } });
+                dictSaveEdits();
+            }
+            dictEditOpen.value = false;
+            dictSay('改好了');
+        };
+        const dictDelAny = (w) => {
+            if (!w || !confirm('从词典里删掉这个词？')) return;
+            if (w.mine) {
+                dictCustom.value = dictCustom.value.filter(x => x.id !== w.id);
+                dictSave();
+            } else {
+                dictHidden.value = Array.from(new Set(dictHidden.value.concat([w.id])));
+                const e = Object.assign({}, dictEdits.value);
+                delete e[w.id];
+                dictEdits.value = e;
+                dictSaveEdits();
+            }
+            dictSay('删掉了');
+        };
         // 词数不给固定档：每轮重新掷一次 1~4，纯粹随机
         const dictCountNow = () => 1 + Math.floor(Math.random() * 4);
         const dictRateNow = () => Math.max(0, Math.min(100, Number(settings.dictRate == null ? 20 : settings.dictRate)));
         // 自动拼句只从安全子集里取（处所名词 / 短语气词），词典页仍展示全量
         const dictPickCat = (c) => {
             const limit = DICT_SAFE[c];
-            const pool = limit && limit.length ? limit : dictAll.value.filter(w => w.c === c).map(w => w.t);
-            return pool.length ? pool[Math.floor(Math.random() * pool.length)] : '';
+            const base = limit && limit.length ? limit : dictAll.value.filter(w => w.c === c).map(w => w.t);
+            const pool = base.map(t => dictRenames.value[t] || t).filter(t => !dictHiddenTexts.value.has(t));
+            return pool.length ? pool[Math.floor(Math.random() * pool.length)] : (base.length ? base[0] : '');
         };
         // 「物」和「处置」必须来自同一语义组，才会出现「把水倒好」「把衣服晾上」，而不是「把菜挂好」
         const DICT_PAIR_GROUP = [
@@ -18919,6 +19061,7 @@ createApp({
                 await patLoad();
                 await rdLoad();
                 await dictLoad();
+                await dictEditsLoad();
                 const rsDb = await localforage.getItem('liubai_replySettings_db');
                 if (rsDb) {
                     if (typeof rsDb.replyMinDelay === 'number') replyMinDelay.value = rsDb.replyMinDelay;
@@ -19582,7 +19725,7 @@ createApp({
                 'liubai_sleep_session', 'liubai_sleep_summary',
                 'liubai_shop_wallet', 'liubai_shop_cart', 'liubai_shop_orders', 'liubai_shop_custom_db', 'liubai_shop_coupons', 'liubai_shop_fav_me', 'liubai_shop_fav_them',
                 'liubai_qa_bank_db', 'liubai_pat_actions_db', 'liubai_spark_db', 'liubai_weather_care_db', 'liubai_ai_global_db',
-                'liubai_reading_books_db', 'liubai_reading_state_db', 'liubai_dict_custom_db',
+                'liubai_reading_books_db', 'liubai_reading_state_db', 'liubai_dict_custom_db', 'liubai_dict_edits_db',
                 'liubai_reading_stats_db', 'liubai_menstrual_care_shift'
             ]);
             let removed = 0, freed = 0;
@@ -19795,7 +19938,7 @@ createApp({
                     'liubai_sleep_mix', 'liubai_sleep_recipes', 'liubai_sleep_chat', 'liubai_sleep_history', 'liubai_sleep_vols',
                     'liubai_sleep_session', 'liubai_sleep_summary',
                     'liubai_shop_wallet', 'liubai_shop_cart', 'liubai_shop_orders', 'liubai_shop_custom_db', 'liubai_shop_coupons', 'liubai_shop_fav_me', 'liubai_shop_fav_them', 'liubai_qa_bank_db', 'liubai_horary_db', 'liubai_pat_actions_db', 'liubai_spark_db', 'liubai_weather_care_db', 'liubai_ai_global_db',
-                    'liubai_reading_books_db', 'liubai_reading_state_db', 'liubai_dict_custom_db', 'liubai_reading_stats_db',
+                    'liubai_reading_books_db', 'liubai_reading_state_db', 'liubai_dict_custom_db', 'liubai_dict_edits_db', 'liubai_reading_stats_db',
                     'liubai_companion_custom_name', 'liubai_companion_msgs', 'liubai_companion_recent',
                     'liubai_menstrual_records', 'liubai_menstrual_cycle_avg', 'liubai_menstrual_duration_avg', 'liubai_menstrual_care_shift',
                 'liubai_hp_img1', 'liubai_hp_img2', 'liubai_hp_img3',
@@ -19876,6 +20019,7 @@ createApp({
                     readingState: await localforage.getItem('liubai_reading_state_db'),
                     readingStats: { totalSec: rdStats.totalSec, togetherSec: rdStats.togetherSec, opened: rdStats.opened.slice() },
                     dictCustom: await localforage.getItem('liubai_dict_custom_db'),
+                    dictEdits: await localforage.getItem('liubai_dict_edits_db'),
                     menstrualRecords: await localforage.getItem('liubai_menstrual_records'),
                     menstrualCycleAvg: await localforage.getItem('liubai_menstrual_cycle_avg'),
                     menstrualDurationAvg: await localforage.getItem('liubai_menstrual_duration_avg'),
@@ -20004,7 +20148,7 @@ createApp({
                               await localforage.setItem(AI_GLOBAL_KEY, JSON.parse(JSON.stringify(aiGlobalState)));
                           }
                           if (Array.isArray(data.qaBank)) await localforage.setItem('liubai_qa_bank_db', data.qaBank.filter(it => it && typeof it.q === 'string' && (Array.isArray(it.opts) || typeof it.a === 'string')));
-                          if (Array.isArray(data.patActions)) await localforage.setItem('liubai_pat_actions_db', data.patActions.filter(a => a && typeof a.text === 'string' && a.text.trim()).slice(0, 100));
+                          if (Array.isArray(data.patActions)) await localforage.setItem('liubai_pat_actions_db', data.patActions.filter(a => a && (typeof a.me === 'string' || typeof a.them === 'string' || typeof a.text === 'string')).slice(0, 100));
                           if (Array.isArray(data.readingBooks)) await localforage.setItem('liubai_reading_books_db', data.readingBooks.filter(b => b && typeof b.raw === 'string').slice(0, 60));
                           if (data.readingState && typeof data.readingState === 'object') await localforage.setItem('liubai_reading_state_db', data.readingState);
                           if (data.readingStats && typeof data.readingStats === 'object') {
@@ -20019,7 +20163,8 @@ createApp({
                               rdStats.togetherSec = _clean.togetherSec;
                               rdStats.opened = _clean.opened.slice();
                           }
-                          if (Array.isArray(data.dictCustom)) await localforage.setItem('liubai_dict_custom_db', data.dictCustom.filter(w => w && typeof w.t === 'string' && w.t.trim()).slice(0, 2000));
+                          if (Array.isArray(data.dictCustom)) await localforage.setItem('liubai_dict_custom_db', 'liubai_dict_edits_db', data.dictCustom.filter(w => w && typeof w.t === 'string' && w.t.trim()).slice(0, 2000));
+                          if (data.dictEdits && typeof data.dictEdits === 'object') await localforage.setItem('liubai_dict_edits_db', data.dictEdits);
                           if (data.menstrualRecords && typeof data.menstrualRecords === 'object') await localforage.setItem('liubai_menstrual_records', data.menstrualRecords);
                           if (typeof data.menstrualCycleAvg === 'number') await localforage.setItem('liubai_menstrual_cycle_avg', data.menstrualCycleAvg);
                           if (typeof data.menstrualDurationAvg === 'number') await localforage.setItem('liubai_menstrual_duration_avg', data.menstrualDurationAvg);
@@ -24355,7 +24500,7 @@ mood 写这一刻的气氛，例如 安静 / 开心 / 想你 / 下雨 / 深夜 /
         return {
             aiGlobalState, aiGlobalToday, aiGlobalOn, aiGlobalManual, aiGlobalTick, aiGlobalRun, aiGlobalLoad, aiGlobalSave, aiGlobalPass, aiGlobalAllowed, aiGlobalNote, aiGlobalResetDay, aiToast, aiSay, aiActionPrompt, aiParseAction, aiBuildContext, aiRequest, aiRunAction, aiStateBrief,
             showIntro, currentView, unreadCount, messages, inputText, isTyping, profiles, settings, replyGroups, emojiList, libraryTab, searchQuery, activeGroupFilter, showGroupManager, showCardEditor, editingCard, filteredCards,
-            patActions, patAll, patEditorOpen, patDraft, patPickerOpen, patFormat,
+            patActions, patAll, patEditorOpen, patEditingId, patDraftMe, patDraftThem, patPickerOpen, patFormat, patTail,
             patOpenEditor, patSaveCard, patDelete, patPickFromLibrary, patOpenPicker, patPickFromChat, patGoManage, patSend,
             openCardEditor, saveCard, deleteCard, toggleCardEnable, addNewGroup, editGroupName, deleteGroup, setGroupColor, totalCardsCount,
             globalWallpaper, chatWallpaper, customBubbleCSS, customFontUrl, setWallpaper, clearWallpaper, applyBubbleCSS, applyFontUrl,
@@ -24511,6 +24656,8 @@ mensFmtDate, mensHasRecord, mensToggleSymptom,
             MYCARD_CHOICES, myCardNow, myCardTurn, myCardRandomTurn, myCardPickLines, myCardPool,
             dictCats, dictAll, dictShown, dictFilteredCount, dictLimit, dictCustom, dictQuery, dictCat, dictAddOpen, dictAddText, dictAddCat, dictToast,
             dictDel, dictOpenAdd, dictSaveAdd, dictHeSend, dictHeSendWord, dictMakeLine, dictCountNow, dictLoad,
+            dictEdits, dictHidden, dictEditOpen, dictEditId, dictEditMine, dictEditText, dictEditCat,
+            dictOpenEdit, dictSaveEdit, dictDelAny, dictEditsLoad,
             rdBooks, rdMain, rdView, rdBook, rdBookId, rdPage, rdPageCount, rdPageText, rdPages, rdTogether,
             rdStats, rdFmtDur, rdSaveStats, rdMarkOpened,
             rdDanmuOn, rdDanmus, rdLineMode, rdDanmuSpeed, rdSpeedLabel, rdCycleDanmuSpeed, rdImportOpen, rdImportTab, rdImportTitle, rdImportAuthor, rdImportText, rdAppendId, rdBusy, rdErr, rdToast,
