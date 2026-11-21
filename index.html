@@ -1965,8 +1965,50 @@ html.dark.theme-xinghua .music-page {
 .music-page .vinyl-tonearm rect { fill:var(--vp-arm); }
 .music-page .vc-disc { color:rgba(var(--vp-ink), .42); }
 .music-page .vp-spin { border:2px solid rgba(var(--vp-ink), .22); border-top-color:rgb(var(--vp-ink)); }
+/* ===== 磁带页留白装饰：极淡细线 / 竖排小字 / 虚线光环，跟着 --vp-ink 自动翻深浅与主题 ===== */
+.vd-orn { position:absolute; left:0; right:0; top:0; height:252px; pointer-events:none; z-index:0; }
+.vd-orn-top { position:absolute; top:2px; left:50%; transform:translateX(-50%);
+      display:flex; align-items:center; gap:9px; white-space:nowrap; }
+.vd-orn-top span { position:relative; display:block; width:32px; height:1px; background:rgba(var(--vp-ink),.17); }
+.vd-orn-top span::before { content:''; position:absolute; top:-2px; width:5px; height:5px;
+      border:1px solid rgba(var(--vp-ink),.24); transform:rotate(45deg); }
+.vd-orn-top span:first-child::before { right:-2px; }
+.vd-orn-top span:last-child::before { left:-2px; }
+.vd-orn-top em { font-style:normal; font-family:'Noto Serif SC','Noto Serif SC Offline',serif;
+      font-size:9px; letter-spacing:.2em; color:rgba(var(--vp-ink),.40); }
+.vd-orn-ring { position:absolute; top:15px; left:50%; transform:translateX(-50%);
+      width:228px; height:228px; border-radius:50%;
+      border:1px dashed rgba(var(--vp-ink),.15);
+      box-shadow:0 0 0 6px rgba(var(--vp-ink),.018), inset 0 0 26px rgba(var(--vp-ink),.028); }
+.vd-orn-ring::after { content:''; position:absolute; inset:9px; border-radius:50%;
+      border:1px solid rgba(var(--vp-ink),.05); }
+.vd-orn-side { position:absolute; top:74px; display:flex; flex-direction:column;
+      align-items:center; gap:8px; }
+.vd-fig { display:block; width:20px; height:22px; color:rgba(var(--vp-ink),.32);
+      filter:drop-shadow(0 0 3px rgba(var(--vp-ink),.07)); }
+.vd-fig svg { width:100%; height:100%; display:block; }
+.vd-orn-side.right .vd-fig { color:rgba(var(--vp-ink),.28); }
+.vd-dot { position:absolute; width:3px; height:3px; border-radius:50%;
+      background:rgba(var(--vp-ink),.28); }
+.vd-dot:nth-of-type(even) { width:2px; height:2px; background:var(--color-accent); opacity:.45; }
+/* 底部一小段五线谱细线，收住整块装饰 */
+.vd-score { position:absolute; bottom:4px; left:50%; transform:translateX(-50%);
+      display:flex; flex-direction:column; gap:3px; align-items:center; }
+.vd-score span { display:block; height:1px; background:rgba(var(--vp-ink),.13); }
+.vd-score span:nth-child(1) { width:54px; }
+.vd-score span:nth-child(2) { width:38px; }
+.vd-score span:nth-child(3) { width:22px; }
+.vd-orn-side.left { left:14px; }
+.vd-orn-side.right { right:14px; }
+.vd-orn-side b { writing-mode:vertical-rl; font-weight:400;
+      font-family:'Noto Serif SC','Noto Serif SC Offline',serif;
+      font-size:9px; letter-spacing:.30em; color:rgba(var(--vp-ink),.34); white-space:nowrap; }
+.vd-orn-side i { display:block; width:1px; height:24px;
+      background:linear-gradient(rgba(var(--vp-ink),.22), rgba(var(--vp-ink),0)); }
+.vd-orn-side em { font-style:normal; font-size:9px; color:var(--color-accent); opacity:.5; }
+@media (min-width:400px) { .vd-orn-ring { width:248px; height:248px; } }
 /* ============ 黑胶唱片播放器 ============ */
-.vinyl-deck { position:relative; width:100%; max-width:360px; margin:0 auto; display:flex; flex-direction:column; align-items:center; padding-top:8px; }
+.vinyl-deck { position:relative; width:100%; max-width:360px; margin:0 auto; display:flex; flex-direction:column; align-items:center; padding-top:24px; }
 .vinyl-shaft { position:relative; width:210px; height:210px; flex-shrink:0; }
 @media (min-width: 400px) { .vinyl-shaft { width:230px; height:230px; } }
 .vinyl-tonearm { position:absolute; top:-6px; right:0px; width:88px; height:120px; z-index:15; transform-origin:16px 16px; transform:rotate(28deg); transition:transform .6s cubic-bezier(.45,1.6,.5,1); pointer-events:none; }
@@ -2115,6 +2157,59 @@ html.dark.theme-xinghua .music-page {
 .shop-order-ship .o-sub { font-size:9.5px; color:var(--color-muted); line-height:1.5; }
 .shop-order-ship .o-go { width:19px; height:19px; flex:none; color:var(--color-muted); }
 .shop-order-ship .o-go svg { width:100%; height:100%; display:block; }
+
+/* ===== 商品展览：原站圆角白卡 / 细线 / 衬线小字 / 主题变量 ===== */
+.gal-intro { position:relative; text-align:center; padding:14px 12px 16px; margin-bottom:14px;
+      border:1px solid var(--color-border); border-radius:18px; background:var(--color-surface); }
+.gal-intro::before, .gal-intro::after { content:''; position:absolute; top:50%; width:26px; height:1px;
+      background:var(--color-border); }
+.gal-intro::before { left:14px; } .gal-intro::after { right:14px; }
+.gal-intro-star { display:block; font-size:10px; color:var(--color-accent); opacity:.65; margin-bottom:6px; }
+.gal-intro-t { font-size:14px; letter-spacing:.12em; color:var(--color-text); }
+.gal-intro-s { font-size:10px; color:var(--color-muted); margin-top:6px; letter-spacing:.04em; }
+.gal-tabs { display:flex; gap:6px; padding:3px; border:1px solid var(--color-border);
+      border-radius:999px; background:var(--color-bg); margin-bottom:16px; }
+.gal-tabs button { flex:1; padding:8px 0; border:0; border-radius:999px; background:transparent;
+      color:var(--color-muted); font-size:11px; letter-spacing:.08em; cursor:pointer; font-family:inherit; }
+.gal-tabs button em { font-style:normal; font-size:9px; opacity:.7; margin-left:3px; }
+.gal-tabs button.on { background:var(--color-surface); color:var(--color-text);
+      box-shadow:0 1px 5px rgba(0,0,0,.06); font-weight:600; }
+.gal-sec-h { display:flex; align-items:center; gap:10px; margin:0 2px 10px; }
+.gal-sec-h span { flex:1; height:1px; background:var(--color-border); }
+.gal-sec-h b { font-family:var(--font-serif, Georgia, 'Songti SC', serif); font-weight:400;
+      font-size:10px; letter-spacing:.22em; color:var(--color-muted); }
+.gal-list { display:flex; flex-direction:column; gap:10px; }
+.gal-card { border:1px solid var(--color-border); border-radius:16px; background:var(--color-surface);
+      padding:12px 13px 11px; box-shadow:0 2px 10px rgba(0,0,0,.025); }
+.gal-top { display:flex; align-items:center; justify-content:space-between; gap:8px;
+      margin-bottom:10px; }
+.gal-no { font-family:var(--font-serif, Georgia, 'Songti SC', serif); font-size:10px;
+      letter-spacing:.14em; color:var(--color-muted); }
+.gal-date { font-size:9px; color:var(--color-muted); letter-spacing:.03em;
+      font-variant-numeric:tabular-nums; }
+.gal-main { display:flex; align-items:center; gap:11px; }
+.gal-art { flex:none; width:46px; height:46px; border-radius:13px; display:flex;
+      align-items:center; justify-content:center; color:var(--color-text);
+      background:var(--color-bg); border:1px solid var(--color-border); overflow:hidden; }
+.gal-art svg { width:28px; height:28px; display:block; }
+.gal-art .shop-art-emoji span { font-size:25px; }
+.gal-art .shop-art-photo { width:100%; height:100%; object-fit:cover; border-radius:12px; }
+.gal-meta { flex:1; min-width:0; }
+.gal-name { font-size:13.5px; color:var(--color-text); letter-spacing:.04em;
+      overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.gal-from { font-size:9.5px; color:var(--color-muted); margin-top:4px; letter-spacing:.04em; }
+.gal-mark { flex:none; font-size:10px; color:var(--color-accent); opacity:.55; }
+.gal-quote { display:flex; align-items:center; gap:8px; margin-top:11px;
+      padding-top:9px; border-top:1px solid var(--color-border); }
+.gal-quote span { flex:none; width:9px; height:1px; background:var(--color-border); }
+.gal-quote p { flex:1; min-width:0; margin:0; font-size:10.5px; line-height:1.75;
+      color:var(--color-muted); letter-spacing:.03em; text-align:center; }
+.gal-quote p::before { content:'「'; color:var(--color-accent); opacity:.7; }
+.gal-quote p::after { content:'」'; color:var(--color-accent); opacity:.7; }
+.gal-empty { padding:34px 0; }
+.gal-foot { text-align:center; font-size:9px; letter-spacing:.1em; color:var(--color-muted);
+      opacity:.7; margin-top:18px; }
+.dark .gal-card { box-shadow:0 2px 10px rgba(0,0,0,.22); }
 
 /* ===== 我的：主页式资料卡 ===== */
 .shop-me-page { position:absolute; inset:0; z-index:30; display:flex; flex-direction:column; background:var(--color-bg); }
@@ -2901,6 +2996,13 @@ html.dark .qa-tag.sys { color:#BEE7CD !important; background:rgba(159,211,180,.1
 .vc-stage { position:relative; display:flex; flex-direction:column; align-items:center; }
 .vc-under { position:absolute; top:100%; left:-10px; right:-10px; transform:translateY(calc(-6vh + 14px)); display:flex; flex-direction:column; align-items:center; gap:10px; pointer-events:none; z-index:2; }
 .vc-under > * { pointer-events:auto; }
+.vc-under-row { display:flex; align-items:center; justify-content:center; gap:7px; }
+.vc-log-btn { display:inline-flex; align-items:center; gap:5px; padding:4px 10px; border-radius:999px;
+    border:1px solid var(--color-border); background:var(--color-surface); color:var(--color-muted);
+    font-size:9.5px; letter-spacing:.06em; cursor:pointer; white-space:nowrap; font-family:inherit;
+    box-shadow:0 2px 8px rgba(0,0,0,.05); }
+.vc-log-btn svg { color:var(--cp-primary); }
+.vc-log-btn:active { background:var(--cp-primary-soft); color:var(--cp-primary); }
 .vc-listen { display:inline-flex; align-items:center; gap:6px; border:0; background:transparent; color:var(--color-muted); font-size:10px; letter-spacing:.08em; padding:3px 8px; cursor:pointer; opacity:.75; white-space:nowrap; }
 .vc-listen i { width:5px; height:5px; border-radius:50%; background:var(--color-border); flex:none; }
 .vc-listen.on i { background:var(--color-accent); animation:videoPulse 2.4s ease-in-out infinite; }
@@ -2933,6 +3035,84 @@ html.dark .qa-tag.sys { color:#BEE7CD !important; background:rgba(159,211,180,.1
   .vc-reply { padding:7px 11px; }
   .vc-reply-text { -webkit-line-clamp:1; }
 }
+/* ===== 站内弹窗：圆角白卡 / 细线 / 衬线标题 / 软底选中，深色自动翻 ===== */
+.lb-mask { position:absolute; inset:0; z-index:200; background:rgba(18,22,30,.44);
+    display:flex; align-items:center; justify-content:center; padding:22px; }
+.lb-sheet { width:100%; max-width:340px; max-height:78vh; overflow-y:auto;
+    background:var(--color-surface); border:1px solid var(--color-border);
+    border-radius:18px; padding:14px 16px 16px;
+    box-shadow:0 16px 48px rgba(0,0,0,.20); scrollbar-width:thin; }
+.lb-bar { width:32px; height:3px; border-radius:3px; background:var(--color-border); margin:0 auto 12px; }
+.lb-h { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px; }
+.lb-t { font-family:var(--font-serif, Georgia, 'Songti SC', serif); font-size:13px;
+    letter-spacing:.16em; color:var(--color-text); }
+.lb-x { flex:none; width:26px; height:26px; border-radius:50%; border:1px solid var(--color-border);
+    background:var(--color-bg); color:var(--color-muted); display:flex; align-items:center;
+    justify-content:center; cursor:pointer; }
+.lb-msg { font-size:12px; line-height:1.8; color:var(--color-text); white-space:pre-wrap;
+    word-break:break-word; margin:4px 0 14px; letter-spacing:.02em; }
+.lb-inp { width:100%; box-sizing:border-box; padding:10px 12px; border-radius:10px;
+    border:1px solid var(--color-border); background:var(--color-bg); color:var(--color-text);
+    font-size:13px; outline:none; font-family:inherit; margin-bottom:12px; }
+.lb-inp::placeholder { color:var(--color-muted); opacity:.7; }
+.lb-opts { display:flex; flex-direction:column; margin:2px 0 8px; }
+.lb-opt { display:flex; align-items:center; justify-content:space-between; gap:10px;
+    padding:11px 2px; border-bottom:1px solid var(--color-border); cursor:pointer;
+    font-size:13px; color:var(--color-text); letter-spacing:.04em; }
+.lb-opt:last-child { border-bottom:0; }
+.lb-opt.on { color:var(--cp-primary); font-weight:600; }
+.lb-radio { flex:none; width:16px; height:16px; border-radius:50%;
+    border:1px solid var(--color-border); display:flex; align-items:center; justify-content:center; }
+.lb-radio i { width:8px; height:8px; border-radius:50%; background:transparent; }
+.lb-opt.on .lb-radio { border-color:var(--cp-primary); }
+.lb-opt.on .lb-radio i { background:var(--cp-primary); }
+.lb-acts { display:flex; gap:9px; margin-top:12px; }
+.lb-acts button { flex:1; padding:10px 0; border-radius:11px; font-size:11.5px;
+    letter-spacing:.16em; cursor:pointer; font-family:inherit; }
+.lb-cancel { border:1px solid var(--color-border); background:var(--color-bg); color:var(--color-muted); }
+.lb-ok { border:none; background:var(--cp-primary); color:#fff; }
+.lb-foot { text-align:center; font-size:9px; letter-spacing:.14em; color:var(--color-muted);
+    opacity:.65; margin-top:12px; }
+/* 单选触发器：替代原生 select，不弹系统大列表 */
+.lb-select { display:flex; align-items:center; justify-content:space-between; gap:8px;
+    width:100%; box-sizing:border-box; padding:10px 12px; border-radius:10px;
+    border:1px solid var(--color-border); background:var(--color-bg);
+    color:var(--color-text); font-size:13px; cursor:pointer; font-family:inherit; }
+.lb-select .lb-sel-v { flex:1; min-width:0; text-align:left; overflow:hidden;
+    text-overflow:ellipsis; white-space:nowrap; }
+.lb-select .lb-sel-a { flex:none; color:var(--color-muted); font-size:11px; }
+/* 本轮 / 历史通话记录 */
+.vc-log-sheet, .vc-his-sheet { max-width:360px; }
+.vc-log-meta { font-size:10px; color:var(--color-muted); letter-spacing:.06em;
+    text-align:center; margin:2px 0 12px; }
+.vc-log-list, .vc-his-list { max-height:48vh; overflow-y:auto; scrollbar-width:thin; }
+.vc-log-row { padding:9px 11px; margin-bottom:8px; border-radius:12px;
+    background:var(--color-bg); border:1px solid var(--color-border); }
+.vc-log-top { display:flex; align-items:center; gap:7px; font-size:9.5px;
+    color:var(--color-muted); letter-spacing:.08em; margin-bottom:5px; }
+.vc-log-top span { font-family:var(--font-serif, Georgia, 'Songti SC', serif); color:var(--color-text); }
+.vc-log-top em { font-style:normal; padding:1px 6px; border-radius:999px;
+    background:var(--cp-primary-soft); color:var(--cp-primary); font-size:9px; }
+.vc-log-top b { margin-left:auto; font-weight:400; font-variant-numeric:tabular-nums; }
+.vc-log-text { font-size:12.5px; line-height:1.65; color:var(--color-text); word-break:break-word; }
+.vc-log-empty { text-align:center; font-size:11px; line-height:2; color:var(--color-muted); padding:26px 0; }
+.vc-his-item { border:1px solid var(--color-border); border-radius:13px;
+    background:var(--color-bg); margin-bottom:9px; cursor:pointer; overflow:hidden; }
+.vc-his-top { display:flex; align-items:center; gap:10px; padding:11px; }
+.vc-his-ico { flex:none; width:30px; height:30px; border-radius:9px;
+    background:var(--cp-primary-soft); color:var(--cp-primary);
+    display:flex; align-items:center; justify-content:center; }
+.vc-his-main { flex:1; min-width:0; }
+.vc-his-l1 { font-size:11.5px; color:var(--color-text); letter-spacing:.04em; }
+.vc-his-l1 em { font-style:normal; font-size:9px; color:var(--cp-primary); margin-left:6px; }
+.vc-his-l1 em.miss { color:var(--color-muted); }
+.vc-his-l2 { font-size:9.5px; color:var(--color-muted); margin-top:3px; }
+.vc-his-go { flex:none; color:var(--color-muted); font-size:16px; }
+.vc-his-body { padding:0 11px 11px; border-top:1px solid var(--color-border); padding-top:10px; }
+.vc-his-del { display:block; width:100%; margin-top:8px; padding:8px 0; border-radius:9px;
+    border:1px solid var(--color-border); background:var(--color-surface);
+    color:var(--color-muted); font-size:10px; letter-spacing:.12em; cursor:pointer; font-family:inherit; }
+.dark .lb-sheet { box-shadow:0 16px 48px rgba(0,0,0,.55); }
 /* 红包封面提示 */
 .rp-open-tip { font-size:10px; color:var(--color-muted); text-align:center; margin:-4px 0 10px; letter-spacing:.02em; }
 .rp-cover-tip { font-size:10px; color:var(--color-muted); text-align:center; margin:-4px 0 10px; letter-spacing:.02em; }
@@ -3199,38 +3379,87 @@ html.dark textarea, html.dark input { color: #ffffff !important; caret-color: #f
 .ios-weather > header, .ios-weather > main { position:relative; z-index:1; }
 .iw-sky-fx { position:absolute; inset:0; z-index:0; overflow:hidden; pointer-events:none; }
 .iw-sky-fx > span { position:absolute; display:none; }
-/* 星夜：两层星点 + 月亮 + 一道极淡银河 */
-.iw-fx-stars .iw-fx-starfield { display:block; inset:0; opacity:.8;
+/* 星夜：三层星点（细星 / 带光晕的亮星 / 远处碎星）+ 月亮 + 一道极淡银河 */
+.iw-fx-stars .iw-fx-starfield { display:block; inset:0; opacity:1;
     background-image:
-      radial-gradient(1.6px 1.6px at 6% 9%,#fff,transparent), radial-gradient(1.2px 1.2px at 18% 22%,#fff,transparent),
-      radial-gradient(1.8px 1.8px at 31% 7%,#fff,transparent), radial-gradient(1.1px 1.1px at 44% 17%,#fff,transparent),
-      radial-gradient(1.5px 1.5px at 57% 5%,#fff,transparent), radial-gradient(1.2px 1.2px at 69% 14%,#fff,transparent),
-      radial-gradient(1.7px 1.7px at 82% 8%,#fff,transparent), radial-gradient(1.1px 1.1px at 93% 21%,#fff,transparent),
-      radial-gradient(1.3px 1.3px at 11% 35%,#fff,transparent), radial-gradient(1.6px 1.6px at 26% 43%,#fff,transparent),
-      radial-gradient(1.1px 1.1px at 39% 31%,#fff,transparent), radial-gradient(1.4px 1.4px at 53% 38%,#fff,transparent),
-      radial-gradient(1.2px 1.2px at 66% 29%,#fff,transparent), radial-gradient(1.7px 1.7px at 78% 40%,#fff,transparent),
-      radial-gradient(1.2px 1.2px at 89% 34%,#fff,transparent), radial-gradient(1.5px 1.5px at 4% 55%,#fff,transparent),
-      radial-gradient(1.1px 1.1px at 21% 62%,#fff,transparent), radial-gradient(1.3px 1.3px at 35% 52%,#fff,transparent),
-      radial-gradient(1.6px 1.6px at 48% 64%,#fff,transparent), radial-gradient(1.1px 1.1px at 61% 55%,#fff,transparent),
-      radial-gradient(1.4px 1.4px at 74% 61%,#fff,transparent), radial-gradient(1.2px 1.2px at 86% 53%,#fff,transparent),
-      radial-gradient(1.5px 1.5px at 96% 66%,#fff,transparent), radial-gradient(1.1px 1.1px at 14% 78%,#fff,transparent),
-      radial-gradient(1.3px 1.3px at 43% 82%,#fff,transparent), radial-gradient(1.2px 1.2px at 69% 76%,#fff,transparent);
-    background-repeat:no-repeat; animation:iwTwinkle 5.5s ease-in-out infinite alternate; }
-.iw-fx-stars .iw-fx-milky { display:block; left:-20%; top:6%; width:140%; height:52%; opacity:.14;
+      radial-gradient(2.5px 2.5px at 6% 9%,#fff,transparent), radial-gradient(1.9px 1.9px at 18% 22%,#fff,transparent),
+      radial-gradient(2.8px 2.8px at 31% 7%,#fff,transparent), radial-gradient(1.8px 1.8px at 44% 17%,#fff,transparent),
+      radial-gradient(2.4px 2.4px at 57% 5%,#fff,transparent), radial-gradient(2.0px 2.0px at 69% 14%,#fff,transparent),
+      radial-gradient(2.7px 2.7px at 82% 8%,#fff,transparent), radial-gradient(1.9px 1.9px at 93% 21%,#fff,transparent),
+      radial-gradient(2.2px 2.2px at 11% 35%,#fff,transparent), radial-gradient(2.6px 2.6px at 26% 43%,#fff,transparent),
+      radial-gradient(1.8px 1.8px at 39% 31%,#fff,transparent), radial-gradient(2.3px 2.3px at 53% 38%,#fff,transparent),
+      radial-gradient(2.0px 2.0px at 66% 29%,#fff,transparent), radial-gradient(2.7px 2.7px at 78% 40%,#fff,transparent),
+      radial-gradient(1.9px 1.9px at 89% 34%,#fff,transparent), radial-gradient(2.5px 2.5px at 4% 55%,#fff,transparent),
+      radial-gradient(1.8px 1.8px at 21% 62%,#fff,transparent), radial-gradient(2.2px 2.2px at 35% 52%,#fff,transparent),
+      radial-gradient(2.6px 2.6px at 48% 64%,#fff,transparent), radial-gradient(1.9px 1.9px at 61% 55%,#fff,transparent),
+      radial-gradient(2.3px 2.3px at 74% 61%,#fff,transparent), radial-gradient(2.0px 2.0px at 86% 53%,#fff,transparent),
+      radial-gradient(2.5px 2.5px at 96% 66%,#fff,transparent), radial-gradient(1.8px 1.8px at 14% 78%,#fff,transparent),
+      radial-gradient(2.2px 2.2px at 43% 82%,#fff,transparent), radial-gradient(2.0px 2.0px at 69% 76%,#fff,transparent),
+      radial-gradient(2.1px 2.1px at 58% 88%,#fff,transparent), radial-gradient(1.9px 1.9px at 8% 92%,#fff,transparent);
+    background-repeat:no-repeat; filter:drop-shadow(0 0 2.5px rgba(255,255,255,.9));
+    animation:iwTwinkle 4.6s ease-in-out infinite alternate; }
+/* 亮星：每颗都带一圈柔光晕，单独一层错速呼吸，比小星点更抓眼 */
+.iw-fx-stars .iw-fx-starfield::before { content:""; position:absolute; inset:0;
+    background-image:
+      radial-gradient(11px 11px at 18% 14%, rgba(226,240,255,.30), transparent 70%), radial-gradient(3.2px 3.2px at 18% 14%, #fff, transparent),
+      radial-gradient(13px 13px at 73% 11%, rgba(226,240,255,.28), transparent 70%), radial-gradient(3.6px 3.6px at 73% 11%, #fff, transparent),
+      radial-gradient(10px 10px at 37% 29%, rgba(255,246,225,.26), transparent 70%), radial-gradient(3.0px 3.0px at 37% 29%, #fff8e6, transparent),
+      radial-gradient(12px 12px at 91% 44%, rgba(226,240,255,.26), transparent 70%), radial-gradient(3.4px 3.4px at 91% 44%, #fff, transparent),
+      radial-gradient(11px 11px at 12% 58%, rgba(226,240,255,.24), transparent 70%), radial-gradient(3.0px 3.0px at 12% 58%, #fff, transparent),
+      radial-gradient(13px 13px at 57% 72%, rgba(255,246,225,.24), transparent 70%), radial-gradient(3.5px 3.5px at 57% 72%, #fff8e6, transparent),
+      radial-gradient(10px 10px at 84% 85%, rgba(226,240,255,.22), transparent 70%), radial-gradient(2.9px 2.9px at 84% 85%, #fff, transparent);
+    background-repeat:no-repeat; animation:iwTwinkle 2.9s ease-in-out infinite alternate-reverse; }
+/* 远处碎星：更细更密，慢慢闪，铺满不留空 */
+.iw-fx-stars .iw-fx-starfield::after { content:""; position:absolute; inset:0;
+    background-image:
+      radial-gradient(1.4px 1.4px at 3% 17%,#fff,transparent), radial-gradient(1.2px 1.2px at 23% 6%,#fff,transparent),
+      radial-gradient(1.5px 1.5px at 48% 14%,#fff,transparent), radial-gradient(1.3px 1.3px at 62% 24%,#fff,transparent),
+      radial-gradient(1.4px 1.4px at 97% 30%,#fff,transparent), radial-gradient(1.2px 1.2px at 30% 47%,#fff,transparent),
+      radial-gradient(1.5px 1.5px at 55% 46%,#fff,transparent), radial-gradient(1.3px 1.3px at 70% 56%,#fff,transparent),
+      radial-gradient(1.4px 1.4px at 17% 70%,#fff,transparent), radial-gradient(1.2px 1.2px at 40% 73%,#fff,transparent),
+      radial-gradient(1.5px 1.5px at 77% 68%,#fff,transparent), radial-gradient(1.3px 1.3px at 94% 78%,#fff,transparent),
+      radial-gradient(1.4px 1.4px at 27% 90%,#fff,transparent), radial-gradient(1.2px 1.2px at 66% 94%,#fff,transparent);
+    background-repeat:no-repeat; animation:iwTwinkle 6.8s ease-in-out infinite alternate; }
+.iw-fx-stars .iw-fx-milky { display:block; left:-20%; top:6%; width:140%; height:52%; opacity:.20;
     background:radial-gradient(ellipse 70% 28% at 50% 50%, rgba(255,255,255,.9), transparent 70%);
     transform:rotate(-18deg); }
 .iw-fx-stars .iw-fx-moon { display:block; right:13%; top:10%; width:52px; height:52px; border-radius:50%;
-    background:radial-gradient(circle at 34% 30%, #fff, #eef3fb 58%, #cfdcef); opacity:.82;
-    box-shadow:0 0 54px 20px rgba(226,238,255,.20), 0 0 120px 50px rgba(200,220,255,.10); }
-@keyframes iwTwinkle { 0%{opacity:.55;} 100%{opacity:.95;} }
+    background:radial-gradient(circle at 34% 30%, #fff, #eef3fb 58%, #cfdcef); opacity:.9;
+    box-shadow:0 0 54px 20px rgba(226,238,255,.26), 0 0 120px 50px rgba(200,220,255,.14); }
+@keyframes iwTwinkle { 0%{opacity:.72;} 100%{opacity:1;} }
+/* 几颗最亮的星：更大更白、带十字星芒感，跟小星点错相位闪 */
+.iw-fx-stars .iw-fx-starbright { display:block; inset:0; opacity:1;
+    background-image:
+      radial-gradient(5px 5px at 23% 15%, #fff 0 18%, rgba(226,240,255,.72) 40%, transparent 100%),
+      radial-gradient(4.6px 4.6px at 71% 24%, #fff 0 18%, rgba(226,240,255,.72) 40%, transparent 100%),
+      radial-gradient(5.4px 5.4px at 47% 34%, #fff8e6 0 16%, rgba(255,246,225,.7) 40%, transparent 100%),
+      radial-gradient(4.4px 4.4px at 88% 57%, #fff 0 18%, rgba(226,240,255,.72) 40%, transparent 100%),
+      radial-gradient(4.8px 4.8px at 16% 68%, #fff 0 18%, rgba(226,240,255,.72) 40%, transparent 100%),
+      radial-gradient(5.2px 5.2px at 62% 79%, #fff8e6 0 16%, rgba(255,246,225,.7) 40%, transparent 100%);
+    background-repeat:no-repeat; filter:drop-shadow(0 0 7px rgba(255,255,255,.95));
+    animation:iwTwinkleBright 3.1s ease-in-out infinite alternate; }
+@keyframes iwTwinkleBright { 0%{opacity:.6;} 100%{opacity:1;} }
 /* 晴光 */
 .iw-fx-sun .iw-fx-sun { display:block; right:8%; top:6%; width:120px; height:120px; border-radius:50%;
     background:radial-gradient(circle, rgba(255,248,224,.55), rgba(255,244,214,.16) 55%, transparent 72%); }
-/* 雨丝 */
-.iw-fx-rain .iw-fx-rainlines { display:block; inset:-20%; opacity:.30;
-    background-image:repeating-linear-gradient(104deg, transparent 0 15px, rgba(255,255,255,.55) 15px 16px, transparent 16px 31px);
-    animation:iwRain .85s linear infinite; }
-@keyframes iwRain { 0%{transform:translate(0,-8%);} 100%{transform:translate(-4%,8%);} }
+/* 落雨：三层「短雨丝」错速错落往下走。
+   每根雨丝是一粒细长椭圆（不是贯穿全屏的斜线），按稀疏格子平铺；
+   每轮背景正好走一格，所以循环无缝，看着就是淅淅沥沥落下来。 */
+.iw-fx-rain .iw-fx-rainlines, .iw-fx-rain .iw-fx-rain2, .iw-fx-rain .iw-fx-rain3 {
+    display:block; left:-25%; top:-50%; width:150%; height:200%;
+    transform:skewX(-9deg); background-repeat:repeat; }
+.iw-fx-rain .iw-fx-rainlines { opacity:.58;
+    background-image:radial-gradient(1.2px 10px at 50% 50%, rgba(255,255,255,.95), rgba(255,255,255,.28) 60%, transparent 100%);
+    background-size:23px 40px; animation:iwRain1 .62s linear infinite; }
+.iw-fx-rain .iw-fx-rain2 { opacity:.36; left:-31%;
+    background-image:radial-gradient(1px 13px at 50% 50%, rgba(255,255,255,.88), rgba(255,255,255,.22) 60%, transparent 100%);
+    background-size:33px 56px; animation:iwRain2 .94s linear infinite; }
+.iw-fx-rain .iw-fx-rain3 { opacity:.28; left:-19%;
+    background-image:radial-gradient(.9px 6px at 50% 50%, rgba(255,255,255,.85), rgba(255,255,255,.2) 60%, transparent 100%);
+    background-size:16px 30px; animation:iwRain3 .46s linear infinite; }
+@keyframes iwRain1 { 0%{background-position:0 0;} 100%{background-position:0 40px;} }
+@keyframes iwRain2 { 0%{background-position:0 0;} 100%{background-position:0 56px;} }
+@keyframes iwRain3 { 0%{background-position:0 0;} 100%{background-position:0 30px;} }
 /* 飘雪：两层点阵错速下落 */
 .iw-fx-snow .iw-fx-snow1, .iw-fx-snow .iw-fx-snow2 { display:block; inset:-60% 0 0 0; opacity:.55;
     background-image:
@@ -3611,6 +3840,41 @@ html.dark textarea, html.dark input { color: #ffffff !important; caret-color: #f
 .cp-noise-vol input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; appearance:none; width:14px; height:14px; border-radius:50%; background:var(--cp-primary); cursor:pointer; }
 .cp-noise-vol input[type=range]::-moz-range-thumb { width:14px; height:14px; border:none; border-radius:50%; background:var(--cp-primary); cursor:pointer; }
 .cp-noise-tip { font-size:9px; color:var(--color-muted); margin-top:8px; line-height:1.5; }
+/* 放一首歌：站内白卡 / 细线 / 软底，深色自动翻 */
+.slp-song-card { margin-top:12px; padding:11px; border:1px solid var(--color-border);
+    border-radius:13px; background:var(--color-bg); }
+.slp-song-top { display:flex; align-items:center; gap:9px; }
+.slp-song-ico { flex:0 0 28px; width:28px; height:28px; border-radius:9px;
+    background:var(--cp-primary-soft); color:var(--cp-primary);
+    display:flex; align-items:center; justify-content:center; }
+.slp-song-h { flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; }
+.slp-song-title { font-size:11px; letter-spacing:.12em; color:var(--color-text); }
+.slp-song-sub { font-size:9px; color:var(--color-muted); letter-spacing:.03em; }
+.slp-song-live { flex-shrink:0; font-size:9px; color:var(--cp-primary);
+    display:inline-flex; align-items:center; gap:4px; letter-spacing:.06em; }
+.slp-song-live i { width:5px; height:5px; border-radius:50%; background:var(--cp-primary);
+    animation:iwTwinkle 1.6s ease-in-out infinite alternate; }
+.slp-song-now { display:flex; align-items:center; gap:6px; margin-top:9px; padding:7px 9px;
+    border-radius:9px; background:var(--cp-primary-soft); color:var(--cp-primary); }
+.slp-song-now-name { flex:1; min-width:0; font-size:10px; overflow:hidden;
+    text-overflow:ellipsis; white-space:nowrap; }
+.slp-song-now-loop { flex-shrink:0; font-size:9px; opacity:.75; }
+.slp-song-acts { display:flex; gap:7px; margin-top:9px; }
+.slp-song-btn { flex:1; padding:8px 0; border-radius:9px; border:none; cursor:pointer;
+    font-family:inherit; font-size:10.5px; letter-spacing:.12em;
+    background:var(--cp-primary); color:#fff; }
+.slp-song-btn.ghost { background:var(--color-bg); color:var(--color-muted);
+    border:1px solid var(--color-border); }
+.slp-song-url { display:flex; gap:6px; margin-top:8px; }
+.slp-song-url input { flex:1; min-width:0; padding:7px 9px; border-radius:8px;
+    border:1px solid var(--color-border); background:var(--color-surface);
+    color:var(--color-text); font-size:10px; outline:none; font-family:inherit; }
+.slp-song-url input::placeholder { color:var(--color-muted); opacity:.7; }
+.slp-song-url button { flex-shrink:0; padding:0 12px; border-radius:8px;
+    border:1px solid var(--color-border); background:var(--color-surface);
+    color:var(--cp-primary); font-size:10px; cursor:pointer; font-family:inherit; }
+.slp-song-err { font-size:9px; color:#c96a6a; margin-top:6px; line-height:1.5; }
+.slp-song-tip { font-size:9px; line-height:1.6; color:var(--color-muted); margin-top:8px; }
 /* 助眠音：分层音量 / 配方 / 聊天卡片 */
 .slp-sec-lbl { font-size:9px; letter-spacing:.16em; color:var(--color-muted); margin-bottom:7px; }
 .slp-layers { margin-top:11px; padding-top:9px; border-top:1px solid var(--color-border); display:flex; flex-direction:column; gap:7px; }
@@ -3668,6 +3932,66 @@ html.dark textarea, html.dark input { color: #ffffff !important; caret-color: #f
   .slp-start-moon { font-size:20px; line-height:1; }
   .slp-start-main { font-size:14px; letter-spacing:.22em; }
   .slp-start-sub { font-size:10px; opacity:.75; letter-spacing:.06em; }
+  /* 播放模式：到点渐停 / 一直循环 */
+  .slp-mode-card { margin:12px 16px 0; background:var(--color-surface); border:1px solid var(--color-border);
+      border-radius:16px; padding:13px; flex-shrink:0; }
+  .slp-mode-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+  .slp-mode-title { font-size:10px; letter-spacing:.22em; color:var(--color-muted); }
+  .slp-mode-mark { font-size:12px; color:var(--cp-primary); }
+  .slp-mode-chips { display:flex; gap:8px; }
+  .slp-mode-chip { flex:1; padding:9px 0; border-radius:11px; font-size:11px; letter-spacing:.1em;
+      border:1px solid var(--color-border); background:var(--color-bg); color:var(--color-muted);
+      cursor:pointer; transition:all .18s; font-family:inherit; }
+  .slp-mode-chip.on { background:var(--cp-primary-soft); border-color:transparent;
+      color:var(--cp-primary); font-weight:600; }
+  .slp-mode-chip:active { transform:scale(.98); }
+  .slp-mode-time { display:flex; align-items:center; gap:8px; margin-top:12px; padding-top:11px;
+      border-top:1px solid var(--color-border); font-size:11px; color:var(--color-muted); letter-spacing:.06em; }
+  .slp-time-pill { display:inline-flex; align-items:center; justify-content:center; gap:7px;
+      padding:7px 12px; border-radius:10px; border:1px solid var(--color-border);
+      background:var(--color-bg); color:var(--color-text); cursor:pointer; font-family:inherit;
+      transition:border-color .18s, background .18s; }
+  .slp-time-pill:hover { border-color:var(--cp-primary); }
+  .slp-time-pill svg { color:var(--cp-primary); flex-shrink:0; }
+  .slp-time-pill svg:last-child { color:var(--color-muted); opacity:.65; }
+  .slp-time-pill-txt { font-size:14px; letter-spacing:.12em; font-variant-numeric:tabular-nums; }
+  /* 自绘时间选择：站内同一套白卡 / 细线 / 软底选中，深色自动翻 */
+  .slp-tp-mask { position:fixed; inset:0; z-index:90; background:rgba(18,22,30,.42);
+      display:flex; align-items:flex-end; justify-content:center; }
+  .slp-tp-sheet { width:100%; max-width:440px; background:var(--color-surface);
+      border:1px solid var(--color-border); border-bottom:0; border-radius:20px 20px 0 0;
+      padding:10px 16px calc(16px + env(safe-area-inset-bottom));
+      box-shadow:0 -10px 40px rgba(0,0,0,.18); }
+  .slp-tp-bar { width:34px; height:3px; border-radius:3px; background:var(--color-border); margin:0 auto 12px; }
+  .slp-tp-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+  .slp-tp-title { font-size:12px; letter-spacing:.14em; color:var(--color-text); }
+  .slp-tp-x { width:28px; height:28px; border-radius:50%; border:1px solid var(--color-border);
+      background:var(--color-bg); color:var(--color-muted); display:flex; align-items:center;
+      justify-content:center; cursor:pointer; }
+  .slp-tp-cols { display:flex; align-items:stretch; justify-content:center; gap:10px; }
+  .slp-tp-col { flex:1; min-width:0; display:flex; flex-direction:column; }
+  .slp-tp-lbl { text-align:center; font-size:9.5px; letter-spacing:.2em; color:var(--color-muted); margin-bottom:7px; }
+  .slp-tp-scroll { position:relative; height:184px; overflow-y:auto; border:1px solid var(--color-border);
+      border-radius:12px; background:var(--color-bg); padding:5px; scrollbar-width:thin; }
+  .slp-tp-cell { text-align:center; padding:8px 0; border-radius:8px; font-size:13px;
+      color:var(--color-muted); cursor:pointer; font-variant-numeric:tabular-nums;
+      letter-spacing:.08em; transition:background .15s, color .15s; }
+  .slp-tp-cell.on { background:var(--cp-primary-soft); color:var(--cp-primary); font-weight:600; }
+  .slp-tp-cell:active { background:var(--cp-primary-soft); }
+  .slp-tp-colon { align-self:center; padding-top:22px; font-size:16px; color:var(--color-muted); }
+  .slp-tp-foot { text-align:center; font-size:9.5px; line-height:1.7; color:var(--color-muted);
+      margin:11px 0 12px; letter-spacing:.04em; }
+  .slp-tp-acts { display:flex; gap:9px; }
+  .slp-tp-acts button { flex:1; padding:11px 0; border-radius:11px; font-size:11.5px;
+      letter-spacing:.14em; cursor:pointer; font-family:inherit; }
+  .slp-tp-cancel { border:1px solid var(--color-border); background:var(--color-bg); color:var(--color-muted); }
+  .slp-tp-ok { border:none; background:var(--cp-primary); color:#fff; }
+  .slp-mode-quick { display:flex; flex-wrap:wrap; gap:6px; margin-top:9px; }
+  .slp-mode-quick button { padding:5px 9px; border-radius:999px; font-size:10px;
+      border:1px solid var(--color-border); background:var(--color-bg); color:var(--color-muted);
+      cursor:pointer; font-family:inherit; }
+  .slp-mode-quick button:active { background:var(--cp-primary-soft); color:var(--cp-primary); }
+  .slp-mode-note { font-size:9.5px; line-height:1.7; color:var(--color-muted); margin-top:10px; }
   /* 睡眠中：整屏聊天 */
   .slp-live-head { justify-content:space-between; }
   .slp-live-playing { font-size:10px; color:var(--cp-primary); display:flex; align-items:center; gap:5px; }
@@ -3746,6 +4070,7 @@ html.dark textarea, html.dark input { color: #ffffff !important; caret-color: #f
   /* ---- 睡眠计时 / 结束 / 睡醒总结卡 ---- */
   .slp-live-right { display:flex; flex-direction:column; align-items:flex-end; gap:2px; }
   .slp-live-timer { font-size:11px; letter-spacing:.1em; color:var(--cp-primary); font-variant-numeric:tabular-nums; }
+  .slp-live-mode { font-size:9.5px; letter-spacing:.06em; color:var(--cp-primary); opacity:.82; font-variant-numeric:tabular-nums; }
   .slp-live-head .slp-live-playing { font-size:9px; }
   .slp-end-btn { display:flex; align-items:center; justify-content:center; gap:8px;
       width:calc(100% - 28px); margin:8px 14px 2px; padding:11px 0; border-radius:13px;
@@ -5019,6 +5344,80 @@ html.dark .hr-cell.bond .hr-cell-v, .dark .hr-cell.bond .hr-cell-v { color:var(-
 .jb-note-text { font-family:"Kaiti SC","STKaiti","KaiTi","楷体","Noto Serif SC",'Noto Serif SC Offline',serif; font-size:11px; line-height:1.45; color:#4a4438; text-align:center; word-break:break-all; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; padding-top:4px; }
 .dark .jb-note { border-color:rgba(255,255,255,.10); }
 .dark .jb-note-text { color:#3a3428; }
+/* ---------- 便签纸：淡蓝格纹（横竖宽窄条带交错）+ 顶上一小条胶带 + 翘角 ---------- */
+/* 同一套纸面给「贴上的便签 / 左边预览 / 色板小样」共用，选颜色只换 --jb-paper 底色，格纹不变 */
+.jb-sticky, .jb-sticky-preview, .jb-sticky-swatch {
+    --jb-paper:#eff7fd;
+    --jb-band:rgba(146,187,219,.16);   /* 宽蓝带，横竖叠出深浅格 */
+    --jb-line:rgba(126,172,208,.18);   /* 细蓝线 */
+    --jb-hair:rgba(255,255,255,.48);   /* 极细白丝，纸纹 */
+    background-color:var(--jb-paper);
+    background-image:
+      repeating-linear-gradient(0deg,   var(--jb-hair) 0 1px, transparent 1px 14px),
+      repeating-linear-gradient(90deg,  var(--jb-hair) 0 1px, transparent 1px 14px),
+      repeating-linear-gradient(0deg,   var(--jb-line) 0 1px, transparent 1px 28px),
+      repeating-linear-gradient(90deg,  var(--jb-line) 0 1px, transparent 1px 28px),
+      repeating-linear-gradient(0deg,   transparent 0 8px, var(--jb-band) 8px 46px, transparent 46px 56px),
+      repeating-linear-gradient(90deg,  transparent 0 8px, var(--jb-band) 8px 46px, transparent 46px 56px),
+      repeating-linear-gradient(0deg,   rgba(255,255,255,.95) 0 3px, transparent 3px 56px),
+      repeating-linear-gradient(90deg,  rgba(255,255,255,.95) 0 3px, transparent 3px 56px);
+    background-position:0 0;
+}
+.jb-sticky { position:relative; width:100%; height:100%; box-sizing:border-box; overflow:hidden;
+    border-radius:3px 3px 4px 3px; pointer-events:none;
+    box-shadow:0 2px 9px rgba(60,90,120,.20), inset 0 0 0 1px rgba(120,160,195,.16);
+    padding:19px 11px 11px; display:flex; align-items:flex-start; justify-content:center; }
+.dark .jb-sticky { box-shadow:0 3px 10px rgba(0,0,0,.40), inset 0 0 0 1px rgba(255,255,255,.10); }
+.jb-sticky-tape { position:absolute; top:-4px; left:50%; transform:translateX(-50%) rotate(-2deg);
+    width:46%; height:13px; border-radius:1px;
+    background:linear-gradient(180deg, rgba(255,255,255,.78), rgba(255,255,255,.46));
+    border-left:1px solid rgba(255,255,255,.75); border-right:1px solid rgba(255,255,255,.75);
+    box-shadow:0 1px 2px rgba(80,110,140,.10); }
+.dark .jb-sticky-tape { background:linear-gradient(180deg, rgba(255,255,255,.42), rgba(255,255,255,.22)); }
+.jb-sticky::after { content:''; position:absolute; right:0; bottom:0; width:15px; height:15px;
+    background:linear-gradient(135deg, transparent 50%, rgba(90,130,165,.10) 50%, rgba(255,255,255,.60) 52%);
+    border-top-left-radius:3px; }
+.jb-sticky-text { font-family:"Kaiti SC","STKaiti","KaiTi","楷体",'Noto Serif SC Offline',serif;
+    color:#4d6379; line-height:1.55; text-align:center; word-break:break-word; white-space:pre-wrap;
+    max-width:100%; max-height:100%; overflow:hidden; padding-top:2px;
+    text-shadow:0 1px 0 rgba(255,255,255,.55); }
+.dark .jb-sticky-text { color:#4d6379; }
+.jb-sticky-art { position:absolute; right:7px; bottom:7px; width:26px; height:26px; object-fit:contain; opacity:.85; pointer-events:none; }
+/* 便签面板 */
+.jb-sticky-top { display:flex; gap:12px; align-items:flex-start; }
+.jb-sticky-preview { position:relative; flex:0 0 96px; width:96px; height:110px; border-radius:3px;
+    box-shadow:0 2px 8px rgba(60,90,120,.18), inset 0 0 0 1px rgba(120,160,195,.14);
+    padding:18px 8px 8px; box-sizing:border-box; display:flex; align-items:flex-start; justify-content:center; }
+.jb-sticky-preview .jb-sticky-text { font-size:10px; }
+.jb-sticky-forms { flex:1; min-width:0; }
+.jb-sticky-colors { display:grid; grid-template-columns:repeat(9,1fr); gap:5px; }
+.jb-sticky-swatch { width:100%; aspect-ratio:1/1; border-radius:5px; cursor:pointer;
+    border:1px solid rgba(120,160,195,.20); box-shadow:0 1px 2px rgba(60,90,120,.10); transition:transform .12s; }
+.jb-sticky-swatch:active { transform:scale(.9); }
+.jb-sticky-swatch.on { outline:2px solid var(--jb-accent); outline-offset:1px; }
+.jb-sticky-custom { position:relative; width:100%; aspect-ratio:1/1; border-radius:5px; cursor:pointer;
+    border:1px dashed var(--jb-ink-soft); display:flex; align-items:center; justify-content:center;
+    color:var(--jb-accent); overflow:hidden; }
+.jb-sticky-custom input[type=color] { position:absolute; inset:0; width:100%; height:100%; opacity:0; cursor:pointer; }
+.jb-sticky-sizes { display:flex; gap:7px; }
+.jb-sticky-size { flex:1; padding:7px 0; border-radius:9px; border:1px solid var(--color-border);
+    background:var(--color-bg); color:var(--color-text); font-size:11px; letter-spacing:.1em; cursor:pointer; }
+.jb-sticky-size.on { background:var(--jb-accent-soft); border-color:var(--jb-accent); color:var(--jb-accent); }
+.jb-sticky-input { width:100%; box-sizing:border-box; font-size:12px; padding:9px 11px; border-radius:10px;
+    border:1px solid var(--color-border); background:var(--color-bg); color:var(--color-text); outline:none; }
+.jb-sticky-input::placeholder { color:var(--color-muted); opacity:.7; }
+.jb-sticky-optional { font-size:9px; letter-spacing:.04em; opacity:.6; }
+.jb-sticky-arts { display:flex; gap:7px; overflow-x:auto; padding-bottom:4px; }
+.jb-sticky-art-cell { flex:0 0 38px; width:38px; height:38px; border-radius:9px; border:1px solid var(--color-border);
+    background:var(--color-bg); display:flex; align-items:center; justify-content:center; cursor:pointer;
+    font-size:10px; color:var(--color-muted); }
+.jb-sticky-art-cell img { width:26px; height:26px; object-fit:contain; }
+.jb-sticky-art-cell.on { background:var(--jb-accent-soft); border-color:var(--jb-accent); }
+.jb-sticky-go { flex-shrink:0; width:calc(100% - 28px); margin:0 14px 13px; padding:11px 0; border-radius:11px; border:none;
+    background:var(--jb-accent); color:#fff; font-size:12px; letter-spacing:.16em; cursor:pointer; }
+.jb-item-bar.with-edit { gap:5px; }
+.jb-item-bar.with-edit .jb-item-btn { font-size:10px; }
+.jb-item-bar .jb-item-btn.edit { color:var(--jb-accent); border-color:var(--jb-accent); }
 /* 生成中：按钮上转圈 */
 .jb-tool.busy { opacity:.6; }
 .jb-spin { animation:jbSpin 1s linear infinite; }
@@ -5509,8 +5908,9 @@ html, body { overscroll-behavior-y: none; }
 <!-- ===== [MOD-02R] 天气 · iOS 风格：一个主视图随时切「我这边 / 对方那边」 ===== -->
 <div v-else-if="currentView === 'weather'" key="weather" class="absolute inset-0 flex flex-col z-20 weather-page ios-weather" :style="iwSky">
     <div class="iw-sky-fx" :class="'iw-fx-' + iwFx" aria-hidden="true">
-        <span class="iw-fx-starfield"></span><span class="iw-fx-moon"></span><span class="iw-fx-milky"></span>
-        <span class="iw-fx-sun"></span><span class="iw-fx-rainlines"></span>
+        <span class="iw-fx-starfield"></span><span class="iw-fx-starbright"></span><span class="iw-fx-moon"></span><span class="iw-fx-milky"></span>
+        <span class="iw-fx-sun"></span>
+        <span class="iw-fx-rainlines"></span><span class="iw-fx-rain2"></span><span class="iw-fx-rain3"></span>
         <span class="iw-fx-snow1"></span><span class="iw-fx-snow2"></span>
         <span class="iw-fx-fog1"></span><span class="iw-fx-fog2"></span>
     </div>
@@ -5700,7 +6100,7 @@ html, body { overscroll-behavior-y: none; }
             <div class="iw-chips iw-fx-chips">
                 <button v-for="f in IW_FX_OPTIONS" :key="f.k" class="iw-chip" :class="{ on: iwFxMode === f.k }" @click="iwSetFx(f.k)">{{ f.n }}</button>
             </div>
-            <div class="iw-fx-note">跟着天气：晴夜有星星和月亮、雨天有雨丝、雪天飘雪、起雾有雾带，白天出太阳光。<br>也能自己挑一张一直用。</div>
+            <div class="iw-fx-note">跟着天气：晴夜有星星和月亮、雨天有细细落下的雨丝、雪天飘雪、起雾有雾带，白天出太阳光。<br>也能自己挑一张一直用。</div>
         </div>
 
         <p class="iw-note">我这边是真实天气，对方那边是这里生成的小天气，两边互不相干。<br>选好城市，上面的名字和下面的天气会一起换；最细只到县 / 区。</p>
@@ -5860,7 +6260,7 @@ html, body { overscroll-behavior-y: none; }
             <h3 class="text-[11px] font-semibold text-muted tracking-widest px-2 mb-2">排版</h3>
             <div class="bg-surface border border-border rounded-xl overflow-hidden text-[13px]">
                 <div class="flex items-center justify-between p-3.5 border-b border-border"><span>墨色模式</span><button @click="toggleDarkMode" class="w-10 h-5 rounded-full relative" :class="settings.darkMode ? 'bg-text' : 'bg-border'"><div class="absolute top-1 left-1 w-3 h-3 bg-surface rounded-full transition-transform" :class="settings.darkMode ? 'translate-x-5' : 'translate-x-0'"></div></button></div>
-                <div class="flex items-center justify-between p-3.5 border-b border-border"><span>形体</span><select v-model="settings.fontFamily" class="bg-bg border border-border rounded px-2 py-1 text-xs"><option value="sans">无衬线</option><option value="serif">衬线</option></select></div>
+                <div class="flex items-center justify-between p-3.5 border-b border-border"><span>形体</span><div class="lb-select" style="padding:5px 9px;font-size:11px;width:auto;min-width:78px;" @click="pickFontFamily()"><span class="lb-sel-v">{{ fontFamilyText }}</span><span class="lb-sel-a">›</span></div></div>
                 <div class="p-3.5 border-b border-border flex flex-col gap-3"><div class="flex justify-between"><span>字重尺寸</span><span>{{settings.fontSize}}px</span></div><input type="range" v-model.number="settings.fontSize" min="12" max="20" class="w-full accent-text"></div>
                 <div class="flex items-center justify-between p-3.5"><span>显露头像</span><button @click="settings.showAvatar = !settings.showAvatar" class="w-10 h-5 rounded-full relative" :class="settings.showAvatar ? 'bg-text' : 'bg-border'"><div class="absolute top-1 left-1 w-3 h-3 bg-surface rounded-full transition-transform" :class="settings.showAvatar ? 'translate-x-5' : 'translate-x-0'"></div></button></div>
             </div>
@@ -5999,18 +6399,11 @@ html, body { overscroll-behavior-y: none; }
             <input v-model="settings.apiKey" type="password" class="ai-input" placeholder="例如：sk-xxxxxxxxxxxxxxxx">
             <label class="ai-label font-medium block mb-1">选择模型</label>
             <div class="flex gap-2 mb-2">
-                <select v-model="settings.apiModel" class="ai-input flex-1 mb-0">
-                    <option value="deepseek-chat">deepseek-chat</option>
-                    <option value="deepseek-reasoner">deepseek-reasoner</option>
-                    <option value="gpt-3.5-turbo">gpt-3.5-turbo</option>
-                    <option value="gpt-4o">gpt-4o</option>
-                </select>
+                <div class="lb-select ai-input flex-1 mb-0" @click="pickApiModel()"><span class="lb-sel-v">{{ apiModelText }}</span><span class="lb-sel-a">›</span></div>
                 <button @click="fetchModels" class="ai-btn" style="width:80px;margin-bottom:0;padding:0 8px;font-size:11px;">拉取</button>
             </div>
             <div v-if="modelsList.length > 0" class="mb-3">
-                <select v-model="settings.apiModel" class="ai-input">
-                    <option v-for="m in modelsList" :key="m" :value="m">{{ m }}</option>
-                </select>
+                <div class="lb-select ai-input" @click="pickApiModel(modelsList)"><span class="lb-sel-v">{{ apiModelText }}</span><span class="lb-sel-a">›</span></div>
             </div>
             <div v-if="apiStatusMsg" class="ai-hint" :style="{color: apiStatusMsg.includes('成功') ? '#22c55e' : '#ef4444'}">{{ apiStatusMsg }}</div>
             <button @click="testApiConnection" class="ai-btn ai-btn-outline mt-2">测试连接</button>
@@ -6519,9 +6912,7 @@ html, body { overscroll-behavior-y: none; }
             
             <div v-if="libraryTab === 'cards' && replyGroups.length > 0" class="mb-4">
                 <label class="block text-[12px] text-muted mb-2">归属分组</label>
-                <select v-model="editingCard.groupId" class="w-full bg-bg text-text text-[13px] rounded-lg p-2.5 outline-none border border-border">
-                    <option v-for="g in replyGroups" :key="g.id" :value="g.id">{{ g.name }}</option>
-                </select>
+                <div class="lb-select" @click="pickCardGroup()"><span class="lb-sel-v">{{ cardGroupText }}</span><span class="lb-sel-a">›</span></div>
             </div>
             <div v-else-if="libraryTab === 'cards' && replyGroups.length === 0" class="mb-4">
                 <p class="text-[12px] text-muted">请先点击上方文件夹图标新建分组。</p>
@@ -6540,9 +6931,7 @@ html, body { overscroll-behavior-y: none; }
             <p class="text-[10px] text-muted leading-relaxed mb-3">一行一个词，可以一次贴好几个。别放成语，放词语、人称、动作、小物件都行。</p>
             <textarea v-model="dictAddText" class="w-full bg-bg text-text text-[14px] rounded-xl p-3 outline-none border border-border mb-3 resize-none" style="min-height:96px" placeholder="比如：晚风&#10;比如：靠过来"></textarea>
             <label class="block text-[12px] text-muted mb-2">归到哪一类</label>
-            <select v-model="dictAddCat" class="w-full bg-bg text-text text-[13px] rounded-lg p-2.5 outline-none border border-border mb-4">
-                <option v-for="c in dictCats" :key="c" :value="c">{{ c }}</option>
-            </select>
+            <div class="lb-select mb-4" @click="pickDictAddCat()"><span class="lb-sel-v">{{ dictAddCatText }}</span><span class="lb-sel-a">›</span></div>
             <div class="flex gap-2">
                 <button @click="dictAddOpen = false" class="flex-1 py-2.5 bg-bg border border-border text-text rounded-lg text-[13px]">取消</button>
                 <button @click="dictSaveAdd" class="flex-1 py-2.5 bg-accent text-bg rounded-lg text-[13px] font-medium">存好</button>
@@ -6556,9 +6945,7 @@ html, body { overscroll-behavior-y: none; }
             <p class="text-[10px] text-muted leading-relaxed mb-3">改完立刻生效；拼句时也会用新词。内置词改写只存你这一份，不动原词库。</p>
             <input v-model="dictEditText" @keyup.enter="dictSaveEdit" type="text" maxlength="24" class="w-full bg-bg text-text text-[14px] rounded-xl p-3 outline-none border border-border mb-3" placeholder="写个词">
             <label class="block text-[12px] text-muted mb-2">归到哪一类</label>
-            <select v-model="dictEditCat" class="w-full bg-bg text-text text-[13px] rounded-lg p-2.5 outline-none border border-border mb-4">
-                <option v-for="c in dictCats" :key="c" :value="c">{{ c }}</option>
-            </select>
+            <div class="lb-select mb-4" @click="pickDictEditCat()"><span class="lb-sel-v">{{ dictEditCatText }}</span><span class="lb-sel-a">›</span></div>
             <div class="flex gap-2">
                 <button @click="dictEditOpen = false" class="flex-1 py-2.5 bg-bg border border-border text-text rounded-lg text-[13px]">取消</button>
                 <button @click="dictSaveEdit" class="flex-1 py-2.5 bg-accent text-bg rounded-lg text-[13px] font-medium">存好</button>
@@ -7054,6 +7441,10 @@ html, body { overscroll-behavior-y: none; }
                         <span>通话语音感应</span>
                         <button @click="settings.callVoiceSense = !settings.callVoiceSense" class="w-10 h-5 rounded-full relative" :class="settings.callVoiceSense ? 'bg-text' : 'bg-border'"><div class="absolute top-1 left-1 w-3 h-3 bg-surface rounded-full transition-transform" :class="settings.callVoiceSense ? 'translate-x-5' : ''"></div></button>
                     </div>
+                    <div class="flex items-center justify-between pt-2.5 border-t border-border" @click="openCallHis()" style="cursor:pointer">
+                        <span>通话记录</span>
+                        <span class="text-[10px] text-muted">{{ callHistory.length }} 次 · 点开回看 ›</span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -7479,6 +7870,27 @@ html, body { overscroll-behavior-y: none; }
           </div>
         </div>
         <div class="vinyl-deck">
+            <!-- 磁带这一面：唱片两侧留白用极淡细线 / 竖排小字 / 虚线光环填一下，不挡操作 -->
+            <div v-if="settings.musicMode !== 'lyric'" class="vd-orn" aria-hidden="true">
+                <div class="vd-orn-top"><span></span><em>第 {{ syncState.index + 1 }} 面 · 共 {{ syncPlaylist.length }} 首</em><span></span></div>
+                <div class="vd-orn-ring"></div>
+                <!-- 光环上撒几颗极淡星屑 -->
+                <span class="vd-dot" style="top:13%;left:12%"></span>
+                <span class="vd-dot" style="top:24%;right:10%"></span>
+                <span class="vd-dot" style="bottom:16%;left:17%"></span>
+                <span class="vd-dot" style="bottom:22%;right:15%"></span>
+                <div class="vd-orn-side left">
+                    <span class="vd-fig" title="磁带"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="8.5" cy="11" r="2.2"/><circle cx="15.5" cy="11" r="2.2"/><path d="M6.5 16.2h11"/></svg></span>
+                    <b>S I D E&nbsp; A</b><i></i><em>✦</em>
+                    <span class="vd-fig"><svg viewBox="0 0 16 20" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M2 8v4M6 4v12M10 7v6M14 5v10"/></svg></span>
+                </div>
+                <div class="vd-orn-side right">
+                    <span class="vd-fig"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg></span>
+                    <em>✦</em><i></i><b>33⅓ RPM</b>
+                    <span class="vd-fig"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 15.5A8 8 0 0 1 8.5 5 8 8 0 1 0 19 15.5z"/></svg></span>
+                </div>
+                <div class="vd-score" aria-hidden="true"><span></span><span></span><span></span></div>
+            </div>
             <!-- 黑胶唱片 -->
             <div v-if="settings.musicMode !== 'lyric'" class="vinyl-shaft"
                  :class="{ 'drag-over': vinylDragging, 'dragging': vinylSwiping }"
@@ -7828,14 +8240,14 @@ html, body { overscroll-behavior-y: none; }
     </main>
 
     <!-- 底部导航：逛逛 / 分类 / 消息中心 / 我的 -->
-    <div class="shop-bottom-nav" v-if="!shopMeOpen && !shopMsgOpen && !shopThemFavOpen">
+    <div class="shop-bottom-nav" v-if="!shopMeOpen && !shopMsgOpen && !shopThemFavOpen && !shopGalleryOpen">
         <button v-for="n in SHOP_NAV" :key="n.k" :class="{ on: shopNav === n.k }" @click="shopNavTap(n)">
             <span class="sn-e" v-html="SHOP_ICONS[n.i]"></span><span class="sn-t">{{ n.n }}</span>
         </button>
     </div>
 
     <!-- ===== 消息中心：每件买过的货，从次元快递站送到我填的地址 ===== -->
-    <div v-if="shopMsgOpen && !shopThemFavOpen" class="shop-me-page">
+    <div v-if="shopMsgOpen && !shopThemFavOpen && !shopGalleryOpen" class="shop-me-page">
         <header class="h-14 flex items-center justify-between px-4 border-b border-border shrink-0 bg-surface">
             <button @click="shopMsgBack" class="p-2 -ml-2 text-text" title="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="m15 18-6-6 6-6"/></svg></button>
             <span class="text-[13px] font-medium tracking-widest serif-text">消息中心</span><span class="w-9"></span>
@@ -7856,7 +8268,7 @@ html, body { overscroll-behavior-y: none; }
     </div>
 
     <!-- ===== 我的：主页式资料卡 + 购物车 / 两边收藏 / 买过的 ===== -->
-    <div v-if="shopMeOpen && !shopThemFavOpen" class="shop-me-page">
+    <div v-if="shopMeOpen && !shopThemFavOpen && !shopGalleryOpen" class="shop-me-page">
         <header class="h-14 flex items-center justify-between px-4 border-b border-border shrink-0 bg-surface">
             <button @click="shopMeBack" class="p-2 -ml-2 text-text" title="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="m15 18-6-6 6-6"/></svg></button>
             <span class="text-[13px] font-medium tracking-widest serif-text">我的</span><span class="w-9"></span>
@@ -7963,7 +8375,7 @@ html, body { overscroll-behavior-y: none; }
     </div>
 
     <!-- ===== TA 收藏的：独立的一页商品，不进「我的」 ===== -->
-    <div v-if="shopThemFavOpen" class="shop-me-page">
+    <div v-if="shopThemFavOpen && !shopGalleryOpen" class="shop-me-page">
         <header class="h-14 flex items-center justify-between px-4 border-b border-border shrink-0 bg-surface">
             <button @click="shopThemFavBack" class="p-2 -ml-2 text-text" title="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="m15 18-6-6 6-6"/></svg></button>
             <span class="text-[13px] font-medium tracking-widest serif-text">TA 收藏的</span><span class="w-9"></span>
@@ -7998,6 +8410,49 @@ html, body { overscroll-behavior-y: none; }
             </div>
             <div v-else class="me-empty">他还没收过。等一会儿他自己收，或者点上面让他现在挑一件。</div>
             <div class="tfav-foot">想调他收藏的频繁程度，去「偏好 → 基础 → 他收藏商品的概率」。</div>
+        </main>
+    </div>
+
+    <!-- ===== 商品展览：我买下的 / 他送我的 ===== -->
+    <div v-if="shopGalleryOpen && !shopMeOpen && !shopMsgOpen && !shopThemFavOpen" class="shop-me-page">
+        <header class="h-14 flex items-center justify-between px-4 border-b border-border shrink-0 bg-surface">
+            <button @click="shopGalBack" class="p-2 -ml-2 text-text" title="返回"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="m15 18-6-6 6-6"/></svg></button>
+            <span class="text-[13px] font-medium tracking-widest serif-text">小小的展览</span>
+            <span class="w-9 text-right text-[10px] text-muted">{{ shopGalMine.length + shopGalThem.length }} 件</span>
+        </header>
+        <main class="flex-1 overflow-y-auto px-4 pb-10 pt-4 shop-gal-main">
+            <div class="gal-intro">
+                <span class="gal-intro-star">✦</span>
+                <div class="gal-intro-t serif-text">把收过的东西，一件一件摆好</div>
+                <div class="gal-intro-s">每一件都记着日子，也留着当时那句话。</div>
+            </div>
+            <div class="gal-tabs">
+                <button :class="{ on: shopGalleryTab === 'mine' }" @click="shopGalleryTab = 'mine'">我买下的 <em>{{ shopGalMine.length }}</em></button>
+                <button :class="{ on: shopGalleryTab === 'them' }" @click="shopGalleryTab = 'them'">他送我的 <em>{{ shopGalThem.length }}</em></button>
+            </div>
+            <div class="gal-sec-h"><span></span><b>{{ shopGalleryTab === 'them' ? '他送来的' : '我自己收的' }}</b><span></span></div>
+            <div class="gal-list">
+                <div v-for="(o, i) in shopGalItems" :key="o.id" class="gal-card">
+                    <div class="gal-top">
+                        <span class="gal-no">No.{{ String(i + 1).padStart(2, '0') }}</span>
+                        <span class="gal-date">{{ shopGalDate(o.at) }}</span>
+                    </div>
+                    <div class="gal-main">
+                        <span class="gal-art" v-html="shopArt(o.item.id, o.item)"></span>
+                        <div class="gal-meta">
+                            <div class="gal-name serif-text">{{ o.item.name }}</div>
+                            <div class="gal-from">{{ shopGalleryTab === 'them' ? profiles.them.name + ' 送我的' : (o.label || '我 自己收着') }}</div>
+                        </div>
+                        <span class="gal-mark">✦</span>
+                    </div>
+                    <div class="gal-quote"><span></span><p>{{ shopGalNote(o) }}</p><span></span></div>
+                </div>
+                <div v-if="!shopGalItems.length" class="me-empty gal-empty">
+                    {{ shopGalleryTab === 'them' ? '他还没送过东西。' : '还没有买下过东西。' }}<br>
+                    去逛逛挑一件，或让他送一件，就会摆进这里。
+                </div>
+            </div>
+            <div class="gal-foot">日子和那句话都只存在这台设备上 · 跟着备份一起走</div>
         </main>
     </div>
 
@@ -8614,7 +9069,7 @@ html, body { overscroll-behavior-y: none; }
                 </div>
             </div>
 
-            <div class="slp-sec-lbl" style="margin-top:12px">助眠音乐</div>
+            <div class="slp-sec-lbl" style="margin-top:12px">睡眠曲单</div>
             <div class="cp-noise-grid">
                 <div v-for="n in cpMusics" :key="n.k" class="cp-noise-item" :class="{ on: cpActive[n.k] !== undefined }" @click="cpToggleNoise(n.k)">
                     <div class="cp-noise-icon">
@@ -8624,6 +9079,36 @@ html, body { overscroll-behavior-y: none; }
                     </div>
                     <span class="cp-noise-name">{{ n.name }}</span>
                 </div>
+            </div>
+
+            <!-- 放一首歌：网上的助眠歌 / 轻音乐，自己选文件或贴直链，不内嵌不涨体积 -->
+            <div class="slp-song-card">
+                <div class="slp-song-top">
+                    <span class="slp-song-ico">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l10-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/></svg>
+                    </span>
+                    <div class="slp-song-h">
+                        <span class="slp-song-title">放一首歌</span>
+                        <span class="slp-song-sub">网上那种助眠歌、轻音乐也行</span>
+                    </div>
+                    <span v-if="cpSongOn" class="slp-song-live"><i></i>播放中</span>
+                </div>
+                <div v-if="cpSongOn" class="slp-song-now">
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l10-2v13"/></svg>
+                    <span class="slp-song-now-name">{{ cpSongName }}</span>
+                    <span class="slp-song-now-loop">轻轻循环</span>
+                </div>
+                <div class="slp-song-acts">
+                    <button class="slp-song-btn" @click="cpPickSong">选个文件</button>
+                    <button v-if="cpSongOn" class="slp-song-btn ghost" @click="cpStopSong">停掉</button>
+                </div>
+                <div class="slp-song-url">
+                    <input v-model="cpSongUrlInput" type="url" placeholder="或贴一个能直接打开的音频链接" @keyup.enter="cpPlayUrl">
+                    <button @click="cpPlayUrl">播放</button>
+                </div>
+                <div v-if="cpSongErr" class="slp-song-err">{{ cpSongErr }}</div>
+                <div class="slp-song-tip">跟着总音量、也跟着「到点渐停」一起慢慢安静下来。文件只在这一次放着，不写进备份。</div>
+                <input ref="cpSongFile" type="file" accept="audio/*" style="display:none" @change="cpOnSong">
             </div>
 
             <div class="slp-sec-lbl" style="margin-top:12px">ASMR · 触发音</div>
@@ -8663,7 +9148,7 @@ html, body { overscroll-behavior-y: none; }
                     {{ r.name }}<i @click.stop="cpDelRecipe(r)">×</i>
                 </span>
             </div>
-            <div class="cp-noise-tip">每种音已按实测响度自动校准，叠得越多每层越轻，进出都淡入淡出，不用手动压也不会一惊一乍。白噪音、音乐、ASMR 随便叠；你手动调过的音量会记住。陪伴里只能你自己选，只有睡眠页开始睡眠后他自己会点。</div>
+            <div class="cp-noise-tip">每种音已按实测响度自动校准，叠得越多每层越轻，进出都淡入淡出，不用手动压也不会一惊一乍。白噪音、睡眠曲单、ASMR 随便叠；曲单是一整首轻轻循环的小曲，也能在上面放你自己找的歌。你手动调过的音量会记住。</div>
         </div>
 
         <div class="cp-enter-btn" @click="cpGo">进入陪伴</div>
@@ -8852,7 +9337,7 @@ html, body { overscroll-behavior-y: none; }
                 </div>
             </div>
 
-            <div class="slp-sec-lbl" style="margin-top:12px">助眠音乐</div>
+            <div class="slp-sec-lbl" style="margin-top:12px">睡眠曲单</div>
             <div class="cp-noise-grid">
                 <div v-for="n in cpMusics" :key="n.k" class="cp-noise-item" :class="{ on: cpActive[n.k] !== undefined }" @click="cpToggleNoise(n.k)">
                     <div class="cp-noise-icon">
@@ -8862,6 +9347,36 @@ html, body { overscroll-behavior-y: none; }
                     </div>
                     <span class="cp-noise-name">{{ n.name }}</span>
                 </div>
+            </div>
+
+            <!-- 放一首歌：网上的助眠歌 / 轻音乐，自己选文件或贴直链，不内嵌不涨体积 -->
+            <div class="slp-song-card">
+                <div class="slp-song-top">
+                    <span class="slp-song-ico">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l10-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="16" cy="16" r="3"/></svg>
+                    </span>
+                    <div class="slp-song-h">
+                        <span class="slp-song-title">放一首歌</span>
+                        <span class="slp-song-sub">网上那种助眠歌、轻音乐也行</span>
+                    </div>
+                    <span v-if="cpSongOn" class="slp-song-live"><i></i>播放中</span>
+                </div>
+                <div v-if="cpSongOn" class="slp-song-now">
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l10-2v13"/></svg>
+                    <span class="slp-song-now-name">{{ cpSongName }}</span>
+                    <span class="slp-song-now-loop">轻轻循环</span>
+                </div>
+                <div class="slp-song-acts">
+                    <button class="slp-song-btn" @click="cpPickSong">选个文件</button>
+                    <button v-if="cpSongOn" class="slp-song-btn ghost" @click="cpStopSong">停掉</button>
+                </div>
+                <div class="slp-song-url">
+                    <input v-model="cpSongUrlInput" type="url" placeholder="或贴一个能直接打开的音频链接" @keyup.enter="cpPlayUrl">
+                    <button @click="cpPlayUrl">播放</button>
+                </div>
+                <div v-if="cpSongErr" class="slp-song-err">{{ cpSongErr }}</div>
+                <div class="slp-song-tip">跟着总音量、也跟着「到点渐停」一起慢慢安静下来。文件只在这一次放着，不写进备份。</div>
+                <input ref="cpSongFile" type="file" accept="audio/*" style="display:none" @change="cpOnSong">
             </div>
 
             <div class="slp-sec-lbl" style="margin-top:12px">ASMR · 触发音</div>
@@ -8901,8 +9416,72 @@ html, body { overscroll-behavior-y: none; }
                     {{ r.name }}<i @click.stop="cpDelRecipe(r)">×</i>
                 </span>
             </div>
-            <div class="cp-noise-tip">每种音已按实测响度自动校准，叠得越多每层越轻，进出都淡入淡出，不用手动压也不会一惊一乍。白噪音、音乐、ASMR 随便叠；你手动调过的音量会记住。陪伴里只能你自己选，只有睡眠页开始睡眠后他自己会点。</div>
+            <div class="cp-noise-tip">每种音已按实测响度自动校准，叠得越多每层越轻，进出都淡入淡出，不用手动压也不会一惊一乍。白噪音、睡眠曲单、ASMR 随便叠；曲单是一整首轻轻循环的小曲，也能在上面放你自己找的歌。你手动调过的音量会记住。</div>
         </div>
+
+        <!-- 播放模式：到点轻轻淡出停下 / 一直循环到这一觉结束 -->
+        <div class="slp-mode-card">
+            <div class="slp-mode-head">
+                <span class="slp-mode-title">播放模式</span>
+                <span class="slp-mode-mark">☾</span>
+            </div>
+            <div class="slp-mode-chips">
+                <button class="slp-mode-chip" :class="{ on: slpSoundMode === 'timer' }" @click="slpSetSoundMode('timer')">到点渐停</button>
+                <button class="slp-mode-chip" :class="{ on: slpSoundMode === 'loop' }" @click="slpSetSoundMode('loop')">一直循环</button>
+            </div>
+            <template v-if="slpSoundMode === 'timer'">
+                <div class="slp-mode-time">
+                    <span>到</span>
+                    <button class="slp-time-pill" @click="slpOpenTimePicker">
+                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg>
+                        <span class="slp-time-pill-txt">{{ slpStopHHMM }}</span>
+                        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+                    </button>
+                    <span>轻轻停下</span>
+                </div>
+                <div class="slp-mode-quick">
+                    <button v-for="m in [15,30,45,60,90]" :key="m" @click="slpQuickMin(m)">{{ m }} 分</button>
+                </div>
+                <div class="slp-mode-note">到 {{ slpStopAtText }} 前后音量会一点点变淡，再安静下来；这一觉不会结束，聊天照旧。手动点音或拖音量会取消这次淡出。</div>
+            </template>
+            <div v-else class="slp-mode-note">一直放着、一直循环，直到你点「结束睡眠」才停。</div>
+        </div>
+
+        <!-- 自绘「到几点」：不用系统那个蓝色大圆盘，跟站内同一套白卡细线 -->
+        <transition name="fade">
+        <div v-if="slpTimePickerOpen" class="slp-tp-mask" @click.self="slpTimePickerOpen = false">
+            <div class="slp-tp-sheet">
+                <div class="slp-tp-bar"></div>
+                <div class="slp-tp-head">
+                    <span class="slp-tp-title">到几点轻轻停下</span>
+                    <button class="slp-tp-x" @click="slpTimePickerOpen = false" aria-label="关掉">
+                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                    </button>
+                </div>
+                <div class="slp-tp-cols">
+                    <div class="slp-tp-col">
+                        <span class="slp-tp-lbl">时</span>
+                        <div class="slp-tp-scroll">
+                            <div v-for="h in 24" :key="'h'+h" class="slp-tp-cell" :class="{ on: slpTP.h === h-1 }" @click="slpTP.h = h-1">{{ slpTPPad(h-1) }}</div>
+                        </div>
+                    </div>
+                    <span class="slp-tp-colon">:</span>
+                    <div class="slp-tp-col">
+                        <span class="slp-tp-lbl">分</span>
+                        <div class="slp-tp-scroll">
+                            <div v-for="(m, i) in 12" :key="'m'+i" class="slp-tp-cell" :class="{ on: slpTP.m === i*5 }" @click="slpTP.m = i*5">{{ slpTPPad(i*5) }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slp-tp-foot">到点前音量会一点点变淡，再安静下来</div>
+                <div class="slp-tp-acts">
+                    <button class="slp-tp-cancel" @click="slpTimePickerOpen = false">取消</button>
+                    <button class="slp-tp-ok" @click="slpConfirmTime">就这个点</button>
+                </div>
+            </div>
+        </div>
+        </transition>
+
             <!-- 开始睡眠：进去之后只剩聊天，他自己会挑音、自己播，不用你再点 -->
             <button class="slp-start-btn" @click="slpStart">
                 <span class="slp-start-moon">☾</span>
@@ -8922,6 +9501,7 @@ html, body { overscroll-behavior-y: none; }
             <span class="slp-live-right">
                 <span class="slp-live-timer">☾ {{ slpElapsedText }}</span>
                 <span class="slp-live-playing"><i></i>{{ cpActiveKeys.length }} 种在放</span>
+                <span class="slp-live-mode">{{ slpSoundLabel }}</span>
             </span>
         </header>
 
@@ -8935,7 +9515,7 @@ html, body { overscroll-behavior-y: none; }
                     <div class="slp-msg-head"><span class="slp-msg-dot"></span>助眠音</div>
                     <div class="slp-msg-line"><b>{{ profiles[m.sender].name }}</b> 播放了 <b>{{ m.sleep.title }}</b></div>
                     <div class="slp-msg-wave"><i v-for="(h, j) in [5,9,6,12,8,4,10,6]" :key="j" :style="{ height: h + 'px' }"></i></div>
-                    <div class="slp-msg-sub">他点的 · 已经在放，一起听</div>
+                    <div class="slp-msg-sub">{{ m.sleep.joined ? '他点的 · 已经在放，一起听' : '他点的 · 这会儿先安静着' }}</div>
                 </div>
                 <div v-else-if="m.type === 'sticker'" class="slp-sticker-bubble"><img :src="m.sticker" alt="表情包"></div>
                 <div v-else-if="m.type === 'card'" class="slp-card-bubble">
@@ -9156,6 +9736,11 @@ html, body { overscroll-behavior-y: none; }
                         <span class="jb-note-pin"></span>
                         <span class="jb-note-text">{{ it.text }}</span>
                     </div>
+                    <div v-else-if="it.kind === 'sticky'" class="jb-sticky" :style="{ '--jb-paper': it.paper || '#EDF6FD' }">
+                        <span class="jb-sticky-tape"></span>
+                        <img v-if="it.art" :src="it.art" class="jb-sticky-art">
+                        <div class="jb-sticky-text" :style="{ fontSize: (it.size >= 150 ? 13 : it.size >= 110 ? 12 : 11) + 'px' }">{{ it.text }}</div>
+                    </div>
                     <img v-else :src="it.src">
                 </div>
             </div>
@@ -9183,32 +9768,54 @@ html, body { overscroll-behavior-y: none; }
             </div>
         </div>
 
-        <!-- 胶带面板：先选颜色，再选贴哪条边 -->
-        <div v-if="jbPanel === 'tape'" class="jb-panel">
+        <!-- 便签纸面板：颜色 / 大中小 / 写句话 / 贴个小图案，左边实时预览 -->
+        <div v-if="jbPanel === 'sticky'" class="jb-panel">
             <div class="jb-panel-head">
-                <span class="jb-panel-title">撕条胶带</span>
+                <span class="jb-panel-title">{{ jbStickyEditing ? '改这张便签' : '贴张便签' }}</span>
                 <button @click="jbPanel = ''" class="p-1 text-muted">
                     <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 </button>
             </div>
             <div class="jb-panel-body">
-                <div class="jb-panel-sec">选个颜色</div>
-                <div class="jb-tape-pick">
-                    <div v-for="(t, i) in jbTapes" :key="'t'+i" class="jb-tape-swatch jb-tape"
-                         :class="{ on: jbTapeColor === t }" :style="{ backgroundColor: t }" @click="jbTapeColor = t"></div>
+                <div class="jb-sticky-top">
+                    <div class="jb-sticky-preview" :style="{ '--jb-paper': jbStickyPaper }">
+                        <span class="jb-sticky-tape"></span>
+                        <img v-if="jbStickyArt" :src="jbStickyArt" class="jb-sticky-art">
+                        <div class="jb-sticky-text">{{ jbStickyText || '写点什么…' }}</div>
+                    </div>
+                    <div class="jb-sticky-forms">
+                        <div class="jb-panel-sec">选个颜色</div>
+                        <div class="jb-sticky-colors">
+                            <span v-for="c in jbStickyColors" :key="c" class="jb-sticky-swatch"
+                                  :class="{ on: jbStickyPaper.toLowerCase() === c.toLowerCase() }"
+                                  :style="{ '--jb-paper': c }" @click="jbStickyPaper = c"></span>
+                            <label class="jb-sticky-custom" title="自己挑个颜色">
+                                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/></svg>
+                                <input type="color" v-model="jbStickyPaper">
+                            </label>
+                        </div>
+                        <div class="jb-panel-sec" style="margin-top:10px">选个大小</div>
+                        <div class="jb-sticky-sizes">
+                            <button v-for="s in jbStickySizeOpts" :key="s.k" class="jb-sticky-size"
+                                    :class="{ on: jbStickySize === s.k }" @click="jbStickySize = s.k">{{ s.n }}</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="jb-panel-sec" style="margin-top:14px">贴在哪</div>
-                <div class="jb-tape-sides">
-                    <div class="jb-side-btn" @click="jbAddTape('top')"><span class="jb-side-ico top"></span>贴上边</div>
-                    <div class="jb-side-btn" @click="jbAddTape('bottom')"><span class="jb-side-ico bottom"></span>贴下边</div>
-                    <div class="jb-side-btn" @click="jbAddTape('left')"><span class="jb-side-ico left"></span>贴左边</div>
-                    <div class="jb-side-btn" @click="jbAddTape('right')"><span class="jb-side-ico right"></span>贴右边</div>
+                <div class="jb-panel-sec" style="margin-top:12px">写点什么</div>
+                <input class="jb-sticky-input" v-model="jbStickyText" maxlength="40" placeholder="一句话、一个小记号…">
+                <div class="jb-panel-sec" style="margin-top:12px">贴个小图案 <span class="jb-sticky-optional">可不选</span></div>
+                <div class="jb-sticky-arts">
+                    <div class="jb-sticky-art-cell" :class="{ on: !jbStickyArt }" @click="jbStickyArt = ''"><span>无</span></div>
+                    <div v-for="(a, i) in jbArtList" :key="'sa'+i" class="jb-sticky-art-cell"
+                         :class="{ on: jbStickyArt === a }" @click="jbStickyArt = a"><img :src="a"></div>
                 </div>
             </div>
+            <button class="jb-sticky-go" @click="jbAddSticky">{{ jbStickyEditing ? '更新这张' : '贴上去' }}</button>
         </div>
 
         <!-- 选中贴纸时的操作条 -->
-        <div v-if="jbSelItem" class="jb-item-bar">
+        <div v-if="jbSelItem" class="jb-item-bar" :class="{ 'with-edit': jbSelItem.kind === 'sticky' }">
+            <div v-if="jbSelItem.kind === 'sticky'" class="jb-item-btn edit" @click="jbEditSticky">改一改</div>
             <div class="jb-item-btn" @click="jbRotItem(-12)">↺ 转</div>
             <div class="jb-item-btn" @click="jbRotItem(12)">↻ 转</div>
             <div class="jb-item-btn" @click="jbScaleItem(-8)">－</div>
@@ -9221,9 +9828,9 @@ html, body { overscroll-behavior-y: none; }
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12l-8 4-8-4z"/><path d="M8 10h8"/></svg>
                 贴纸
             </div>
-            <div class="jb-tool" :class="{ on: jbPanel === 'tape' }" @click="jbTogglePanel('tape')">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="9" width="20" height="6" rx="1"/><path d="M7 9v6M12 9v6M17 9v6"/></svg>
-                胶带
+            <div class="jb-tool" :class="{ on: jbPanel === 'sticky' }" @click="jbOpenStickyPanel">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 9h16M4 15h16M10 3v18M16 3v18"/></svg>
+                便签
             </div>
             <div class="jb-tool" @click="jbPickPhoto">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 16l-5-5-9 9"/></svg>
@@ -9870,9 +10477,7 @@ html, body { overscroll-behavior-y: none; }
                     <div class="sp-label">惩罚池 · 内置 {{ spPoolBuiltin }} 条 ＋ 我加的 {{ sp.custom.length }} 条</div>
                     <div class="sp-seg" style="gap:6px;">
                         <input v-model="spCustomDraft" class="sp-input" style="flex:1; min-width:0;" maxlength="60" placeholder="加一句惩罚…">
-                        <select v-model="spCustomKind" class="sp-input" style="width:78px; flex:none; padding:10px 4px;">
-                            <option value="truth">真心话</option><option value="dare">大冒险</option>
-                        </select>
+                        <div class="lb-select sp-input" style="width:78px; flex:none; padding:10px 8px;" @click="pickSpKind()"><span class="lb-sel-v">{{ spKindText }}</span></div>
                         <button class="sp-chip" style="flex:none; width:48px; padding:10px 0;" @click="spAddCustom">加</button>
                     </div>
                     <div v-for="c in sp.custom" :key="c.id" class="sp-custom-row">
@@ -10036,10 +10641,7 @@ html, body { overscroll-behavior-y: none; }
                 </template>
 
                 <template v-else>
-                    <select v-model="rdAppendId" class="rd-inp">
-                        <option value="">选一本已有书…</option>
-                        <option v-for="b in rdBooks" :key="b.id" :value="b.id">{{ b.title }}</option>
-                    </select>
+                    <div class="lb-select rd-inp" @click="pickRdBook()"><span class="lb-sel-v">{{ rdBookText }}</span><span class="lb-sel-a">›</span></div>
                     <textarea v-model="rdImportText" class="rd-ta" placeholder="接着上一章往下贴…"></textarea>
                     <div class="rd-hint">续贴的内容会接在原文后面，分页会重新排一次。</div>
                 </template>
@@ -10063,6 +10665,85 @@ html, body { overscroll-behavior-y: none; }
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
     </button>
     <iframe :src="watchState.iframeUrl" allowfullscreen scrolling="no" frameborder="0"></iframe>
+</div>
+</transition>
+
+<!-- ===== 站内弹窗：所有原生 alert / confirm / prompt / 单选都换成这一套圆角白卡 ===== -->
+<transition name="fade">
+<div v-if="lbModal.open" class="lb-mask" @click.self="lbMaskTap">
+    <div class="lb-sheet">
+        <div class="lb-bar"></div>
+        <div class="lb-h">
+            <span class="lb-t">{{ lbModal.title }}</span>
+            <button class="lb-x" @click="lbClose(null)" aria-label="关掉">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+        </div>
+        <div v-if="lbModal.msg" class="lb-msg">{{ lbModal.msg }}</div>
+        <input v-if="lbModal.type === 'prompt'" v-model="lbModal.input" class="lb-inp" :placeholder="lbModal.placeholder" maxlength="120" @keyup.enter="lbOk">
+        <div v-if="lbModal.type === 'pick'" class="lb-opts">
+            <div v-for="o in lbModal.opts" :key="String(o.value)" class="lb-opt" :class="{ on: lbModal.value === o.value }" @click="lbClose(o.value)">
+                <span>{{ o.label }}</span>
+                <span class="lb-radio"><i></i></span>
+            </div>
+        </div>
+        <div v-else class="lb-acts">
+            <button v-if="lbModal.type !== 'alert'" class="lb-cancel" @click="lbClose(null)">取消</button>
+            <button class="lb-ok" @click="lbOk">{{ lbModal.type === 'confirm' ? '确定' : '好' }}</button>
+        </div>
+        <div class="lb-foot">留白 · 只存在这台设备上</div>
+    </div>
+</div>
+</transition>
+
+<!-- ===== 视频通话：本轮记录 ===== -->
+<transition name="fade">
+<div v-if="vcLogOpen && videoCall.active" class="lb-mask vc-log-mask" @click.self="vcLogOpen = false">
+    <div class="lb-sheet vc-log-sheet">
+        <div class="lb-bar"></div>
+        <div class="lb-h"><span class="lb-t">这一通说了什么</span><button class="lb-x" @click="vcLogOpen = false" aria-label="关掉"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+        <div class="vc-log-meta">{{ callHisDate(videoCall.beginAt) }} · {{ videoCall.caller === 'me' ? '我打给' + profiles.them.name : profiles.them.name + '打来' }} · {{ fmtCallTime(videoCall.duration) }}</div>
+        <div class="vc-log-list">
+            <div v-for="m in videoCall.log" :key="m.id" class="vc-log-row">
+                <div class="vc-log-top"><span>{{ profiles.them.name }}</span><em>{{ m.tag }}</em><b>{{ callHisClock(m.at) }}</b></div>
+                <div class="vc-log-text">{{ m.text }}</div>
+            </div>
+            <div v-if="!videoCall.log.length" class="vc-log-empty">还没说话呢。<br>开着语音感应，说一句他就会回你。</div>
+        </div>
+        <div class="lb-acts"><button class="lb-ok" @click="vcLogOpen = false">收好</button></div>
+    </div>
+</div>
+</transition>
+
+<!-- ===== 通话记录：以前每一通，什么时候 / 多久 / 聊了什么 ===== -->
+<transition name="fade">
+<div v-if="callHisOpen" class="lb-mask" @click.self="callHisOpen = false">
+    <div class="lb-sheet vc-his-sheet">
+        <div class="lb-bar"></div>
+        <div class="lb-h"><span class="lb-t">通话记录</span><button class="lb-x" @click="callHisOpen = false" aria-label="关掉"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+        <div class="vc-his-list">
+            <div v-for="h in callHistory" :key="h.id" class="vc-his-item" @click="callHisDetail = callHisDetail === h.id ? '' : h.id">
+                <div class="vc-his-top">
+                    <span class="vc-his-ico"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M10.68 13.31a16 16 0 0 0 3.41 2.6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91"/></svg></span>
+                    <div class="vc-his-main">
+                        <div class="vc-his-l1">{{ callHisDate(h.at) }} <em :class="{ miss: h.kind !== 'connected' }">{{ callHisKindText(h.kind) }}</em></div>
+                        <div class="vc-his-l2">{{ h.from === 'me' ? '我打给 ' + profiles.them.name : profiles.them.name + ' 打来' }} · {{ h.durText }} · {{ h.msgs.length }} 句</div>
+                    </div>
+                    <span class="vc-his-go">›</span>
+                </div>
+                <div v-if="callHisDetail === h.id" class="vc-his-body">
+                    <div v-for="m in h.msgs" :key="m.id" class="vc-log-row">
+                        <div class="vc-log-top"><span>{{ profiles.them.name }}</span><em>{{ m.tag }}</em><b>{{ callHisClock(m.at) }}</b></div>
+                        <div class="vc-log-text">{{ m.text }}</div>
+                    </div>
+                    <div v-if="!h.msgs.length" class="vc-log-empty">这一通没说什么。</div>
+                    <button class="vc-his-del" @click.stop="callHisDel(h.id)">删掉这次</button>
+                </div>
+            </div>
+            <div v-if="!callHistory.length" class="vc-log-empty">还没有通话记录。<br>打一通，挂断后就会留在这里。</div>
+        </div>
+        <div class="lb-acts"><button class="lb-ok" @click="callHisOpen = false">收好</button></div>
+    </div>
 </div>
 </transition>
 
@@ -10094,12 +10775,18 @@ html, body { overscroll-behavior-y: none; }
         </div>
       </div>
       <div v-if="videoCall.status === 'connected'" class="vc-under">
-        <button class="vc-listen" :class="{ on: settings.callVoiceSense && !videoCall.muted && vcSense.state === 'listening' }" @click="vcTapSense">
-            <i></i>{{ vcSenseLabel }}
-        </button>
+        <div class="vc-under-row">
+          <button class="vc-listen" :class="{ on: settings.callVoiceSense && !videoCall.muted && vcSense.state === 'listening' }" @click="vcTapSense">
+              <i></i>{{ vcSenseLabel }}
+          </button>
+          <button class="vc-log-btn" @click="vcLogOpen = true">
+              <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h6"/></svg>
+              这一通 · {{ videoCall.log.length }} 句
+          </button>
+        </div>
         <transition name="vc-reply">
           <div v-if="videoCall.reply" :key="videoCall.reply.id" class="vc-reply">
-            <div class="vc-reply-head"><span>{{ profiles.them.name }}</span><em>{{ videoCall.reply.mode === 'ai' ? '听到你说话' : '字卡' }}</em></div>
+            <div class="vc-reply-head"><span>{{ profiles.them.name }}</span><em>{{ videoCall.reply.tag }}</em></div>
             <div class="vc-reply-text">{{ videoCall.reply.text }}</div>
           </div>
         </transition>
@@ -10309,7 +10996,7 @@ createApp({
         // ② 别让代码自己先把记录砍掉 —— 以前一堆写死的 30/50/120/200/300 才是「存不下」的主因。
         const CAP = {
             watchHistory: 300,   qaBank: 2000,  shopOrders: 500, shopCustom: 1000,
-            watchMsgs: 1000, companionMsgs: 1000, sleepChat: 1000, sleepHistory: 300, tarot: 1000, horary: 1000
+            watchMsgs: 1000, companionMsgs: 1000, sleepChat: 1000, sleepHistory: 300, tarot: 1000, horary: 1000, callHistory: 80
         };
         // 图片清晰度档：显示尺寸不变，只把源图留得更细；表情包仍是 WebP，比 JPEG 省地方
         const IMG = {
@@ -10389,7 +11076,7 @@ createApp({
         };
 
         const clearWallpaper = async (type) => {
-            if (!confirm('恢复默认背景？')) return;
+            if (!await lbConfirm('恢复默认背景？')) return;
             if (type === 'global') { globalWallpaper.value = ''; await localforage.removeItem('liubai_wallpaper_global'); }
             else if (type === 'chat') { chatWallpaper.value = ''; await localforage.removeItem('liubai_wallpaper_chat'); }
         };
@@ -10651,8 +11338,8 @@ createApp({
             patDraftMe.value = ''; patDraftThem.value = ''; patEditingId.value = ''; patEditorOpen.value = false;
             nextTick(() => { if (window.lucide) lucide.createIcons(); });
         };
-        const patDelete = (id) => {
-            if (!confirm('删除这条拍一拍文案？')) return;
+        const patDelete = async (id) => {
+            if (!await lbConfirm('删除这条拍一拍文案？')) return;
             patActions.value = patActions.value.filter(a => a.id !== id);
             patSaveDB();
         };
@@ -10739,6 +11426,11 @@ createApp({
         };
         const rdSpeedNow = () => RD_SPEED[rdDanmuSpeed.value] || RD_SPEED.slow;
         const rdSpeedLabel = computed(() => ({ slow: '慢', normal: '中', fast: '快' })[rdDanmuSpeed.value] || '慢');
+        // 他一起读时只轻翻几下：一轮最多 3 次、每次隔 90~150 秒，翻够就安静陪着只剩弹幕。
+        // 不再跟着弹幕节奏档走（快档 11 秒一次太吵，会一直把人正看的页面带走）。
+        const RD_HIM_TURNS = 3, RD_HIM_GAP_MIN = 90000, RD_HIM_GAP_MAX = 150000, RD_HIM_MY_QUIET = 60000;
+        let rdHimBudget = RD_HIM_TURNS, rdHimLastMyTurnAt = 0;
+        const rdHimReset = () => { rdHimBudget = RD_HIM_TURNS; rdHimLastMyTurnAt = 0; };
         const rdLineMode = ref('mix');
         const rdDanmus = ref([]);
         const rdImportOpen = ref(false);
@@ -10832,6 +11524,7 @@ createApp({
             });
         };
         const rdTurn = (dir) => {
+            rdHimLastMyTurnAt = Date.now();   // 我刚自己翻过页，他先别来抢这一页
             const d = dir > 0 ? 1 : -1;
             const np = rdPage.value + d;
             if (np < 0 || np >= rdPageCount.value) return;
@@ -10842,12 +11535,13 @@ createApp({
         };
         const rdOpenBook = (id) => {
             const b = rdBooks.value.find(x => x.id === id); if (!b) return;
+            rdHimReset();
             rdBookId.value = id;
             rdMarkOpened(id);
             rdPage.value = Math.min(Math.max(0, b.page || 0), rdBookPages(b).length - 1);
             rdView.value = 'read'; rdDanmus.value = []; rdToast.value = ''; rdSaveState(); rdScrollTop();
         };
-        const rdBackToShelf = () => { rdView.value = 'shelf'; rdTogether.value = false; rdDanmus.value = []; rdSaveState(); rdSaveStats(); rdScrollTop(); };
+        const rdBackToShelf = () => { rdView.value = 'shelf'; rdTogether.value = false; rdDanmus.value = []; rdHimReset(); rdSaveState(); rdSaveStats(); rdScrollTop(); };
         const rdBack = () => { if (rdView.value === 'read') rdBackToShelf(); else switchView('home'); };
 
         // ---- 弹幕字卡：内置 + 你自己添加的字卡 ----
@@ -10884,12 +11578,15 @@ createApp({
                 rdScheduleDanmu();
             }, rdSpeedNow().dMin + Math.random() * (rdSpeedNow().dMax - rdSpeedNow().dMin));
         };
-        // 他一起读：也只翻一页，前后各算一次，绝不连翻
+        // 他一起读：一轮只轻翻 3 次，隔很久才动一下；我刚翻过页就先让开，翻够就只剩弹幕陪着
         const rdScheduleHim = () => {
             clearTimeout(rdHimTimer);
             if (!rdTogether.value || rdView.value !== 'read' || currentView.value !== 'reading') return;
+            if (rdHimBudget <= 0) return;   // 翻够这几下就不动了，页面归我自己看
             rdHimTimer = setTimeout(() => {
                 if (rdTogether.value && rdView.value === 'read' && currentView.value === 'reading') {
+                    // 我刚自己翻过页：这一轮跳过，再排下一次，不抢我正看的那一页
+                    if (Date.now() - rdHimLastMyTurnAt < RD_HIM_MY_QUIET) { rdScheduleHim(); return; }
                     const n = rdPageCount.value;
                     let d = Math.random() < 0.75 ? 1 : -1;
                     if (rdPage.value + d < 0 || rdPage.value + d >= n) d = -d;
@@ -10898,12 +11595,14 @@ createApp({
                         rdPage.value = np;
                         if (rdBook.value) rdBook.value.page = np;
                         rdSaveBooks(); rdSaveState(); rdScrollTop();
-                        rdShowToast(profiles.them.name + (d > 0 ? ' 往后翻了一页' : ' 往回翻了一页'));
+                        rdHimBudget--;
+                        if (rdHimBudget <= 0) rdShowToast('他翻到这儿，就安静陪你看啦');
+                        else rdShowToast(profiles.them.name + (d > 0 ? ' 往后翻了一页' : ' 往回翻了一页'));
                         if (Math.random() < rdSpeedNow().him) rdPushDanmu(rdPickLine(), profiles.them.name);
                     }
                 }
                 rdScheduleHim();
-            }, rdSpeedNow().hMin + Math.random() * (rdSpeedNow().hMax - rdSpeedNow().hMin));
+            }, RD_HIM_GAP_MIN + Math.random() * (RD_HIM_GAP_MAX - RD_HIM_GAP_MIN));
         };
         // 切换节奏立刻重排定时器，不用等当前这一轮走完
         const rdCycleDanmuSpeed = () => {
@@ -10928,7 +11627,7 @@ createApp({
             themPush({ id: genId(), sender: 'me', type: 'readinvite', bookId: b.id, title: b.title, author: b.author || '', pages: rdBookPages(b).length, content: '', timestamp: Date.now() });
             try { playTone('send'); } catch (e) {}
             scrollToBottom(); saveAll();
-            rdTogether.value = true; rdSaveState(); rdSaveStats();
+            rdHimReset(); rdTogether.value = true; rdSaveState(); rdSaveStats();
             setTimeout(() => {
                 themPush({ id: genId(), sender: 'them', type: 'text', content: RD_ACCEPT[Math.floor(Math.random() * RD_ACCEPT.length)], timestamp: Date.now() });
                 saveAll();
@@ -10949,7 +11648,7 @@ createApp({
             rdBookId.value = b.id;
             rdMarkOpened(b.id);
             rdPage.value = Math.min(Math.max(0, b.page || 0), rdBookPages(b).length - 1);
-            rdView.value = 'read'; rdTogether.value = true;
+            rdHimReset(); rdView.value = 'read'; rdTogether.value = true;
             switchView('reading'); rdSaveState(); rdScrollTop();
             rdShowToast(profiles.them.name + ' 和你一起翻开了《' + b.title + '》');
         };
@@ -10986,8 +11685,8 @@ createApp({
                 rdShowToast('接上了 · 《' + b.title + '》现在共 ' + rdBookPages(b).length + ' 页');
             }
         };
-        const rdDeleteBook = (id) => {
-            if (!confirm('从书架移除这本书？')) return;
+        const rdDeleteBook = async (id) => {
+            if (!await lbConfirm('从书架移除这本书？')) return;
             rdBooks.value = rdBooks.value.filter(b => b.id !== id);
             delete rdPagesCache[id];
             if (rdBookId.value === id) rdBookId.value = '';
@@ -13514,8 +14213,8 @@ createApp({
             dictQuery.value = ''; dictCat.value = 'all';
             dictSay(added ? ('加进来 ' + added + ' 个词') : '这些词词典里已经有了');
         };
-        const dictDel = (id) => {
-            if (!confirm('从词典里删掉这个自己加的词？')) return;
+        const dictDel = async (id) => {
+            if (!await lbConfirm('从词典里删掉这个自己加的词？')) return;
             dictCustom.value = dictCustom.value.filter(w => w.id !== id);
             dictSave();
         };
@@ -13540,8 +14239,8 @@ createApp({
             dictEditOpen.value = false;
             dictSay('改好了');
         };
-        const dictDelAny = (w) => {
-            if (!w || !confirm('从词典里删掉这个词？')) return;
+        const dictDelAny = async (w) => {
+            if (!w || !await lbConfirm('从词典里删掉这个词？')) return;
             if (w.mine) {
                 dictCustom.value = dictCustom.value.filter(x => x.id !== w.id);
                 dictSave();
@@ -13909,28 +14608,28 @@ createApp({
             nextTick(() => { if (window.lucide) lucide.createIcons(); });
         };
 
-        const deleteCard = (card) => {
-            if (!confirm('确定删除吗？')) return;
+        const deleteCard = async (card) => {
+            if (!await lbConfirm('确定删除吗？')) return;
             if (libraryTab.value === 'emoji') { emojiList.value = emojiList.value.filter(e => e.id !== card.id); saveEmojiList(); }
             else replyGroups.value.forEach(g => { g.replies = g.replies.filter(r => r.id !== card.id); });
             saveAll();
         };
         const toggleCardEnable = (card) => { replyGroups.value.forEach(g => { const r = g.replies.find(x => x.id === card.id); if (r) r.enabled = !r.enabled; }); saveAll(); };
-        const addNewGroup = () => {
-            const name = prompt('请输入新分组名称：'); if (!name || !name.trim()) return;
+        const addNewGroup = async () => {
+            const name = await lbPrompt('请输入新分组名称：'); if (!name || !name.trim()) return;
             const colors = ['#F6C453', '#EF4444', '#A855F7', '#3B82F6', '#10B981', '#F97316'];
             replyGroups.value.push({ id: genId(), name: name.trim(), color: colors[Math.floor(Math.random() * colors.length)], replies: [] });
             saveAll();
         };
-        const editGroupName = (group) => { const name = prompt('修改分组名称：', group.name); if (name && name.trim()) { group.name = name.trim(); saveAll(); } };
-        const deleteGroup = (groupId) => { if (!confirm('删除该分组及里面所有字卡？')) return; replyGroups.value = replyGroups.value.filter(g => g.id !== groupId); if (activeGroupFilter.value === groupId) activeGroupFilter.value = 'all'; saveAll(); };
+        const editGroupName = async (group) => { const name = await lbPrompt('修改分组名称：', group.name); if (name && name.trim()) { group.name = name.trim(); saveAll(); } };
+        const deleteGroup = async (groupId) => { if (!await lbConfirm('删除该分组及里面所有字卡？')) return; replyGroups.value = replyGroups.value.filter(g => g.id !== groupId); if (activeGroupFilter.value === groupId) activeGroupFilter.value = 'all'; saveAll(); };
         const setGroupColor = (group, color) => { group.color = color; saveAll(); };
 
         // ================= [MOD-06] 一起观影：历史记录 =================
         const watchHistory = ref([]);
         const loadWatchHistory = async () => { try { const saved = await localforage.getItem('liubai_watch_history'); if (saved) watchHistory.value = saved; } catch (e) {} };
         const addToHistory = async (type, name, url) => { watchHistory.value = watchHistory.value.filter(h => h.url !== url); watchHistory.value.unshift({ type, name, url, time: Date.now() }); if (watchHistory.value.length > CAP.watchHistory) watchHistory.value.pop(); await localforage.setItem('liubai_watch_history', watchHistory.value); };
-        const clearWatchHistory = async () => { if (!confirm('确定清空所有观影历史吗？')) return; watchHistory.value = []; await localforage.removeItem('liubai_watch_history'); };
+        const clearWatchHistory = async () => { if (!await lbConfirm('确定清空所有观影历史吗？')) return; watchHistory.value = []; await localforage.removeItem('liubai_watch_history'); };
         const playHistory = (item) => {
             if (item.type === 'bili') { watchSetup.tab = 'bili'; watchSetup.biliUrl = item.url; pullBili(); }
         };
@@ -14095,8 +14794,83 @@ createApp({
         const watchShowStickerPanel = ref(false);
         let watchTyping = false;
 
+        // ===== 站内弹窗：接管系统原生 alert / confirm / prompt / 单选，全部用同一套圆角白卡 =====
+        const lbModal = reactive({ open:false, type:'alert', title:'留白', msg:'', opts:[], value:'', input:'', placeholder:'', resolve:null });
+        const lbClose = (v) => {
+            lbModal.open = false;
+            const r = lbModal.resolve; lbModal.resolve = null;
+            if (r) { try { r(v); } catch (e) {} }
+        };
+        const lbOk = () => {
+            if (lbModal.type === 'prompt') lbClose(lbModal.input);
+            else lbClose(true);
+        };
+        const lbMaskTap = () => lbClose(null);
+        const lbOpen = (o) => new Promise(res => {
+            Object.assign(lbModal, { open:true, resolve:res, opts:[], value:'', input:'', placeholder:'', msg:'', title:'留白' }, o);
+        });
+        const lbAlert = (msg, title) => {
+            const o = { type:'alert', msg:String(msg == null ? '' : msg), title:title || '留白' };
+            if (lbModal.open) { setTimeout(() => lbOpen(o), 260); return; }
+            lbOpen(o);
+        };
+        const lbConfirm = (msg, title) => lbOpen({ type:'confirm', msg:String(msg == null ? '' : msg), title:title || '再确认一下' });
+        const lbPrompt = (msg, def, title) => lbOpen({ type:'prompt', msg:String(msg == null ? '' : msg), input:String(def == null ? '' : def), title:title || '写点什么', placeholder:'' });
+        const lbPick = (opts, cur, title) => lbOpen({ type:'pick', opts:opts || [], value:cur, title:title || '选一个' });
+        // 全局接管：源码里那些 alert() 一行不用改，自动走站内卡片
+        try { window.alert = (m) => lbAlert(m); } catch (e) {}
+        // 8 个原生 select 各自的小入口：当前值 + 选项都从同一份数据来
+        const pickFontFamily = () => lbPick([
+            { value:'sans', label:'无衬线' }, { value:'serif', label:'衬线' }
+        ], settings.fontFamily, '形体').then(v => { if (v != null) settings.fontFamily = v; });
+        const pickApiModel = (list) => {
+            const src = (list && list.length) ? list : ['deepseek-chat','deepseek-reasoner','gpt-3.5-turbo','gpt-4o'];
+            return lbPick(src.map(v => ({ value:v, label:v })), settings.apiModel, '选择模型').then(v => { if (v != null) settings.apiModel = v; });
+        };
+        const fontFamilyText = computed(() => settings.fontFamily === 'serif' ? '衬线' : '无衬线');
+        const apiModelText = computed(() => settings.apiModel || '选择模型');
+        const cardGroupText = computed(() => { const g = replyGroups.value.find(x => x.id === editingCard.value.groupId); return g ? g.name : '未分组'; });
+        const dictAddCatText = computed(() => dictAddCat.value || '人称');
+        const dictEditCatText = computed(() => dictEditCat.value || '名词');
+        const spKindText = computed(() => spCustomKind.value === 'dare' ? '大冒险' : '真心话');
+        const rdBookText = computed(() => { if (!rdAppendId.value) return '选一本已有书…'; const b = rdBooks.value.find(x => x.id === rdAppendId.value); return b ? b.title : '选一本已有书…'; });
+        const pickCardGroup = () => lbPick(replyGroups.value.map(g => ({ value:g.id, label:g.name })), editingCard.value.groupId, '归属分组')
+            .then(v => { if (v != null) editingCard.value.groupId = v; });
+        const pickDictAddCat = () => lbPick(dictCats.map(c => ({ value:c, label:c })), dictAddCat.value, '归到哪一类')
+            .then(v => { if (v != null) dictAddCat.value = v; });
+        const pickDictEditCat = () => lbPick(dictCats.map(c => ({ value:c, label:c })), dictEditCat.value, '归到哪一类')
+            .then(v => { if (v != null) dictEditCat.value = v; });
+        const pickSpKind = () => lbPick([{ value:'truth', label:'真心话' }, { value:'dare', label:'大冒险' }], spCustomKind.value, '加进哪一边')
+            .then(v => { if (v != null) spCustomKind.value = v; });
+        const pickRdBook = () => lbPick([{ value:'', label:'选一本已有书…' }].concat(rdBooks.value.map(b => ({ value:b.id, label:b.title }))), rdAppendId.value, '接着哪一本写')
+            .then(v => { if (v != null) rdAppendId.value = v; });
+        const lbSelText = (opts, v, fallback) => { const o = (opts || []).find(x => String(x.value) === String(v)); return o ? o.label : (fallback || '选一个'); };
+
         // ================= [MOD-11] 视频通话 =================
-        const videoCall = reactive({ active: false, minimized: false, status: 'idle', duration: 0, muted: false, myImage: '', startAt: 0, caller: 'me', autoTimeout: null, timer: null, floatX: null, floatY: null, dragging: false, dragMoved: false, dragOffsetX: 0, dragOffsetY: 0, reply: null });
+        const videoCall = reactive({ active: false, minimized: false, status: 'idle', duration: 0, muted: false, myImage: '', startAt: 0, beginAt: 0, caller: 'me', autoTimeout: null, timer: null, floatX: null, floatY: null, dragging: false, dragMoved: false, dragOffsetX: 0, dragOffsetY: 0, reply: null, log: [] });
+        // 通话记录：本轮留在 videoCall.log（只显示在通话页），挂断后归档进 callHistory（本机 + 备份）
+        const CALL_HIS_KEY = 'liubai_call_history';
+        const callHistory = ref([]);
+        const vcLogOpen = ref(false);
+        const callHisOpen = ref(false);
+        const callHisDetail = ref('');
+        const callHisSave = () => localforage.setItem(CALL_HIS_KEY, JSON.parse(JSON.stringify(callHistory.value))).catch(() => {});
+        const callHisLoad = async () => {
+            try {
+                const a = await localforage.getItem(CALL_HIS_KEY);
+                callHistory.value = Array.isArray(a) ? a.filter(x => x && typeof x.at === 'number' && Array.isArray(x.msgs)).slice(0, CAP.callHistory) : [];
+            } catch (e) { callHistory.value = []; }
+        };
+        const callHisDate = (ts) => { const d = new Date(ts || Date.now()); const p = n => String(n).padStart(2, '0'); return `${d.getMonth() + 1}月${d.getDate()}日 ${p(d.getHours())}:${p(d.getMinutes())}`; };
+        const callHisClock = (ts) => { const d = new Date(ts || Date.now()); const p = n => String(n).padStart(2, '0'); return `${p(d.getHours())}:${p(d.getMinutes())}`; };
+        const callHisKindText = (k) => k === 'connected' ? '已接通' : (k === 'cancel' ? '已取消' : '未接通');
+        const openCallHis = () => { callHisDetail.value = ''; callHisOpen.value = true; vcLogOpen.value = false; };
+        const callHisDel = async (id) => {
+            if (!await lbConfirm('删掉这次通话记录？')) return;
+            callHistory.value = callHistory.value.filter(x => x.id !== id);
+            if (callHisDetail.value === id) callHisDetail.value = '';
+            callHisSave();
+        };
         const videoAutoCall = ref(true);
         let videoAutoTimer = null, lastVideoEndAt = 0;
 
@@ -14836,8 +15610,8 @@ createApp({
             qaCloseForm(); qaSave();
         };
         const qaEdit = (p) => qaOpenForm(p);
-        const qaDel = (p) => {
-            if (!confirm('删掉这一题？')) return;
+        const qaDel = async (p) => {
+            if (!await lbConfirm('删掉这一题？')) return;
             qaCustom.value = qaCustom.value.filter(x => x.id !== p.id); qaSave();
         };
         const qaClone = (p) => { qaFilter.value = 'mine'; qaQuery.value = ''; qaOpenForm({ id: null, q: p.q, opts: (p.opts || []).slice() }); };
@@ -14996,6 +15770,7 @@ createApp({
             heart:  _si('<path d="M12 20.5S3.5 15 3.5 9.3A4.6 4.6 0 0 1 12 6.5a4.6 4.6 0 0 1 8.5 2.8C20.5 15 12 20.5 12 20.5z"/>'),
             heartUser: _si('<path d="M10 20.2S3.6 15.8 3.6 10.6a3.9 3.9 0 0 1 6.4-3 3.9 3.9 0 0 1 6.4 3c0 1.3-.4 2.4-1.1 3.4"/><path d="M15 17.2a3 3 0 0 1 5.4 1.8 3 3 0 0 1-5.4 1.8z"/><path d="M17.7 14.6v.01"/>'),
             box:    _si('<path d="M3 7.5 12 3l9 4.5v9L12 21l-9-4.5z"/><path d="M3 7.5 12 12l9-4.5 M12 12v9"/>'),
+            gallery: _si('<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 15l5-5 4 4 3-3 6 6"/><circle cx="8.5" cy="8.5" r="1.3"/><path d="M7 20v2M17 20v2"/>'),
             home:   _si('<path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1z"/>'),
             user:   _si('<circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c0-3.8 3.2-6 7.5-6s7.5 2.2 7.5 6"/>'),
             truck:  _si('<path d="M2 7h11v10H2z M13 10h4l3 3v4h-7z"/><circle cx="6" cy="18" r="1.5"/><circle cx="17" cy="18" r="1.5"/>'),
@@ -15024,11 +15799,13 @@ createApp({
         const SHOP_QUICK = [
             { k:'cats', n:'分类', i:'grid' }, { k:'coupon', n:'领券', i:'ticket' },
             { k:'cart', n:'购物车', i:'cart' }, { k:'fav', n:'我收藏的', i:'heart' },
-            { k:'themFav', n:'TA 收藏的', i:'heartUser' }, { k:'orders', n:'买过的', i:'box' }
+            { k:'themFav', n:'TA 收藏的', i:'heartUser' }, { k:'orders', n:'买过的', i:'box' },
+            { k:'gallery', n:'展览', i:'gallery' }
         ];
         const SHOP_NAV = [
             { k:'home', n:'逛逛', i:'home' }, { k:'cats', n:'分类', i:'grid' },
-            { k:'msg', n:'消息中心', i:'bell' }, { k:'mine', n:'我的', i:'user' }
+            { k:'msg', n:'消息中心', i:'bell' }, { k:'gallery', n:'展览', i:'gallery' },
+            { k:'mine', n:'我的', i:'user' }
         ];
         const SHOP_ME_ENTRIES = [
             { k:'cart', n:'购物车', i:'cart' }, { k:'fav', n:'我收藏的', i:'heart' },
@@ -15139,9 +15916,10 @@ createApp({
         const shopMsgOpen = ref(false);
         // 「TA 收藏的」是独立的一页商品，不进「我的」
         const shopThemFavOpen = ref(false);
-        const shopThemFavBack = () => { shopThemFavOpen.value = false; };
+        const shopThemFavBack = () => { shopThemFavOpen.value = false; shopGalleryOpen.value = false; };
         const shopMeEntryTap = (e) => {
             if (e.k === 'themFav') { shopThemFavOpen.value = true; return; }
+            if (e.k === 'gallery') { shopGalOpen('mine'); return; }
             shopMeTab.value = e.k;
         };
         const shopSaveAddr = () => {
@@ -15162,8 +15940,9 @@ createApp({
             try { localStorage.removeItem(SHOP_PWD_KEY); } catch (e) {}
             shopPwdDraft.value = ''; shopSay('支付密码清掉了');
         };
+        // 展览页由 shopGalOpen 控制；状态在下方 shopGal* 一组里统一暴露给模板
         const shopGoSetPwd = () => {
-            shopCheckout.value = null; shopMsgOpen.value = false;
+            shopCheckout.value = null; shopMsgOpen.value = false; shopGalleryOpen.value = false;
             shopMeOpen.value = true; shopMeTab.value = 'home'; shopNav.value = 'mine';
             shopMeEditPwd.value = true; shopMeEditAddr.value = false;
             shopPwdDraft.value = '';
@@ -15177,7 +15956,43 @@ createApp({
                 if (shopMeEditPwd.value) { shopPwdDraft.value = ''; shopMeEditAddr.value = false; }
             }
         };
-        const shopMsgBack = () => { shopMsgOpen.value = false; shopNav.value = 'home'; };
+        const shopMsgBack = () => { shopMsgOpen.value = false; shopGalleryOpen.value = false; shopNav.value = 'home'; };
+
+        // ===== 商品展览：我买下的 / 他送我的，标时间 + 那句暖心话 =====
+        // 不新增存储：直接由 shopOrders（一直跟着备份走）与聊天里的送礼消息派生，旧数据也认。
+        const shopGalleryOpen = ref(false);
+        const shopGalleryTab = ref('mine');
+        const shopGalMine = computed(() => shopOrders.value.filter(o => o && o.item && /^我/.test(String(o.label || ''))));
+        const shopGalThem = computed(() => shopOrders.value.filter(o => o && o.item && String(o.label || '').indexOf('客 买给我') >= 0));
+        const shopGalItems = computed(() => (shopGalleryTab.value === 'them' ? shopGalThem.value : shopGalMine.value));
+        const shopGalDate = (at) => {
+            if (!at || !isFinite(Number(at))) return '早些时候';
+            const d = new Date(Number(at));
+            const p = n => String(n).padStart(2, '0');
+            return `${d.getFullYear()} 年 ${d.getMonth() + 1} 月 ${d.getDate()} 日 · ${p(d.getHours())}:${p(d.getMinutes())}`;
+        };
+        // 优先用「当时那句」：同一件、前后 20 秒内的送礼/想要达成消息里的 note；没有就用商品自带那句
+        const shopGalNote = (o) => {
+            if (!o) return '';
+            const it = o.item || {};
+            try {
+                const at = Number(o.at) || 0;
+                const hit = messages.value.find(m => m
+                    && (m.type === 'gift' || (m.type === 'wish' && (m.state === 'bought' || m.state === 'accepted')))
+                    && m.item && String(m.item.id) === String(it.id)
+                    && Math.abs((Number(m.timestamp) || 0) - at) < 20000
+                    && String(m.note || '').trim());
+                if (hit) return String(hit.note).trim();
+            } catch (e) {}
+            return String(it.note || '').trim() || '收好了，这件我一直记着。';
+        };
+        const shopGalOpen = (k) => {
+            shopGalleryTab.value = k || 'mine';
+            shopMeOpen.value = false; shopMsgOpen.value = false; shopThemFavOpen.value = false;
+            shopGalleryOpen.value = true; shopNav.value = 'gallery';
+            const main = document.querySelector('.shop-gal-main'); if (main) main.scrollTop = 0;
+        };
+        const shopGalBack = () => { shopGalleryOpen.value = false; shopNav.value = 'home'; };
 
         // ===== 收藏 / 我的 / 模拟物流 =====
         const SHOP_FAV_ME_KEY = 'liubai_shop_fav_me';
@@ -15209,7 +16024,7 @@ createApp({
                 shopSay('头像换好啦');
             }).catch(() => shopSay('这张图没读进来，换一张试试'));
         };
-        const shopMeBack = () => { if (shopMeTab.value !== 'home') { shopMeTab.value = 'home'; return; } shopMeOpen.value = false; shopNav.value = 'home'; };
+        const shopMeBack = () => { shopGalleryOpen.value = false; if (shopMeTab.value !== 'home') { shopMeTab.value = 'home'; return; } shopMeOpen.value = false; shopNav.value = 'home'; };
         const shopMeCount = (k) => ({ cart: shopCartCount.value, fav: shopFavMe.value.length,
             themFav: shopFavThem.value.length, orders: shopOrders.value.length })[k] || 0;
         const shopFavTime = (at) => {
@@ -15323,19 +16138,21 @@ createApp({
         };
         const shopQuick = (q) => {
             const main = document.querySelector('.shop-main');
-            shopMeOpen.value = false; shopMsgOpen.value = false; shopThemFavOpen.value = false;
+            shopMeOpen.value = false; shopMsgOpen.value = false; shopThemFavOpen.value = false; shopGalleryOpen.value = false;
             if (q.k === 'coupon') { shopCouponOpen.value = true; return; }   // 主页领券入口保留
             if (q.k === 'cats') { shopNav.value = 'cats'; shopTab.value = 'all'; shopQuery.value = ''; if (main) main.scrollTop = 0; return; }
             if (q.k === 'themFav') { shopThemFavOpen.value = true; return; } // 直接看他收的商品
+            if (q.k === 'gallery') { shopGalOpen('mine'); return; }         // 新展览页
             shopMeOpen.value = true; shopMeTab.value = q.k; shopNav.value = 'mine';
         };
         const shopNavTap = (n) => {
             shopNav.value = n.k;
             const main = document.querySelector('.shop-main');
-            shopThemFavOpen.value = false;
+            shopThemFavOpen.value = false; shopGalleryOpen.value = false;
             if (n.k === 'home') { shopMeOpen.value = false; shopMsgOpen.value = false; if (main) main.scrollTop = 0; }
             else if (n.k === 'cats') { shopMeOpen.value = false; shopMsgOpen.value = false; shopTab.value = 'all'; shopQuery.value = ''; if (main) main.scrollTop = 0; }
             else if (n.k === 'msg') { shopMeOpen.value = false; shopMsgOpen.value = true; }
+            else if (n.k === 'gallery') { shopMeOpen.value = false; shopMsgOpen.value = false; shopGalOpen('mine'); }
             else { shopMsgOpen.value = false; shopMeOpen.value = true; shopMeTab.value = 'home'; }
         };
         // 稳定的「已售」数：同一件商品每次看都一样
@@ -15569,9 +16386,9 @@ createApp({
             shopCloseMake();
             shopSay(wasEdit ? '改好啦' : '「' + draft.name + '」做好啦，收在自制那一格');
         };
-        const shopDelMake = (it) => {
+        const shopDelMake = async (it) => {
             if (!it || !it.mine) return;
-            if (!confirm('把「' + it.name + '」从商场里删掉？\n已经买过的记录会留着。')) return;
+            if (!await lbConfirm('把「' + it.name + '」从商场里删掉？\n已经买过的记录会留着。')) return;
             shopCustom.value = shopCustom.value.filter(x => x.id !== it.id);
             shopCart.value = shopCart.value.filter(c => c.id !== it.id);
             shopDetailItem.value = null;
@@ -15937,8 +16754,8 @@ createApp({
             }
         };
 
-        const clearPlaylist = () => {
-            if (!confirm('确定清空整个播放列表？')) return;
+        const clearPlaylist = async () => {
+            if (!await lbConfirm('确定清空整个播放列表？')) return;
             syncPlaylist.value = [];
             syncState.index = 0;
             syncAudio.pause();
@@ -16282,7 +17099,8 @@ createApp({
         };
         const iwSky = computed(() => {
             const v = weatherNow.value, t = IW_TONES[iwToneKey(v.icon)] || IW_TONES.cloudy;
-            const c = iwIsNight() ? t.n : t.d;
+            // 手动挑「星夜」时，白天也把天空压暗一档，否则白星在浅蓝天上几乎看不见
+            const c = (iwIsNight() || iwFx.value === 'stars') ? t.n : t.d;
             return { '--sky1': c[0], '--sky2': c[1], '--sky3': c[2] };
         });
         // 把两套数据（真实 / 虚拟）压成同一个视图模型，模板只认 weatherNow
@@ -17181,7 +17999,7 @@ createApp({
             mailSealStage.value = 'sealed';
         };
         const openLetter = (l) => { currentLetter.value = l; l.read = true; mailboxView.value = 'read'; };
-        const deleteLetter = (id) => { if (!confirm('焚毁此信？')) return; letters.value = letters.value.filter(l => l.id !== id); mailboxView.value = 'list'; currentLetter.value = null; saveAll(); };
+        const deleteLetter = async (id) => { if (!await lbConfirm('焚毁此信？')) return; letters.value = letters.value.filter(l => l.id !== id); mailboxView.value = 'list'; currentLetter.value = null; saveAll(); };
         const mailboxBack = () => { mailFontOpen.value = false; if (mailboxView.value === 'list') switchView('home'); else mailboxView.value = 'list'; };
 
         const getTrackSrc = (t) => { if (!t) return ''; if (t.src) return msSafeSrc(t.src); return ''; };
@@ -17367,8 +18185,8 @@ createApp({
             mensSheet.open = false;
         };
 
-        const deleteMensRecord = (date) => {
-            if (!confirm('删除这条记录？')) return;
+        const deleteMensRecord = async (date) => {
+            if (!await lbConfirm('删除这条记录？')) return;
             delete mensRecords.value[date];
             mensPersist();
             mensSheet.open = false;
@@ -17703,12 +18521,21 @@ createApp({
             { k:'breath',   name:'呼吸',   paths:['M12 4c-3 0-5 2-5 5 0 2 1 3 2 4-2 1-3 3-3 5 0 3 3 4 6 4s6-1 6-4c0-2-1-4-3-5 1-1 2-2 2-4 0-3-2-5-5-5z'] }
         ];
         // 助眠音乐：不是噪声，是慢速音符 + 长音铺底，同样实时合成
+        // 13 首各有各的音阶、波形、呼吸速度与铺底和声，不靠同一套旋律换皮
         const cpMusics = [
-            { k:'starlight', name:'星夜琴', paths:['M9 18V5l12-2v13','M6 21h3','M18 19h3','M9 9l12-2'] },
-            { k:'moonflute', name:'月光笛', paths:['M3 12h13a3 3 0 1 0-3-3','M3 16h9','M20 4v6','M17 7h6'] },
-            { k:'chimes',    name:'风铃',   paths:['M12 3v12','M8 15a4 4 0 0 0 8 0','M5 8v4','M19 8v4','M12 21h.01'] },
-            { k:'drone',     name:'低弦',   paths:['M2 12h20','M5 8c3 0 3 8 6 8s3-8 6-8','M5 16c3 0 3-8 6-8s3 8 6 8'] },
-            { k:'musicbox',  name:'八音盒', paths:['M4 20h16','M6 20V9l6-5 6 5v11','M10 20v-6h4v6','M9 10h6'] }
+            { k:'starlight', name:'夜航', paths:['M9 18V5l12-2v13','M6 21h3','M18 19h3','M9 9l12-2'] },
+            { k:'moonflute', name:'月亮慢慢走', paths:['M3 12h13a3 3 0 1 0-3-3','M3 16h9','M20 4v6','M17 7h6'] },
+            { k:'chimes',    name:'风过窗台',   paths:['M12 3v12','M8 15a4 4 0 0 0 8 0','M5 8v4','M19 8v4','M12 21h.01'] },
+            { k:'drone',     name:'深海呼吸',   paths:['M2 12h20','M5 8c3 0 3 8 6 8s3-8 6-8','M5 16c3 0 3-8 6-8s3 8 6 8'] },
+            { k:'musicbox',  name:'睡前小调', paths:['M4 20h16','M6 20V9l6-5 6 5v11','M10 20v-6h4v6','M9 10h6'] },
+            { k:'rainpiano', name:'雨落窗边', paths:['M3 8h18v9H3z','M9 8v9','M15 8v9','M7 3l-1 2','M12 3l-1 2','M17 3l-1 2'] },
+            { k:'harp',      name:'捞星星',   paths:['M5 3c8 0 12 4 14 15','M5 3v18','M5 21h14','M8 6l9 12','M11 5l7 11'] },
+            { k:'singbowl',  name:'一碗月光',   paths:['M3 11h18a9 9 0 0 1-18 0z','M2 11h20','M12 3v3','M9 6c1 1 2 1 3 0','M15 6c-1 1-2 1-3 0'] },
+            { k:'cello',     name:'晚风低诉', paths:['M12 3v14','M7 10c0 5-2 6-2 8a7 7 0 0 0 14 0c0-2-2-3-2-8','M7 10h10','M12 17v4'] },
+            { k:'guzheng',   name:'山雾慢慢',   paths:['M3 7h18','M3 12h18','M3 17h18','M6 4v16','M18 4v16','M9 7l3 10'] },
+            { k:'guitar',    name:'不赶时间', paths:['M9 3v6','M15 3v6','M8 9a4 4 0 0 0 8 0','M8 9c-3 0-5 3-5 7a7 7 0 0 0 14 0c0-4-2-7-5-7','M12 14v.01'] },
+            { k:'softpad',   name:'云上小憩',   paths:['M2 9c3-3 5 3 8 0s5-3 8 0','M2 14c3-3 5 3 8 0s5-3 8 0','M2 19c3-3 5 3 8 0s5-3 8 0'] },
+            { k:'musicrain', name:'好梦之前',   paths:['M12 2v3','M7 5a6 6 0 0 0 10 0','M8 13l-1 3','M12 12l-1 4','M16 13l-1 3','M6 5h12'] }
         ];
         // ASMR 触发音：冰块、木头、纸、刷子、气泡……近距离小动静，全部实时合成
         const cpAsmr = [
@@ -17776,6 +18603,15 @@ createApp({
             'chimes':      3.30,  // 风铃    cont 实测 0.0067
             'drone':       7.00,  // 低弦    cont 实测 0.0031
             'musicbox':    4.21,  // 八音盒   cont 实测 0.0052
+            // 新增 8 首：按各自音符幅度 / 时长反推，落在和原有音乐同一条响度带上
+            'rainpiano':   3.05,  // 雨窗琴
+            'harp':        3.00,  // 竖琴（短音稍抬一点）
+            'singbowl':    3.80,  // 颂钵（长音稍压一点）
+            'cello':       3.30,  // 大提琴
+            'guzheng':     3.25,  // 古筝
+            'guitar':      2.95,  // 木吉他
+            'softpad':     5.00,  // 云絮（几乎只有铺底）
+            'musicrain':   4.50,  // 雨铃（高音细碎）
             'ice':         4.65,  // 冰块    asmr 实测 0.0030
             'icecup':      7.00,  // 杯中冰   asmr 实测 0.0012
             'icecrush':    5.38,  // 碎冰    asmr 实测 0.0026
@@ -17825,6 +18661,8 @@ createApp({
         };
         // ---------- 助眠音状态（cpNoise.on / vol 保留兼容旧调用）----------
         const cpNoise = reactive({ on:false, type:'', vol:55 });
+        let cpFading = false;                          // 「到点渐停」正在淡出：别让调音量/新层把总音量顶回去
+        const slpSoundMuted = ref(false);              // 定时到点后保持安静，他不再自动叠播（你手动点音仍可开）
         const cpNoiseName = computed(() => { const n = cpAllSounds.find(x => x.k === cpNoise.type); return n ? n.name : ''; });
         const cpActive = reactive({});                 // k -> 独立音量 0~100
         const cpActiveKeys = computed(() => Object.keys(cpActive));
@@ -17889,13 +18727,48 @@ createApp({
             breath:    { src:'pink',  filters:[['lowpass',520,0.9]],                        gain:0.26, lfo:{ f:0.22, depth:0.30, to:'gain' } }
         };
 
-        // 5 种助眠音乐：慢速音符 + 低频长音铺底，全部实时合成
+        // ===== 睡眠曲单：像「一首歌」而不是单件乐器在响 =====
+        // 每首 = 4 小节和弦进行 + 跟着和弦走的主旋律 + 低音根音 + 长音铺底，
+        // 小节无缝循环，音型逐小节轮换，所以听着是一整首在轻轻转，不是随机散音。
+        // 全部 Web Audio 实时合成，不挂外链、不占体积、离线也能放。
+        const SLP_CH = {
+            C:[261.63,329.63,392.00], Am:[220.00,261.63,329.63],
+            F:[174.61,220.00,261.63], G:[196.00,246.94,293.66],
+            Dm:[146.83,174.61,220.00], Em:[164.81,196.00,246.94],
+            Fmaj7:[174.61,261.63,329.63], Am7:[220.00,261.63,392.00],
+            Dm7:[146.83,220.00,261.63], Csus:[261.63,349.23,392.00],
+            Fsus:[174.61,261.63,349.23], Gsus:[196.00,261.63,293.66],
+            Asus:[220.00,293.66,329.63], Clow:[196.00,261.63,329.63]
+        };
+        // 五种旋律音型（索引指向当前和弦的第几个音），逐小节换，不呆板
+        const SLP_PHRASES = [[0,2,1],[0,1,2,1],[2,1,0],[0,2,1,2],[1,2,0,1]];
         const cpMusicCfg = {
-            starlight:{ scale:[261.63,293.66,329.63,392,440,523.25,587.33,659.25], gap:[1100,2600], dur:2.4, gain:0.055, wave:'triangle', atk:0.10, pad:[130.81,196,261.63] },
-            moonflute:{ scale:[392,440,523.25,587.33,659.25,783.99],                 gap:[2200,4200], dur:3.2, gain:0.050, wave:'sine',     atk:0.22, slide:1.06, pad:[196,293.66] },
-            chimes:   { scale:[880,1046.5,1174.66,1318.51,1567.98,1760],             gap:[1600,4200], dur:1.8, gain:0.045, wave:'sine',     atk:0.01 },
-            drone:    { scale:[],                                                       gap:[6000,12000],dur:5.0, gain:0.000, wave:'sine',     atk:0.40, pad:[98,146.83,196,293.66] },
-            musicbox: { scale:[523.25,587.33,659.25,783.99,880,1046.5],               gap:[700,1700],  dur:1.3, gain:0.050, wave:'triangle', atk:0.01 }
+            // 夜航：C-Am-F-G，明亮一点，像睡前慢慢走的一段
+            starlight:{ prog:['C','Am','F','G'],       phrases:[0,2,1,3], melOct:2,   bar:4.6, wave:'triangle', gain:0.042, padGain:0.013, atk:0.12, bell:true },
+            // 月亮慢慢走：高音长音，最慢
+            moonflute:{ prog:['Fmaj7','C','Am7','Fsus'],phrases:[2,0,3,1], melOct:2,   bar:5.6, wave:'sine',     gain:0.038, padGain:0.014, atk:0.26 },
+            // 风过窗台：清亮小铃，音区最高
+            chimes:   { prog:['C','G','Am','F'],       phrases:[4,0,2,1], melOct:4,   bar:3.8, wave:'sine',     gain:0.034, padGain:0.009, atk:0.02, bell:true },
+            // 深海呼吸：几乎只剩和声垫，最沉
+            drone:    { prog:['Clow','Am','Dm7','Gsus'],phrases:[2,2,0,2], melOct:1,   bar:7.2, wave:'sine',     gain:0.022, padGain:0.017, atk:0.55 },
+            // 睡前小调：短促小音符，像旧音乐盒
+            musicbox: { prog:['C','F','G','C'],        phrases:[1,3,0,4], melOct:2,   bar:3.3, wave:'triangle', gain:0.040, padGain:0.010, atk:0.02, bell:true },
+            // 雨落窗边：低音区，铺底最厚
+            rainpiano:{ prog:['Am','F','C','G'],       phrases:[0,1,2,3], melOct:2,   bar:4.9, wave:'triangle', gain:0.040, padGain:0.016, atk:0.08 },
+            // 捞星星：高八度拨弦，短衰减
+            harp:     { prog:['F','C','Dm','Am'],      phrases:[3,1,4,0], melOct:4,   bar:3.6, wave:'sine',     gain:0.036, padGain:0.009, atk:0.01, bell:true },
+            // 一碗月光：低频泛音，间隔最久
+            singbowl: { prog:['Clow','Gsus','Am','F'], phrases:[2,2,1,2], melOct:1,   bar:6.6, wave:'sine',     gain:0.028, padGain:0.016, atk:0.40 },
+            // 晚风低诉：低音长弓，起音最慢
+            cello:    { prog:['Dm','Am','F','G'],      phrases:[2,0,2,1], melOct:2,   bar:5.8, wave:'triangle', gain:0.036, padGain:0.015, atk:0.48 },
+            // 山雾慢慢：五声感分解，颗粒分明
+            guzheng:  { prog:['Csus','Am7','Fsus','G'],phrases:[1,4,0,3], melOct:2,   bar:3.9, wave:'triangle', gain:0.038, padGain:0.011, atk:0.02 },
+            // 不赶时间：柔和分解和弦
+            guitar:   { prog:['C','G','Am','F'],       phrases:[3,1,0,4], melOct:2,   bar:4.2, wave:'triangle', gain:0.040, padGain:0.012, atk:0.02 },
+            // 云上小憩：基本只剩和声垫慢慢起伏
+            softpad:  { prog:['Fmaj7','C','Dm7','Am7'],phrases:[2,2,2,2], melOct:1.5, bar:7.4, wave:'sine',     gain:0.020, padGain:0.018, atk:0.70 },
+            // 好梦之前：高音细铃，收尾用
+            musicrain:{ prog:['Am','F','C','Gsus'],    phrases:[4,0,1,2], melOct:4,   bar:3.5, wave:'sine',     gain:0.032, padGain:0.009, atk:0.02, bell:true }
         };
 
         // 一个柔和的音符
@@ -18237,29 +19110,52 @@ createApp({
             }
             t.timers.push(setTimeout(() => cpEventLoop(ctx, cfg.ev, t), 120 + Math.random() * 380));
         };
-        // 音乐轨：长音铺底 + 缓慢随机音符
+        // 一个「按拍点落下」的音符：起音/衰减都排进 Web Audio 时间轴，节拍才准
+        const cpSongNote = (ctx, t, f, at, dur, gain, wave, atk) => {
+            const o = ctx.createOscillator(); o.type = wave || 'sine';
+            o.frequency.setValueAtTime(f, at);
+            const g = ctx.createGain();
+            const a = Math.min(atk === undefined ? 0.12 : atk, dur * 0.45);
+            g.gain.setValueAtTime(0.0001, at);
+            g.gain.linearRampToValueAtTime(Math.max(0.0002, gain), at + a);
+            g.gain.exponentialRampToValueAtTime(0.0004, at + dur);
+            o.connect(g); g.connect(t.gain);
+            o.start(at); o.stop(at + dur + 0.05);
+            cpTrans(t, o, [o, g]);
+        };
+        // 音乐轨 = 一首轻轻循环的小曲：每小节铺和弦 + 低音 + 跟着和弦走的主旋律
         const cpBuildMusic = (ctx, k, t) => {
-            const cfg = cpMusicCfg[k]; if (!cfg) return;
-            if (cfg.pad) {
-                const pg = ctx.createGain(); pg.gain.value = 0.018; pg.connect(t.gain); t.nodes.push(pg);
-                cfg.pad.forEach((f, i) => {
-                    const o = ctx.createOscillator(); o.type = 'sine'; o.frequency.value = f;
-                    const g = ctx.createGain(); g.gain.value = 0.5 / (i + 1);
-                    o.connect(g); g.connect(pg); o.start(); t.nodes.push(o, g);
-                });
-                const lfo = ctx.createOscillator(); lfo.frequency.value = 0.045;
-                const lg = ctx.createGain(); lg.gain.value = 0.009;
-                lfo.connect(lg); lg.connect(pg.gain); lfo.start(); t.nodes.push(lfo, lg);
-            }
-            const loop = () => {
+            const cfg = cpMusicCfg[k]; if (!cfg || !cfg.prog) return;
+            const bar = cfg.bar || 4.4;
+            let bi = 0;
+            const schedule = () => {
                 if (!cpTracks[t.k]) return;
-                if (cfg.scale && cfg.scale.length) {
-                    const f = cfg.scale[Math.floor(Math.random() * cfg.scale.length)] * (Math.random() < 0.22 ? 0.5 : 1);
-                    cpBlip(ctx, f, cfg.slide ? f * cfg.slide : null, cfg.dur, cfg.gain, cfg.wave, t, cfg.atk);
-                }
-                t.timers.push(setTimeout(loop, cfg.gap[0] + Math.random() * (cfg.gap[1] - cfg.gap[0])));
+                const now = ctx.currentTime + 0.06;
+                const ch = SLP_CH[cfg.prog[bi % cfg.prog.length]] || SLP_CH.C;
+                const phrase = SLP_PHRASES[cfg.phrases[bi % cfg.phrases.length]] || SLP_PHRASES[0];
+                // 和声垫：三音低八度长音，整小节慢慢浮起再落下
+                ch.forEach((f, i) => cpSongNote(ctx, t, f / 2, now, bar * 1.02,
+                    (cfg.padGain || 0.012) / (i + 1.5), 'sine', bar * 0.32));
+                // 低音根音
+                cpSongNote(ctx, t, ch[0] / 4, now, bar * 0.92,
+                    (cfg.padGain || 0.012) * 0.85, 'sine', bar * 0.26);
+                // 主旋律：一小节几个音，按拍点依次响，音型逐小节换
+                const step = bar / (phrase.length + 0.7);
+                phrase.forEach((idx, j) => {
+                    let f = ch[idx % ch.length] * (cfg.melOct || 2);
+                    if (cfg.swing && j === phrase.length - 1 && Math.random() < 0.45) f *= 1.5;
+                    const at = now + (j + 0.35) * step;
+                    cpSongNote(ctx, t, f, at, Math.min(bar * 0.5, step * 1.6),
+                        cfg.gain || 0.04, cfg.wave || 'triangle', cfg.atk || 0.1);
+                    // 收尾那个音再叠一层高八度轻点缀
+                    if (cfg.bell && j === phrase.length - 1)
+                        cpSongNote(ctx, t, f * 2, at + 0.14, bar * 0.28,
+                            (cfg.gain || 0.04) * 0.30, 'sine', 0.02);
+                });
+                bi++;
+                t.timers.push(setTimeout(schedule, Math.max(200, bar * 1000 - 70)));
             };
-            t.timers.push(setTimeout(loop, 180 + Math.random() * 900));
+            schedule();
         };
 
         const cpTrackStop = (k) => {
@@ -18332,7 +19228,101 @@ createApp({
             cpActive[k] = Number(vol) || 60;
         };
 
-        const cpSetNoiseVol = () => { if (cpMaster) cpMaster.gain.value = (cpNoise.vol / 100) * 0.9; };
+        // ===== 放一首歌：本地文件或音频直链，跟着总音量 / 到点渐停一起走 =====
+        // 不内嵌音频、不写进备份，所以文件体积一点不涨；刷新后重新选一次即可。
+        const cpSongFile = ref(null);
+        const cpSongUrlInput = ref('');
+        const cpSongName = ref('');
+        const cpSongOn = ref(false);
+        const cpSongErr = ref('');
+        let cpSongAudio = null, cpSongBlobUrl = '';
+        const cpSongBaseVol = () => Math.max(0, Math.min(1, (cpNoise.vol / 100) * 0.9 * 0.9));
+        const cpSetSongVol = (v) => {
+            if (!cpSongAudio) return;
+            try { cpSongAudio.volume = (v === undefined) ? cpSongBaseVol() : Math.max(0, Math.min(1, v)); } catch (e) {}
+        };
+        const cpEnsureSongAudio = () => {
+            if (!cpSongAudio) {
+                cpSongAudio = new Audio();
+                cpSongAudio.loop = true;
+                cpSongAudio.preload = 'auto';
+                cpSongAudio.style.display = 'none';
+                try { document.body.appendChild(cpSongAudio); } catch (e) {}
+                cpSongAudio.addEventListener('error', () => {
+                    cpSongOn.value = false; cpSongName.value = '';
+                    cpSongErr.value = '这个放不出来，换个文件，或换个能直接打开的链接';
+                });
+            }
+            return cpSongAudio;
+        };
+        const cpPlaySongSrc = (src, name) => {
+            cpSongErr.value = '';
+            const a = cpEnsureSongAudio();
+            try { a.pause(); } catch (e) {}
+            a.src = src; cpSetSongVol();
+            const pr = a.play();
+            if (pr && pr.then) pr.then(() => { cpSongOn.value = true; cpSongName.value = name; })
+                .catch(() => { cpSongOn.value = false; cpSongErr.value = '浏览器没让自动播，再点一下「播放」就好'; });
+            else { cpSongOn.value = true; cpSongName.value = name; }
+        };
+        const cpPickSong = () => { if (cpSongFile.value) cpSongFile.value.click(); };
+        const cpOnSong = (e) => {
+            const f = e.target.files && e.target.files[0]; if (!f) return;
+            e.target.value = '';
+            if (cpSongBlobUrl) { try { URL.revokeObjectURL(cpSongBlobUrl); } catch (er) {} }
+            cpSongBlobUrl = URL.createObjectURL(f);
+            cpPlaySongSrc(cpSongBlobUrl, String(f.name || '一首歌').replace(/\.[^.]+$/, ''));
+        };
+        const cpPlayUrl = () => {
+            const u = String(cpSongUrlInput.value || '').trim();
+            if (!/^https?:\/\//i.test(u)) { cpSongErr.value = '贴一个 http(s) 开头、能直接打开的音频链接'; return; }
+            cpPlaySongSrc(u, (u.split('/').pop() || '一首歌').split('?')[0] || '一首歌');
+        };
+        const cpStopSong = () => {
+            if (cpSongAudio) { try { cpSongAudio.pause(); cpSongAudio.currentTime = 0; } catch (e) {} }
+            cpSongOn.value = false; cpSongName.value = ''; cpSongErr.value = '';
+            cpSetSongVol();
+        };
+
+        const cpSetNoiseVol = () => {
+            if (!cpFading) cpSetSongVol();
+            if (cpFading || !cpMaster) return;
+            cpMaster.gain.value = (cpNoise.vol / 100) * 0.9;
+        };
+        // 你又手动动了一下（点音 / 拖音量）＝还想听，取消正在进行的淡出，把总音量放回原值
+        const cpCancelFade = () => {
+            if (!cpFading) return;
+            cpFading = false;
+            cpSetSongVol();
+            if (cpMaster && cpAC) {
+                try { cpMaster.gain.cancelScheduledValues(cpAC.currentTime); cpMaster.gain.value = (cpNoise.vol / 100) * 0.9; } catch (e) {}
+            }
+        };
+        // 到点渐停：合成音走 master 淡出，自己放的那首歌同步把音量降下来
+        const cpFadeOut = (seconds) => {
+            if (!cpAC && !cpSongOn.value) return;
+            const sec = Math.max(0.2, Number(seconds) || 25);
+            cpFading = true;
+            if (cpAC && cpMaster) {
+                const now = cpAC.currentTime;
+                try {
+                    const g = cpMaster.gain;
+                    g.cancelScheduledValues(now);
+                    g.setValueAtTime(Math.max(0.0001, g.value), now);
+                    g.linearRampToValueAtTime(0.0001, now + sec);
+                } catch (e) {}
+            }
+            if (cpSongAudio && cpSongOn.value) {
+                const v0 = cpSongAudio.volume, t0 = performance.now();
+                const tick = () => {
+                    if (!cpFading) return;
+                    const p = Math.min(1, (performance.now() - t0) / (sec * 1000));
+                    try { cpSongAudio.volume = Math.max(0.0001, v0 * (1 - p)); } catch (e) {}
+                    if (p < 1) requestAnimationFrame(tick);
+                };
+                requestAnimationFrame(tick);
+            }
+        };
         // 拖动滑块时 @input 每动一格都会触发：原来每格写两次 IndexedDB，主线程被拖住 → 卡。
         // 现在增益同步即时生效（最多 6 条音轨，很轻），落盘合并成 300ms 一次（松手 @change 立即落盘）。
         let cpVolSaveTimer = null;
@@ -18345,6 +19335,8 @@ createApp({
             cpSaveMix(); cpSaveUserVol();
         };
         const cpSetTrackVol = (k, v) => {
+            cpCancelFade();
+            slpSoundMuted.value = false;
             const vol = Math.max(0, Math.min(100, Number(v) || 0));
             cpActive[k] = vol;
             cpUserVol[k] = vol;
@@ -18399,10 +19391,17 @@ createApp({
             cpClearNoise();
             Object.keys(cpActive).forEach(k => delete cpActive[k]);
             cpNoise.on = false; cpNoise.type = ''; cpChatPlaying = false;
+            cpStopSong();                         // 「全部停止」/ 到点 / 结束睡眠，歌也一起收
+            cpCancelFade();                       // 下次开音从正常音量起，不会还停在淡出后的接近 0
+            if (cpMaster && cpAC) {
+                try { cpMaster.gain.cancelScheduledValues(cpAC.currentTime); cpMaster.gain.value = (cpNoise.vol / 100) * 0.9; } catch (e) {}
+            }
             if (cpAC && cpAC.state === 'running') cpAC.suspend().catch(() => {});
         };
         const cpToggleNoise = (k) => {
             cpChatPlaying = false;
+            cpCancelFade();
+            slpSoundMuted.value = false;           // 手动点音＝还想听
             if (cpActive[k] !== undefined) { cpTrackStop(k); delete cpActive[k]; }
             else { try { cpStartTrack(k, cpUserVol[k] !== undefined ? cpUserVol[k] : 60); } catch (e) {} }
             cpSync(); cpRebalance(0.45); cpSaveMix();
@@ -18455,10 +19454,15 @@ createApp({
             if (arr === messages.value) { playTone('recv'); scrollToBottom(); saveAll(); }
             else { playTone('recv'); slpSaveChat(); slpScrollBottom(); }
             // 他自己点、自己播：不覆盖你睡前调好的组合，把他的音叠进来，你一个字都不用点
-            const merged = cpActiveKeys.value.map(k => ({ k, vol: cpActive[k] }));
-            items.forEach(it => { if (!merged.some(x => x.k === it.k)) merged.push(it); });
-            try { cpApplyMix(merged.slice(0, 6), true); } catch (e) {}
-            msg.sleep.joined = true;
+            // 「到点渐停」已经安静下来后就别再自动叠播了，卡片留着，这一觉继续
+            if (!slpSoundMuted.value) {
+                const merged = cpActiveKeys.value.map(k => ({ k, vol: cpActive[k] }));
+                items.forEach(it => { if (!merged.some(x => x.k === it.k)) merged.push(it); });
+                try { cpApplyMix(merged.slice(0, 6), true); } catch (e) {}
+                msg.sleep.joined = true;
+            } else {
+                msg.sleep.joined = false;
+            }
         };
 
         // 页面起来后恢复配方与总音量（不自动出声，避免浏览器拦自动播放）
@@ -18466,6 +19470,7 @@ createApp({
         setTimeout(async () => {
             cpLoadSleep();
             try { await slpLoadSession(); } catch (e) {}
+            try { await slpLoadSound(); } catch (e) {}
             try { await slpLoadHistory(); } catch (e) {}
             try { await slpLoadChat(); } catch (e) {}
         }, 1200);
@@ -18633,6 +19638,140 @@ createApp({
         const slpSavedMix = ref([]);           // 结束时先记下音，再睡时放回来
         let slpTimerId = null;
 
+        // ---------- 播放模式：到点渐停 / 一直循环（跟着刷新、备份走） ----------
+        const SLP_SOUND_KEY = 'liubai_sleep_sound_mode';
+        const SLP_FADE_SEC = 25;                    // 到点前 25 秒开始一点点变淡
+        const slpSoundMode = ref('loop');            // 'timer' | 'loop'
+        const slpStopAt = ref(0);                   // 定时目标时间戳
+        const slpStopHHMM = ref('23:30');           // 输入框里的 HH:MM
+        let slpSoundFadeTimer = null, slpSoundEndTimer = null;
+
+        const slpHHMM = (ts) => {
+            const d = new Date(ts);
+            return String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0');
+        };
+        const slpTSFromHHMM = (s, base) => {
+            const m = /^(\d{1,2}):(\d{2})$/.exec(String(s || ''));
+            if (!m) return 0;
+            const b = (base == null) ? Date.now() : base;
+            const h = Math.min(23, Math.max(0, Number(m[1]))), mi = Math.min(59, Math.max(0, Number(m[2])));
+            const d = new Date(b); d.setHours(h, mi, 0, 0);
+            if (d.getTime() <= b) d.setTime(d.getTime() + 86400000);   // 过了就顺延到明天这个点
+            return d.getTime();
+        };
+        const slpPersistSound = async () => {
+            try { await localforage.setItem(SLP_SOUND_KEY, { mode: slpSoundMode.value, stopAt: slpStopAt.value, hhmm: slpStopHHMM.value }); } catch (e) {}
+        };
+        const slpClearSoundTimers = () => {
+            if (slpSoundFadeTimer) { clearTimeout(slpSoundFadeTimer); slpSoundFadeTimer = null; }
+            if (slpSoundEndTimer) { clearTimeout(slpSoundEndTimer); slpSoundEndTimer = null; }
+        };
+        const slpSoundStopNow = () => {
+            slpClearSoundTimers();
+            cpNoiseStop();
+            slpSoundMuted.value = true;
+        };
+        const slpScheduleSound = () => {
+            slpClearSoundTimers();
+            if (slpSoundMode.value !== 'timer' || !slpStopAt.value) return;
+            const left = slpStopAt.value - Date.now();
+            if (left <= 0) { slpSoundStopNow(); return; }
+            const fadeMs = Math.min(left, SLP_FADE_SEC * 1000);
+            slpSoundFadeTimer = setTimeout(() => { slpSoundFadeTimer = null; cpFadeOut(fadeMs / 1000); }, Math.max(0, left - fadeMs));
+            slpSoundEndTimer  = setTimeout(() => { slpSoundEndTimer = null; slpSoundStopNow(); }, left);
+        };
+        const slpSetSoundMode = (m) => {
+            const mode = (m === 'timer') ? 'timer' : 'loop';
+            slpClearSoundTimers();
+            slpSoundMode.value = mode;
+            slpSoundMuted.value = false;
+            cpCancelFade();
+            if (mode === 'loop') {
+                slpStopAt.value = 0;               // 一直放着，不设闹钟
+            } else {
+                if (!slpStopAt.value || slpStopAt.value <= Date.now()) {
+                    slpStopAt.value = slpTSFromHHMM(slpStopHHMM.value) || (Date.now() + 30 * 60000);
+                    slpStopHHMM.value = slpHHMM(slpStopAt.value);
+                }
+                slpScheduleSound();
+            }
+            slpPersistSound();
+        };
+        // 自绘时间选择器：不弹系统那个蓝色大圆盘，全程站内白卡
+        const slpTimePickerOpen = ref(false);
+        const slpTP = reactive({ h: 23, m: 30 });
+        const slpTPPad = (n) => String(n).padStart(2, '0');
+        const slpOpenTimePicker = () => {
+            const p = String(slpStopHHMM.value || '23:30').split(':');
+            const h = Number(p[0]), m = Number(p[1]);
+            slpTP.h = Number.isFinite(h) ? Math.max(0, Math.min(23, h)) : 23;
+            slpTP.m = Number.isFinite(m) ? (Math.round(m / 5) * 5) % 60 : 30;
+            slpTimePickerOpen.value = true;
+            nextTick(() => {                       // 一打开就把选中的时/分滚到列中间
+                const cols = document.querySelectorAll('.slp-tp-scroll');
+                [slpTP.h, slpTP.m].forEach((v, i) => {
+                    const col = cols[i]; if (!col) return;
+                    const cell = col.querySelectorAll('.slp-tp-cell')[i === 0 ? v : Math.round(v / 5)];
+                    if (cell) col.scrollTop = Math.max(0, cell.offsetTop - col.clientHeight / 2 + cell.offsetHeight / 2);
+                });
+            });
+        };
+        const slpConfirmTime = () => {
+            slpSetStopTime(slpTPPad(slpTP.h) + ':' + slpTPPad(slpTP.m));
+            slpTimePickerOpen.value = false;
+        };
+
+        const slpSetStopTime = (s) => {
+            const ts = slpTSFromHHMM(s);
+            if (!ts) return;
+            slpStopAt.value = ts; slpStopHHMM.value = slpHHMM(ts);
+            slpSoundMuted.value = false; cpCancelFade();
+            slpScheduleSound(); slpPersistSound();
+        };
+        const slpQuickMin = (n) => {
+            const mins = [15,30,45,60,90].indexOf(Number(n)) >= 0 ? Number(n) : 30;
+            const ts = Date.now() + mins * 60000;
+            slpStopAt.value = ts; slpStopHHMM.value = slpHHMM(ts);
+            slpSoundMuted.value = false; cpCancelFade();
+            slpScheduleSound(); slpPersistSound();
+        };
+        // 新开一觉 / 继续睡：定时若已过就按同样的钟点顺延，重新排上
+        const slpWakeSound = () => {
+            if (slpSoundMode.value !== 'timer') return;
+            slpSoundMuted.value = false;
+            if (!slpStopAt.value || slpStopAt.value <= Date.now()) {
+                slpStopAt.value = slpTSFromHHMM(slpStopHHMM.value) || (Date.now() + 30 * 60000);
+                slpStopHHMM.value = slpHHMM(slpStopAt.value);
+            }
+            slpScheduleSound(); slpPersistSound();
+        };
+        const slpLoadSound = async () => {
+            try {
+                const v = await localforage.getItem(SLP_SOUND_KEY);
+                if (v && typeof v === 'object') {
+                    slpSoundMode.value = v.mode === 'timer' ? 'timer' : 'loop';
+                    if (typeof v.hhmm === 'string' && /^\d{1,2}:\d{2}$/.test(v.hhmm)) slpStopHHMM.value = v.hhmm;
+                    if (typeof v.stopAt === 'number' && v.stopAt > 0) slpStopAt.value = v.stopAt;
+                    else if (slpSoundMode.value === 'timer') slpStopAt.value = slpTSFromHHMM(slpStopHHMM.value);
+                }
+            } catch (e) {}
+            if (slpSoundMode.value === 'timer') slpScheduleSound();
+        };
+        // 说明里写死的 24 小时制时刻，免得原生时间控件在某些系统显示成 AM/PM 不好认
+        const slpStopAtText = computed(() => slpStopAt.value ? slpHHMM(slpStopAt.value) : '—');
+        // live 页右上角：借 slpElapsed 每秒重算一次，倒计时才会动
+        const slpSoundLabel = computed(() => {
+            slpElapsed.value;
+            if (slpSoundMode.value === 'loop') return '∞ 一直放着';
+            if (slpSoundMuted.value) return '☾ 已经轻轻停下';
+            if (!slpStopAt.value) return '☾ 到点渐停';
+            const left = slpStopAt.value - Date.now();
+            if (left <= 0) return '☾ 到点渐停';
+            const mins = Math.ceil(left / 60000);
+            const mt = mins >= 60 ? (Math.floor(mins / 60) + ' 时 ' + (mins % 60) + ' 分') : (mins + ' 分');
+            return '☾ ' + slpHHMM(slpStopAt.value) + ' 渐停 · ' + mt;
+        });
+
         const slpClock = (sec) => {
             const h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60), ss = sec % 60;
             const p = n => String(n).padStart(2, '0');
@@ -18740,6 +19879,7 @@ createApp({
                 slpStartAt.value = Date.now(); await slpSaveSession();
             }
             sleepView.value = 'live'; slpStartTimer(); slpScrollBottom();
+            slpWakeSound();
             setTimeout(() => themSendSleep(slpChatMsgs.value), 350);
         };
         const slpExit = () => { sleepView.value = 'setup'; };   // 退出只收起聊天，音继续、计时也继续
@@ -18759,6 +19899,8 @@ createApp({
             // 这一觉的聊天收进历史，不再留在当前页
             await slpArchiveChat(obj);
             slpStartAt.value = 0; slpStopTimer(); slpTick();
+            slpClearSoundTimers();              // 这一觉结束了，定时闹钟不再跑
+            slpSoundMuted.value = false;        // 下一觉重新来
             cpNoiseStop();                       // 结束就是收尾，助眠音替你关掉
             sleepView.value = 'summary';
         };
@@ -18768,6 +19910,7 @@ createApp({
             slpStartAt.value = Date.now(); await slpSaveSession();
             sleepView.value = 'live'; slpStartTimer(); slpScrollBottom();
             if (slpSavedMix.value.length) { try { cpApplyMix(slpSavedMix.value, true); } catch (e) {} }
+            slpWakeSound();
             setTimeout(() => themSendSleep(slpChatMsgs.value), 350);
         };
         const slpGoSetup = () => { slpCloseHistory(); sleepView.value = 'setup'; };
@@ -19031,6 +20174,7 @@ createApp({
 
                 const vacDb = await localforage.getItem('liubai_videoAutoCall_db');
                 if (typeof vacDb === 'boolean') videoAutoCall.value = vacDb;
+                await callHisLoad();
 
                 applyTheme();
 
@@ -19230,8 +20374,8 @@ createApp({
             else syncAudio.pause();
         };
         const selectSong = (idx) => { loadSong(idx); };
-        const removeSong = (idx) => {
-            if (!confirm('确定移除这首？')) return;
+        const removeSong = async (idx) => {
+            if (!await lbConfirm('确定移除这首？')) return;
             const wasCurrent = idx === syncState.index;
             syncPlaylist.value.splice(idx, 1);
             if (syncPlaylist.value.length === 0) {
@@ -19426,8 +20570,8 @@ createApp({
                 }
             });
         };
-        const deleteSticker = (idx) => {
-            if (!confirm('删除这个表情包？')) return;
+        const deleteSticker = async (idx) => {
+            if (!await lbConfirm('删除这个表情包？')) return;
             stickers.value.splice(idx, 1);
             localforage.setItem('liubai_stickers_db', JSON.parse(JSON.stringify(stickers.value))).catch(() => {});
             saveAll();
@@ -19707,7 +20851,7 @@ createApp({
         };
 
         const cleanOrphanKeys = async () => {
-            if (!confirm('将清理旧版遗留的废料缓存。\n\n会保留：聊天记录、手账、塔罗日记、字卡、表情包、书架上的书、阅读记录、头像、壁纸、站点图标、火花契约、天气关心、AI 全局感知、播放列表、陪伴、生理期记录、问卷库、商场零钱与自制商品、天气城市。\n\n继续？')) return;
+            if (!await lbConfirm('将清理旧版遗留的废料缓存。\n\n会保留：聊天记录、手账、塔罗日记、字卡、表情包、书架上的书、阅读记录、头像、壁纸、站点图标、火花契约、天气关心、AI 全局感知、播放列表、陪伴、生理期记录、问卷库、商场零钱与自制商品、天气城市。\n\n继续？')) return;
             const keep = new Set([
                 'liubai_messages_db', 'liubai_profiles_db', 'liubai_settings_db', 'liubai_letters_db', 'liubai_videoAutoCall_db', 'liubai_redpacket_cover',
                 'liubai_stickers_db', 'liubai_replyGroups_db', 'liubai_replySettings_db', 'liubai_playlist_db',
@@ -19722,7 +20866,7 @@ createApp({
                 'liubai_hp_note1', 'liubai_hp_note2', 'liubai_hp_note_sty',
                 'liubai_hp_top_main', 'liubai_hp_top_sub',
                 'liubai_sleep_mix', 'liubai_sleep_recipes', 'liubai_sleep_chat', 'liubai_sleep_history', 'liubai_sleep_vols',
-                'liubai_sleep_session', 'liubai_sleep_summary',
+                'liubai_sleep_session', 'liubai_sleep_summary', 'liubai_sleep_sound_mode',
                 'liubai_shop_wallet', 'liubai_shop_cart', 'liubai_shop_orders', 'liubai_shop_custom_db', 'liubai_shop_coupons', 'liubai_shop_fav_me', 'liubai_shop_fav_them',
                 'liubai_qa_bank_db', 'liubai_pat_actions_db', 'liubai_spark_db', 'liubai_weather_care_db', 'liubai_ai_global_db',
                 'liubai_reading_books_db', 'liubai_reading_state_db', 'liubai_dict_custom_db', 'liubai_dict_edits_db',
@@ -19761,7 +20905,7 @@ createApp({
 
         const compressAllImages = async () => {
             if (compressRunning.value) return;
-            if (!confirm('将把本站在本地存过的所有图片按更清晰的档位整理一遍（头像、壁纸、表情包、磁带封面、聊天图片等）。\n\n图片不会丢失；表情包用清晰 WebP、保留透明底，小图跳过以免越压越糊。已经压糊的旧图不会自动变清晰，重新导入原图即可。\n\n确定继续吗？')) return;
+            if (!await lbConfirm('将把本站在本地存过的所有图片按更清晰的档位整理一遍（头像、壁纸、表情包、磁带封面、聊天图片等）。\n\n图片不会丢失；表情包用清晰 WebP、保留透明底，小图跳过以免越压越糊。已经压糊的旧图不会自动变清晰，重新导入原图即可。\n\n确定继续吗？')) return;
             compressRunning.value = true;
             diagnoseResult.value = '正在扫描本地图片…';
 
@@ -19886,7 +21030,7 @@ createApp({
         };
 
         const compressStickersOnly = async () => {
-            if (!confirm('将把较大的表情包按更清晰的 WebP 档位整理（保留透明底），小图跳过以免越压越糊。以前被压糊的旧图无法自动变清晰，建议删掉后重新导入原图。确定继续吗？')) return;
+            if (!await lbConfirm('将把较大的表情包按更清晰的 WebP 档位整理（保留透明底），小图跳过以免越压越糊。以前被压糊的旧图无法自动变清晰，建议删掉后重新导入原图。确定继续吗？')) return;
             let count = 0, saved = 0;
             for (let i = 0; i < stickers.value.length; i++) {
                 const s = stickers.value[i];
@@ -19913,7 +21057,7 @@ createApp({
         };
 
         const resetAllStorage = async () => {
-            if (!confirm('⚠️ 此操作会清空以前爆炸的旧缓存（修复“已满”报错）。\n\n✅ 你最新的文字记录、字卡和设置会被保留。\n\n确定继续吗？')) return;
+            if (!await lbConfirm('⚠️ 此操作会清空以前爆炸的旧缓存（修复“已满”报错）。\n\n✅ 你最新的文字记录、字卡和设置会被保留。\n\n确定继续吗？')) return;
             await localforage.setItem('liubai_messages_db', JSON.parse(JSON.stringify(messages.value)));
             await localforage.setItem('liubai_profiles_db', JSON.parse(JSON.stringify(profiles)));
             await localforage.setItem('liubai_settings_db', JSON.parse(JSON.stringify(settings)));
@@ -19936,7 +21080,7 @@ createApp({
                     'liubai_anniversary_img', 'liubai_video_image_string', 'liubai_watch_messages', 'liubai_watch_history',
                     'liubai_custom_bubble', 'liubai_custom_font', 'liubai_home_icons', 'liubai_videoAutoCall_db', 'liubai_redpacket_cover',
                     'liubai_sleep_mix', 'liubai_sleep_recipes', 'liubai_sleep_chat', 'liubai_sleep_history', 'liubai_sleep_vols',
-                    'liubai_sleep_session', 'liubai_sleep_summary',
+                    'liubai_sleep_session', 'liubai_sleep_summary', 'liubai_sleep_sound_mode',
                     'liubai_shop_wallet', 'liubai_shop_cart', 'liubai_shop_orders', 'liubai_shop_custom_db', 'liubai_shop_coupons', 'liubai_shop_fav_me', 'liubai_shop_fav_them', 'liubai_qa_bank_db', 'liubai_horary_db', 'liubai_pat_actions_db', 'liubai_spark_db', 'liubai_weather_care_db', 'liubai_ai_global_db',
                     'liubai_reading_books_db', 'liubai_reading_state_db', 'liubai_dict_custom_db', 'liubai_dict_edits_db', 'liubai_reading_stats_db',
                     'liubai_companion_custom_name', 'liubai_companion_msgs', 'liubai_companion_recent',
@@ -19990,6 +21134,7 @@ createApp({
                     horary: await localforage.getItem('liubai_horary_db'),
                     sleepRecipes: await localforage.getItem('liubai_sleep_recipes'), sleepChat: await localforage.getItem('liubai_sleep_chat'), sleepHistory: await localforage.getItem('liubai_sleep_history'), sleepVols: await localforage.getItem('liubai_sleep_vols'),
                     sleepSession: await localforage.getItem('liubai_sleep_session'), sleepSummary: await localforage.getItem('liubai_sleep_summary'),
+                    sleepSoundMode: await localforage.getItem('liubai_sleep_sound_mode'),
                     shopWallet: await localforage.getItem('liubai_shop_wallet'),
                     shopCart: await localforage.getItem('liubai_shop_cart'),
                     shopOrders: await localforage.getItem('liubai_shop_orders'),
@@ -20025,7 +21170,8 @@ createApp({
                     menstrualDurationAvg: await localforage.getItem('liubai_menstrual_duration_avg'),
                     menstrualCareShift: await localforage.getItem('liubai_menstrual_care_shift'),
                     hpBanner: await localforage.getItem('liubai_hp_banner_img'),
-                    letterFont: localStorage.getItem('liubai_letter_font')
+                    letterFont: localStorage.getItem('liubai_letter_font'),
+                    callHistory: await localforage.getItem(CALL_HIS_KEY)
                 };
                 const blob = new Blob([JSON.stringify(dataToExport, null, 2)], { type: 'application/json' });
                 const url = URL.createObjectURL(blob);
@@ -20042,7 +21188,7 @@ createApp({
                 try {
                     const data = JSON.parse(e.target.result);
                     if (data.exportType === 'full_backup') {
-                        if (!confirm('即将覆盖当前所有数据，确定吗？')) return;
+                        if (!await lbConfirm('即将覆盖当前所有数据，确定吗？')) return;
                         if (data.messages) await localforage.setItem('liubai_messages_db', data.messages);
                         if (data.profiles) await localforage.setItem('liubai_profiles_db', data.profiles);
                         if (data.settings) {
@@ -20075,6 +21221,7 @@ createApp({
                           if (data.sleepVols && typeof data.sleepVols === 'object') await localforage.setItem('liubai_sleep_vols', data.sleepVols);
                           if (data.sleepSession && typeof data.sleepSession === 'object') await localforage.setItem('liubai_sleep_session', data.sleepSession);
                           if (data.sleepSummary && typeof data.sleepSummary === 'object') await localforage.setItem('liubai_sleep_summary', data.sleepSummary);
+                          if (data.sleepSoundMode && typeof data.sleepSoundMode === 'object') await localforage.setItem('liubai_sleep_sound_mode', data.sleepSoundMode);
                           if (typeof data.shopWallet === 'number') await localforage.setItem('liubai_shop_wallet', data.shopWallet);
                           if (Array.isArray(data.shopCart)) await localforage.setItem('liubai_shop_cart', data.shopCart);
                           if (Array.isArray(data.shopOrders)) await localforage.setItem('liubai_shop_orders', data.shopOrders);
@@ -20169,6 +21316,10 @@ createApp({
                           if (typeof data.menstrualCycleAvg === 'number') await localforage.setItem('liubai_menstrual_cycle_avg', data.menstrualCycleAvg);
                           if (typeof data.menstrualDurationAvg === 'number') await localforage.setItem('liubai_menstrual_duration_avg', data.menstrualDurationAvg);
                           if (typeof data.menstrualCareShift === 'number') await localforage.setItem('liubai_menstrual_care_shift', data.menstrualCareShift);
+                          if (Array.isArray(data.callHistory)) {
+                              const clean = data.callHistory.filter(h => h && typeof h.at === 'number' && Array.isArray(h.msgs)).slice(0, CAP.callHistory);
+                              await localforage.setItem(CALL_HIS_KEY, clean); callHistory.value = clean;
+                          }
                         alert('全量备份导入成功，正在重新加载页面...'); skipFlushOnLeave = true; window.location.reload();
                     } else alert('未知的文件格式。');
                 } catch (err) { alert('解析文件失败，请确认是合法的 JSON 备份文件。'); }
@@ -20179,12 +21330,13 @@ createApp({
         // ================= [MOD-11B] 视频通话：画面 / 悬浮窗拖拽 / 自动来电 =================
         const startTimer = () => { stopTimer(); videoCall.timer = setInterval(() => { if (videoCall.status === 'connected') videoCall.duration = Math.floor((Date.now() - videoCall.startAt) / 1000); }, 500); };
         const stopTimer = () => { if (videoCall.timer) { clearInterval(videoCall.timer); videoCall.timer = null; } };
+        const vcBeginCall = () => { videoCall.beginAt = Date.now(); videoCall.log = []; videoCall.reply = null; };
         const startVideoCall = () => {
             clearPendingIncoming();
-            showMorePanel.value = false; videoCall.active = true; videoCall.minimized = false; videoCall.status = 'calling'; videoCall.duration = 0; videoCall.caller = 'me'; videoCall.muted = false;
+            showMorePanel.value = false; videoCall.active = true; videoCall.minimized = false; videoCall.status = 'calling'; videoCall.duration = 0; videoCall.caller = 'me'; videoCall.muted = false; vcBeginCall();
             videoCall.autoTimeout = setTimeout(() => { if (videoCall.status === 'calling') { if (Math.random() < 0.7) { videoCall.status = 'connected'; videoCall.startAt = Date.now(); videoCall.duration = 0; startTimer(); } else { videoCall.status = 'noanswer'; setTimeout(() => { if (videoCall.status === 'noanswer') endCallMsg('missed'); }, 1500); } } }, 3000 + Math.random() * 3000);
         };
-        const acceptVideoCall = () => { if (videoCall.status !== 'ringing') return; clearPendingIncoming(); if (videoCall.autoTimeout) { clearTimeout(videoCall.autoTimeout); videoCall.autoTimeout = null; } videoCall.status = 'connected'; videoCall.startAt = Date.now(); videoCall.duration = 0; startTimer(); };
+        const acceptVideoCall = () => { if (videoCall.status !== 'ringing') return; clearPendingIncoming(); if (!videoCall.beginAt) videoCall.beginAt = Date.now(); videoCall.log = []; videoCall.reply = null; if (videoCall.autoTimeout) { clearTimeout(videoCall.autoTimeout); videoCall.autoTimeout = null; } videoCall.status = 'connected'; videoCall.startAt = Date.now(); videoCall.duration = 0; startTimer(); };
         const hangupVideoCall = () => { if (videoCall.status === 'connected') endCallMsg('connected'); else if (videoCall.caller === 'them' && videoCall.status === 'ringing') endCallMsg('missed_them'); else if (videoCall.status === 'calling') endCallMsg('cancel'); else endCall(); };
         const endCallMsg = (mode) => {
             if (mode === 'connected') { const d = fmtCallTime(videoCall.duration); themPush({ id: genId(), sender: 'me', type: 'call', status: 'connected', duration: d, content: '', timestamp: Date.now() }); } 
@@ -20192,7 +21344,25 @@ createApp({
             else if (mode === 'cancel') { themPush({ id: genId(), sender: 'me', type: 'call', status: 'missed', duration: '', content: '', timestamp: Date.now() }); }
             scrollToBottom(); endCall(); saveAll();
         };
-        const endCall = () => { clearPendingIncoming(); if (videoCall.autoTimeout) { clearTimeout(videoCall.autoTimeout); videoCall.autoTimeout = null; } stopTimer(); lastVideoEndAt = Date.now(); try { vcStopSense(); if (vcReplyHideTimer) { clearTimeout(vcReplyHideTimer); vcReplyHideTimer = null; } } catch (e) {} videoCall.reply = null; videoCall.active = false; videoCall.minimized = false; videoCall.status = 'idle'; videoCall.duration = 0; };
+        const endCall = () => {
+            // 这一通归档：什么时候打的 / 谁打给谁 / 多久 / 说了什么
+            try {
+                if (videoCall.active || videoCall.beginAt) {
+                    const st = videoCall.status;
+                    const kind = st === 'connected' ? 'connected' : (st === 'calling' ? 'cancel' : 'missed');
+                    const dur = Number(videoCall.duration) || 0;
+                    const rec = {
+                        id: genId(), at: videoCall.beginAt || Date.now(), durSec: dur,
+                        durText: fmtCallTime(dur), from: videoCall.caller || 'me', kind,
+                        msgs: JSON.parse(JSON.stringify(videoCall.log || []))
+                    };
+                    callHistory.value.unshift(rec);
+                    if (callHistory.value.length > CAP.callHistory) callHistory.value.length = CAP.callHistory;
+                    callHisSave();
+                }
+            } catch (e) {}
+            clearPendingIncoming(); if (videoCall.autoTimeout) { clearTimeout(videoCall.autoTimeout); videoCall.autoTimeout = null; } stopTimer(); lastVideoEndAt = Date.now(); try { vcStopSense(); if (vcReplyHideTimer) { clearTimeout(vcReplyHideTimer); vcReplyHideTimer = null; } } catch (e) {} videoCall.reply = null; videoCall.active = false; videoCall.minimized = false; videoCall.status = 'idle'; videoCall.duration = 0; videoCall.beginAt = 0; videoCall.log = [];
+        };
         const minimizeVideoCall = () => { videoCall.minimized = true; nextTick(() => ensureFloatInBounds()); };
         const expandVideoCall = () => { videoCall.minimized = false; };
         // 长条 178×46 / 方形 68×90，拖动边界跟着当前样式走
@@ -20235,7 +21405,7 @@ createApp({
             if (lastVideoEndAt && Date.now() - lastVideoEndAt < 3600 * 1000) return false;
             clearPendingIncoming();
             showMorePanel.value = false; showStickerPanel.value = false; showSurveyPanel.value = false; showRedPacketModal.value = false;
-            videoCall.active = true; videoCall.minimized = false; videoCall.status = 'ringing'; videoCall.caller = 'them'; videoCall.duration = 0; videoCall.muted = false;
+            videoCall.active = true; videoCall.minimized = false; videoCall.status = 'ringing'; videoCall.caller = 'them'; videoCall.duration = 0; videoCall.muted = false; vcBeginCall();
             videoCall.autoTimeout = setTimeout(() => { if (videoCall.status === 'ringing' && videoCall.caller === 'them') endCallMsg('missed'); }, 8000);
             return true;
         };
@@ -20886,7 +22056,7 @@ mood 写这一刻的气氛，例如 安静 / 开心 / 想你 / 下雨 / 深夜 /
             if (callBusy()) return false;   // 通话期间 AI 也不许再打一通
             showMorePanel.value = false; showStickerPanel.value = false;
             videoCall.active = true; videoCall.minimized = false; videoCall.status = 'ringing';
-            videoCall.caller = 'them'; videoCall.duration = 0; videoCall.muted = false;
+            videoCall.caller = 'them'; videoCall.duration = 0; videoCall.muted = false; vcBeginCall();
             if (videoCall.autoTimeout) clearTimeout(videoCall.autoTimeout);
             videoCall.autoTimeout = setTimeout(() => { if (videoCall.status === 'ringing' && videoCall.caller === 'them') endCallMsg('missed'); }, 8000);
             aiGlobalNote('他主动打来了视频');
@@ -21187,7 +22357,8 @@ mood 写这一刻的气氛，例如 安静 / 开心 / 想你 / 下雨 / 深夜 /
             for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = a[i]; a[i] = a[j]; a[j] = t; }
             return a.slice(0, n);
         };
-        const myCardPushOne = (line, kind) => {
+        // showMyCardTag：只有「2~3 句连着发」才挂「拼字卡」小字；单句当一张普通字卡，不带标签
+        const myCardPushOne = (line, kind, showMyCardTag) => {
             if (!line) return;
             let content = line, mix = false, emojiOnly = false;
             try {
@@ -21196,7 +22367,7 @@ mood 写这一刻的气氛，例如 安静 / 开心 / 想你 / 下雨 / 深夜 /
             } catch (e) {}
             themPush({ id: genId(), sender: 'them', type: 'text', content,
                 timestamp: Date.now(), emojiOnly, emojiMix: mix,
-                dictLine: kind === 'dict', myCardLine: kind === 'mycard' });
+                dictLine: kind === 'dict', myCardLine: (kind === 'mycard' && showMyCardTag === true) });
             try { playTone('recv'); } catch (e) {}
             try { scrollToBottom(); } catch (e) {}
             try { saveAll(); } catch (e) {}
@@ -21206,7 +22377,8 @@ mood 写这一刻的气氛，例如 安静 / 开心 / 想你 / 下雨 / 深夜 /
             const lines = myCardPickLines(settings.myCardCount);
             if (!lines.length) { try { alert('先在「主字卡」里加几条自己的字卡吧'); } catch (e) {} return; }
             switchView('chat');
-            lines.forEach((line, i) => setTimeout(() => myCardPushOne(line, 'mycard'), i * 500));
+            const showTag = lines.length >= 2;
+            lines.forEach((line, i) => setTimeout(() => myCardPushOne(line, 'mycard', showTag), i * 500));
         };
         // 一轮回复：把一组句子按回复设置的速度依次发来；可指定句数，也可标成「词典」
         // 随机档：这一轮在「普通字卡（一条一条单独发）/ 拼字卡 / 词典」里随机挑一种
@@ -21222,6 +22394,7 @@ mood 写这一刻的气氛，例如 安静 / 开心 / 想你 / 下雨 / 深夜 /
             const lines = (opts.lines && opts.lines.length) ? opts.lines : myCardPickLines(opts.size);
             if (!lines.length) return false;
             const kind = opts.dict ? 'dict' : 'mycard';
+            const showTag = !opts.dict && lines.length >= 2;   // 单句＝普通字卡，不挂「拼字卡」
             const lo = Math.max(1, Number(replyMinDelay.value) || 1);
             const hi = Math.max(lo, Number(replyMaxDelay.value) || lo);
             const scheduled = []; let elapsed = 0;
@@ -21232,7 +22405,7 @@ mood 写这一刻的气氛，例如 安静 / 开心 / 想你 / 下雨 / 深夜 /
             scheduled.forEach((delay, i) => setTimeout(() => {
                 if (kaTok !== kaToken) return;
                 if (i === lines.length - 1) isTyping.value = false;
-                myCardPushOne(lines[i], kind);
+                myCardPushOne(lines[i], kind, showTag);
                 kaTick('chat', scheduled[i + 1] || 0, kaTok);
                 if (i === lines.length - 1) { try { themMaybeSendCard(900, 1700); } catch (e) {} }
             }, delay));
@@ -21301,8 +22474,48 @@ mood 写这一刻的气氛，例如 安静 / 开心 / 想你 / 下雨 / 深夜 /
             } catch (e) { vcRecog = null; }
         };
 
-        const vcShowReply = (text, mode) => {
-            videoCall.reply = { id: genId(), text: String(text || '').trim(), mode, at: Date.now() };
+        const VC_FALLBACK = ['嗯，我在听。', '慢慢说，不着急。', '我在这儿呢。', '听到啦。', '嗯嗯，然后呢？', '别急，我听着。'];
+        const vcDeco = (line) => {
+            let t = String(line || '').trim();
+            try { const d = emojiCompose(t); if (d) t = d.text; } catch (e) {}
+            return t.slice(0, 80);
+        };
+        const vcCardPool = () => {
+            const pool = [];
+            replyGroups.value.forEach(g => g.replies.forEach(r => { if (r.enabled && r.text.trim()) pool.push(r.text.trim()); }));
+            return pool;
+        };
+        const vcPlainLine = () => {
+            // 跟聊天 sendAutoReply 一致：普通字卡，词典开着时按概率换成词典拼句
+            if (settings.dictMode && Math.random() * 100 < dictRateNow())
+                return { text: vcDeco(dictMakeLine()), tag: '词典' };
+            const p = vcCardPool();
+            const usable = p.length ? p : VC_FALLBACK;
+            return { text: vcDeco(usable[Math.floor(Math.random() * usable.length)]), tag: '字卡' };
+        };
+        // 跟主聊天同一套：普通字卡 / 拼字卡 1~3 句 / 词典；单句拼字卡不挂「拼字卡」
+        const vcMakeLines = () => {
+            const r = Math.random();
+            if (settings.myCardMode) {
+                const fixed = Number(settings.myCardCount == null ? 0 : settings.myCardCount);
+                let lines = null;
+                if (fixed >= 1 && fixed <= 3) lines = myCardPickLines(fixed);
+                else if (r < 1 / 3) return [vcPlainLine()];                 // 普通字卡
+                else if (r < 2 / 3) lines = myCardPickLines(0);             // 拼字卡：随机 1~3 句
+                else if (settings.dictMode) return [{ text: vcDeco(dictMakeLine()), tag: '词典' }];
+                else return [vcPlainLine()];
+                if (lines && lines.length) return lines.map(t => ({ text: vcDeco(t), tag: lines.length >= 2 ? '拼字卡' : '字卡' }));
+                return [vcPlainLine()];                                      // 字卡库空了安静回退
+            }
+            return [vcPlainLine()];
+        };
+        // 回应只浮在通话页，不进聊天记录；同时记进「这一通」的列表
+        const vcShowReply = (text, tag) => {
+            const t = String(text || '').trim(); if (!t) return;
+            const item = { id: genId(), text: t, tag: tag || '字卡', at: Date.now() };
+            videoCall.log.push(item);
+            if (videoCall.log.length > 120) videoCall.log.splice(0, videoCall.log.length - 120);
+            videoCall.reply = { id: item.id, text: t, tag: item.tag, at: item.at };
             if (vcReplyHideTimer) clearTimeout(vcReplyHideTimer);
             vcReplyHideTimer = setTimeout(() => { videoCall.reply = null; vcReplyHideTimer = null; }, 9000);
             try { playTone('recv'); } catch (e) {}
@@ -21314,7 +22527,7 @@ mood 写这一刻的气氛，例如 安静 / 开心 / 想你 / 下雨 / 深夜 /
             vcLastReplyAt = now;
             const heard = vcHeard; vcHeard = '';
             const aiOn = !!(settings.useAI && settings.apiKey && settings.apiUrl);
-            let text = '', mode = 'card';
+            let lines = null;
             if (aiOn) {
                 try {
                     const sys = generateSystemPrompt()
@@ -21324,22 +22537,21 @@ mood 写这一刻的气氛，例如 安静 / 开心 / 想你 / 下雨 / 深夜 /
                         ? '【对方刚才说的话】＝' + heard + '\n接住这句，顺着聊，别复述。'
                         : '【提示】我只听见对方在说话，没听清内容。绝不许假装听懂、不许猜测或复述内容；就自然地接一句软软的、此刻该说的话。';
                     const raw = await aiFetch([{ role: 'system', content: sys }, { role: 'user', content: what }], 0.85, 120);
-                    text = aiParseAction(String(raw || '')).text.replace(/<<<[\s\S]*?>>>/g, '').trim().slice(0, 60);
-                    if (text) mode = 'ai';
-                } catch (e) { text = ''; }
+                    const t = aiParseAction(String(raw || '')).text.replace(/<<<[\s\S]*?>>>/g, '').trim().slice(0, 60);
+                    if (t) lines = [{ text: t, tag: '听到你说话' }];
+                } catch (e) { lines = null; }
             }
-            if (!text) {
-                mode = 'card';
-                const pool = [];
-                replyGroups.value.forEach(g => g.replies.forEach(r => { if (r.enabled && r.text.trim()) pool.push(r.text.trim()); }));
-                // 字卡库还没加过东西时，用几句内置的通话短句兜底，不会只回一个「……」
-                const VC_FALLBACK = ['嗯，我在听。', '慢慢说，不着急。', '我在这儿呢。', '听到啦。', '嗯嗯，然后呢？', '别急，我听着。'];
-                const usable = pool.length ? pool : VC_FALLBACK;
-                const base = usable[Math.floor(Math.random() * usable.length)];
-                const deco = emojiCompose(base);
-                text = (deco ? deco.text : base).slice(0, 80);
-            }
-            vcShowReply(text, mode);
+            if (!lines || !lines.length) lines = vcMakeLines();
+            // 一句一句按回复设置的速度浮出来，跟聊天节奏一致
+            const lo = Math.max(1, Number(replyMinDelay.value) || 1);
+            const hi = Math.max(lo, Number(replyMaxDelay.value) || lo);
+            let acc = 0;
+            lines.forEach((ln, i) => {
+                if (i) acc += (lo + Math.floor(Math.random() * (hi - lo + 1))) * 1000;
+                setTimeout(() => {
+                    if (videoCall.active && videoCall.status === 'connected') vcShowReply(ln.text, ln.tag);
+                }, Math.min(acc, 9000));
+            });
         };
 
         const vcStartSense = async () => {
@@ -21597,7 +22809,9 @@ mood 写这一刻的气氛，例如 安静 / 开心 / 想你 / 下雨 / 深夜 /
         const jbSetMood = (id) => { jbCur.value.mood = (jbCur.value.mood === id) ? '' : id; };
 
         // 贴纸/照片是正方形；胶带是长条，粗细单独记（老数据没有 thick 就按比例兜底）
-        const jbItemH = (it) => it.kind === 'tape' ? (it.thick || Math.max(14, Math.round(it.size * 0.28))) : it.size;
+        // 贴纸/照片是正方形；旧胶带是长条；便签纸是略竖的长方形（旧数据没存 h 就按比例兜底）
+        const jbItemH = (it) => it.kind === 'tape' ? (it.thick || Math.max(14, Math.round(it.size * 0.28)))
+            : it.kind === 'sticky' ? (it.h || Math.round(it.size * 1.12)) : it.size;
 
         // 纸面轻提示：贴上了 / 已保存，1.9s 自动消失
         const jbToast = ref('');
@@ -21718,6 +22932,64 @@ mood 写这一刻的气氛，例如 安静 / 开心 / 想你 / 下雨 / 深夜 /
             jbSay(side === 'free' ? '撕了一条 · 按住拖到想贴的地方' : '贴好了 · 按住可以拖走');
         };
 
+        // ===== 便签纸：颜色 / 大中小 / 写句话 / 贴小图案 =====
+        // 以前「胶带」的渲染与缩放分支留着（已经在手账上的旧胶带不会凭空消失），只是不再给入口。
+        // 淡蓝白格纹那一挂的低饱和色系；自定义取色仍可挑任意颜色，格纹不变
+        const jbStickyColors = [
+            '#EDF6FD', '#E6F1FB', '#DCEBF8', '#E9F3F8', '#E3F1EF', '#E9F4E9', '#F2F1E7', '#F7EFE5',
+            '#F8EBEA', '#F2EAF4', '#EDEAF6', '#E6ECF5', '#F5F5F3', '#E8F2F6', '#F1EDE9', '#FFFFFF'
+        ];
+        const jbStickySizeOpts = [
+            { k:'s', n:'小', w:92,  h:104 },
+            { k:'m', n:'中', w:128, h:144 },
+            { k:'l', n:'大', w:168, h:188 }
+        ];
+        const jbStickyPaper   = ref(jbStickyColors[0]);
+        const jbStickySize    = ref('m');
+        const jbStickyText    = ref('');
+        const jbStickyArt     = ref('');
+        const jbStickyEditing = ref('');      // 正在改的便签 id；空＝贴一张新的
+
+        const jbOpenStickyPanel = () => {
+            if (jbPanel.value === 'sticky') { jbPanel.value = ''; return; }
+            jbStickyEditing.value = '';
+            jbStickyPaper.value = jbStickyColors[0];
+            jbStickySize.value = 'm';
+            jbStickyText.value = '';
+            jbStickyArt.value = '';
+            jbSel.value = '';
+            jbTogglePanel('sticky');
+        };
+        const jbEditSticky = () => {
+            const it = jbSelItem.value; if (!it || it.kind !== 'sticky') return;
+            jbStickyEditing.value = it.id;
+            jbStickyPaper.value = it.paper || jbStickyColors[0];
+            const s = jbStickySizeOpts.find(x => x.w === it.size);
+            jbStickySize.value = s ? s.k : 'm';
+            jbStickyText.value = it.text || '';
+            jbStickyArt.value = it.art || '';
+            jbPanel.value = 'sticky';
+        };
+        const jbAddSticky = () => {
+            const opt = jbStickySizeOpts.find(x => x.k === jbStickySize.value) || jbStickySizeOpts[1];
+            const data = {
+                kind:'sticky', paper: jbStickyPaper.value || jbStickyColors[0],
+                size: opt.w, h: opt.h,
+                text: String(jbStickyText.value || '').slice(0, 40),
+                art: jbStickyArt.value || ''
+            };
+            if (jbStickyEditing.value) {
+                const it = jbCur.value.items.find(x => x.id === jbStickyEditing.value);
+                if (it) Object.assign(it, data);
+                jbStickyEditing.value = '';
+                jbSay('便签改好了');
+            } else {
+                jbAdd(data);
+                jbSay('便签贴上了 · 按住可以拖走');
+            }
+            jbPanel.value = '';
+        };
+
         const jbPickPhoto = () => { if (jbFileInput.value) jbFileInput.value.click(); };
         const jbOnPhoto = async (e) => {
             const file = e.target.files && e.target.files[0]; if (!file) return;
@@ -21736,10 +23008,13 @@ mood 写这一刻的气氛，例如 安静 / 开心 / 想你 / 下雨 / 深夜 /
         const jbScaleItem = (d) => {
             const it = jbSelItem.value; if (!it) return;
             const ns = Math.max(30, Math.min(340, it.size + d));
-            // 胶带等比变粗细，不要越缩放越粗
+            // 旧胶带等比变粗细，不要越缩放越粗
             if (it.kind === 'tape') {
                 const ratio = (it.thick || Math.max(14, Math.round(it.size * 0.28))) / it.size;
                 it.thick = Math.max(10, Math.round(ns * ratio));
+            } else if (it.kind === 'sticky') {
+                const ratio = (it.h || Math.round(it.size * 1.12)) / it.size;
+                it.h = Math.max(40, Math.round(ns * ratio));
             }
             it.size = ns;
         };
@@ -22807,7 +24082,7 @@ mood 写这一刻的气氛，例如 安静 / 开心 / 想你 / 下雨 / 深夜 /
         };
         const trDeleteThis = async () => {
             if (!trSavedId.value || trDeleted.value) return;
-            if (!confirm('把这次抽牌从日记里删掉？牌面还在这儿，只是不再留下记录。')) return;
+            if (!await lbConfirm('把这次抽牌从日记里删掉？牌面还在这儿，只是不再留下记录。')) return;
             trHistory.value = trHistory.value.filter(h => h.id !== trSavedId.value);
             trDeleted.value = true;
             await trPersist();
@@ -22835,7 +24110,7 @@ mood 写这一刻的气氛，例如 安静 / 开心 / 想你 / 下雨 / 深夜 /
         });
         const trOpenHis = (h) => { trDetail.value = h; };
         const trDelHis = async (h) => {
-            if (!confirm('删掉这次抽牌记录？')) return;
+            if (!await lbConfirm('删掉这次抽牌记录？')) return;
             trHistory.value = trHistory.value.filter(x => x.id !== h.id);
             if (trSavedId.value === h.id) trSavedId.value = '';
             trDetail.value = null;
@@ -23976,7 +25251,7 @@ mood 写这一刻的气氛，例如 安静 / 开心 / 想你 / 下雨 / 深夜 /
         const hpFlip = (n) => { if (hpFront.value !== n) hpFront.value = n; };
 
         const hpSetDays = async () => {
-            const v = window.prompt('从哪天开始算？（格式 2024-01-01）', '');
+            const v = await lbPrompt('从哪天开始算？（格式 2024-01-01）', '');
             if (!v) return;
             const d = new Date(v);
             if (isNaN(d.getTime())) return;
@@ -24021,7 +25296,7 @@ mood 写这一刻的气氛，例如 安静 / 开心 / 想你 / 下雨 / 深夜 /
 
         const hpEditNote = async (n) => {
             const cur = n === 1 ? hpNote1.value : hpNote2.value;
-            const v = window.prompt('写点什么', cur);
+            const v = await lbPrompt('写点什么', cur);
             if (v === null) return;
             if (n === 1) { hpNote1.value = v; await localforage.setItem('liubai_hp_note1', v); }
             else { hpNote2.value = v; await localforage.setItem('liubai_hp_note2', v); }
@@ -24053,9 +25328,9 @@ mood 写这一刻的气氛，例如 安静 / 开心 / 想你 / 下雨 / 深夜 /
             } catch (e) {}
         };
         const hpEditTop = async () => {
-            const a = window.prompt('上面那行字', hpTopMain.value);
+            const a = await lbPrompt('上面那行字', hpTopMain.value);
             if (a !== null) { hpTopMain.value = a; await localforage.setItem('liubai_hp_top_main', a); }
-            const b = window.prompt('下面那行小字', hpTopSub.value);
+            const b = await lbPrompt('下面那行小字', hpTopSub.value);
             if (b !== null) { hpTopSub.value = b; await localforage.setItem('liubai_hp_top_sub', b); }
         };
         // ================= [MOD-00B] 视图切换路由 =================
@@ -24089,7 +25364,7 @@ mood 写这一刻的气氛，例如 安静 / 开心 / 想你 / 下雨 / 深夜 /
             });
         };
         
-        const editName = (role) => { const n = prompt('新名字', profiles[role].name); if (n && n.trim()) { profiles[role].name = n.trim().slice(0, 10); saveAll(); } };
+        const editName = async (role) => { const n = await lbPrompt('新名字', profiles[role].name); if (n && n.trim()) { profiles[role].name = n.trim().slice(0, 10); saveAll(); } };
         const editAvatar = (role) => {
             const input = document.createElement('input'); input.type = 'file'; input.accept = 'image/*';
             input.onchange = async (e) => {
@@ -24101,8 +25376,8 @@ mood 写这一刻的气氛，例如 安静 / 开心 / 想你 / 下雨 / 深夜 /
             input.click();
         };
         
-        const clearChat = () => { 
-            if (confirm('焚毁所有对话？')) { 
+        const clearChat = async () => { 
+            if (await lbConfirm('焚毁所有对话？')) { 
                 messages.value = []; 
                 saveAll();
                 switchView('home'); 
@@ -24479,8 +25754,8 @@ mood 写这一刻的气氛，例如 安静 / 开心 / 想你 / 下雨 / 深夜 /
             spHist('改了契约条款' + (sp.preDrawn ? ' · 重抽一条' + spKindName(sp.preDrawn.kind) : ''));
             spSave(); spEditOpen.value = false; spSay('契约改好了');
         };
-        const spDissolve = () => {
-            if (!confirm('解除火花契约？记录和惩罚池也会一起清掉。')) return;
+        const spDissolve = async () => {
+            if (!await lbConfirm('解除火花契约？记录和惩罚池也会一起清掉。')) return;
             sp.signed = false; sp.signedAt = 0; sp.lastRenew = ''; sp.streak = 0; sp.total = 0; sp.broken = 0;
             sp.by = 'them'; sp.kind = 'any'; sp.myPunish = ''; sp.pending = null; sp.preDrawn = null; sp.custom = []; sp.history = [];
             sp.meRenew = ''; sp.themRenew = ''; sp.tickDate = ''; sp.himRemindAt = '';
@@ -24522,7 +25797,12 @@ mood 写这一刻的气氛，例如 安静 / 开心 / 想你 / 下雨 / 深夜 /
             MAIL_FONTS, mailFont, mailFontOpen, letterFontStyle, mailSetFont, mailToggleFontPanel,
             mailEnvelopeOpen, mailEnvelopeLetter, mailSealStage, mailOpenEnvelope, mailEnvelopeClose,
             videoCall, videoAutoCall, fmtCallTime, vfSize, setFloatStyle,
-            vcSense, vcSenseLabel, vcTapSense,
+            vcSense, vcSenseLabel, vcTapSense, vcMakeLines, vcOnSpeech, vcShowReply,
+            lbModal, lbClose, lbOk, lbMaskTap, lbAlert, lbConfirm, lbPrompt, lbPick, lbSelText,
+            pickFontFamily, pickApiModel, pickCardGroup, pickDictAddCat, pickDictEditCat, pickSpKind, pickRdBook,
+            fontFamilyText, apiModelText, cardGroupText, dictAddCatText, dictEditCatText, spKindText, rdBookText,
+            callHistory, vcLogOpen, callHisOpen, callHisDetail, openCallHis, callHisDel,
+            callHisDate, callHisClock, callHisKindText,
             startVideoCall, acceptVideoCall, hangupVideoCall, minimizeVideoCall, expandVideoCall,
             startFloatDrag, onFloatDrag, endFloatDrag, onFloatClick,
             syncPlaylist, syncState, currentSong, fmt,
@@ -24548,6 +25828,8 @@ mood 写这一刻的气氛，例如 安静 / 开心 / 想你 / 下雨 / 深夜 /
             shopCheckoutAddr, shopCheckoutPwd, shopPayErr, shopMeToggleEdit,
             shopMsgOpen, shopMsgBack,
             shopThemFavOpen, shopThemFavBack, shopMeEntryTap,
+            shopGalleryOpen, shopGalleryTab, shopGalMine, shopGalThem, shopGalItems,
+            shopGalDate, shopGalNote, shopGalOpen, shopGalBack,
             TAKEOUT_SHOPS, TAKEOUT_MENU, TAKEOUT_DISHES, tkMenuOpen, tkShop, tkDishes,
             tkOpenMenu, tkOrder, tkRandomOrder, tkRandomToMe, tkSend, themMaybeTakeout,
             takeoutProg, takeoutDot, takeoutToShort,
@@ -24599,6 +25881,8 @@ mood 写这一刻的气氛，例如 安静 / 开心 / 想你 / 下雨 / 深夜 /
             cpHeart, cpTemp, cpSleepStatus, cpSceneName, cpTitle, cpDisplay, cpDashTotal, cpDashOffset,
             cpEndTime, cpPick, cpGo, cpBack, cpEnd, cpSetMode, cpAdjust, cpToggle, cpReset, cpSend, cpOpenSticker, cpSendSticker,
             cpNoises, cpNoise, cpNoiseName, cpToggleNoise, cpNoiseStop, cpSetNoiseVol, cpQueueSave, cpFlushSave,
+            cpSongFile, cpSongUrlInput, cpSongName, cpSongOn, cpSongErr,
+            cpPickSong, cpOnSong, cpPlayUrl, cpStopSong,
             cpMusics, cpAsmr, cpSoundName, cpActive, cpTrim, cpTargetGain, cpRebalance, cpUserVol, cpActiveKeys, cpRecipes, cpRecipeName,
             cpSetTrackVol, cpSaveMix, cpSaveRecipe, cpLoadRecipe, cpDelRecipe,
             cpApplyMix, cpJoinSleep, cpJoinSleepFromChat, themSendSleep, cpDebug,
@@ -24607,6 +25891,9 @@ mood 写这一刻的气氛，例如 安静 / 开心 / 想你 / 下雨 / 深夜 /
             slpHistory, slpHistoryOpen, slpHistorySel, slpOpenHistory, slpCloseHistory, slpViewHistory,
             slpStartAt, slpElapsed, slpElapsedText, slpSummary, slpLastSummary, slpDurParts,
             slpEnd, slpResume, slpAgain, slpGoSetup, slpGoHome, slpShowLast, slpLoadSession, slpBuildSummary,
+            slpSoundMode, slpStopAt, slpStopHHMM, slpStopAtText, slpSoundLabel, slpSoundMuted,
+            slpSetSoundMode, slpSetStopTime, slpQuickMin, slpWakeSound, slpScheduleSound, slpLoadSound, cpFadeOut, cpCancelFade,
+            slpTimePickerOpen, slpTP, slpTPPad, slpOpenTimePicker, slpConfirmTime,
             mensPeriodStarts, mensStats, mensPredictDays,
             mensYear, mensMonth, mensCells, mensShiftMonth,
             mensRecordsSorted, 
@@ -24617,9 +25904,11 @@ mensFmtDate, mensHasRecord, mensToggleSymptom,
             jbToast, jbSaved, jbItemH, jbWho, jbSetWho, jbThemWrite, jbThemBusy, jbThemHasText, jbThemAuto, jbToggleThemAuto, jbThemWaitText,
             jbThemArm, jbThemTick,
             toggleKeepAlive, kaResume, pendingReply,
-            jbMoods, jbWxList, jbWx, jbWxOpen, jbPanel, jbArtList, jbTapes, jbTapeColor, jbFileInput,
+            jbMoods, jbWxList, jbWx, jbWxOpen, jbPanel, jbArtList, jbFileInput,
+            jbStickyColors, jbStickySizeOpts, jbStickyPaper, jbStickySize, jbStickyText, jbStickyArt, jbStickyEditing,
+            jbOpenStickyPanel, jbEditSticky, jbAddSticky,
             jbOpenBook, jbCloseBook, jbShift, jbToday, jbSetMood, jbPagerClick, jbPagerDown, jbPagerUp, jbNearestEntry, jbDayHas,
-            jbTogglePanel, jbAddArt, jbAddSticker, jbAddTape, jbPickPhoto, jbOnPhoto,
+            jbTogglePanel, jbAddArt, jbAddSticker, jbPickPhoto, jbOnPhoto,
             jbStartDrag, jbRotItem, jbScaleItem, jbDelItem, jbOpenWx, jbSaveWx, jbSaveNow,
             TR_BACK_INNER, TR_SPREADS, trSpreads, trView, trPhase, trSpreadKey, trCards, trHistory, trDetail,
             trNoteOpen, trNoteText, trAiOn, trAiBusy, trSavedId, trDeleted, trShuffleT, trShuffleStyle,
